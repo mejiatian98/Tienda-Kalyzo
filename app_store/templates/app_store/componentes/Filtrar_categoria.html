@@ -1,0 +1,28 @@
+{% load static %}
+
+<div>
+    <h5 class="fw-bold mb-3">Categorías</h5>
+
+    <div class="list-group">
+
+        {% for categoria in categorias %}
+        
+        <a href="{% url 'category_specific_products' categoria.slug categoria.id %}"
+           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3">
+
+            <!-- NOMBRE + DESCRIPCIÓN -->
+            <div class="d-flex flex-column">
+                <span class="fw-semibold">{{ categoria.name }}</span>
+            </div>
+
+            <!-- CONTADOR -->
+            <span class="badge bg-primary rounded-pill">
+            {{ categoria.products.count }}
+            </span>
+        </a>
+        {% empty %}
+            <p class="text-muted">No hay productos en esta categoría.</p>
+        {% endfor %}
+
+    </div>
+</div>

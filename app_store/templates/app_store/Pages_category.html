@@ -1,0 +1,24 @@
+{% extends 'Store_page.html' %}
+{% load static %}
+{% block title %} {{ categoria.name }} {% endblock %}
+
+
+
+{% block content %}
+{% include 'app_store/componentes/Boton_back.html' %}
+{% include 'app_store/componentes/Filtrar_categoria.html' %}
+    <!-- Contenido -->
+    <div class="container mt-4">
+        
+    <h3 class="fw-bold mb-4">
+        {{ categoria.name }}
+    </h3>
+
+    <div class="row">
+
+        {% include 'app_store/componentes/Card.html' %}
+
+    </div>
+
+</div>
+{% endblock %}
