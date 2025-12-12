@@ -1,0 +1,35 @@
+{% extends 'Store_page.html' %}
+{% load static %}
+{% load moneda %}
+{% load math_filters %}
+{% block title %} Resultados de búsqueda {% endblock %}
+
+{% block content %}
+{% include 'app_store/componentes/Boton_back.html' %}
+
+<div class="container mt-4">
+    
+
+    <!-- Título -->
+    <h3 class="fw-bold mb-4">
+        Resultados para: 
+        <span class="text-primary">"{{ query }}"</span>
+    </h3>
+
+    <!-- Si no hay productos -->
+    {% if productos.count == 0 %}
+        <div class="alert alert-warning text-center py-4 shadow-sm">
+            <i class="bi bi-exclamation-circle me-2"></i>
+            No se encontraron productos relacionados.
+        </div>
+    {% else %}
+
+    <!-- GRID DE PRODUCTOS -->
+     <!-- GRID DE PRODUCTOS -->
+    <div class="row">
+        {% include 'app_store/componentes/Card.html' %}
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

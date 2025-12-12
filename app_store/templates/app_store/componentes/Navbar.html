@@ -1,0 +1,72 @@
+{% load static %}
+<nav class="navbar navbar-1 bg-primary" data-bs-theme="dark">
+  <div class="container-fluid my-1 mx-4  px-4">
+
+    <!-- LOGO -->
+    <!-- <a class="navbar-brand d-flex align-items-center text-center" href="{% url 'store_page' %}">
+      <img src="{% static 'favicon/kalyzo.png' %}" 
+           alt="Kalyzo" 
+           width="35" 
+           height="35" 
+           class="me-2 rounded-circle">
+           hola
+    </a> -->
+
+    <a class="navbar-nav  d-flex align-items-center text-center" href="{% url 'store_page' %}">
+      <i class="bi bi-house fs-4"></i>
+    </a>
+
+    <a href="{% url 'store_page' %}" class="no-link-style">
+      <span class="brand-text">KALYZO</span>
+    </a>
+
+
+    <!-- ICONOS -->
+    <ul class="navbar-nav d-flex flex-row align-items-center gap-3">
+
+      <!-- LOGIN (abre offcanvas derecha) -->
+      <li class="nav-item">
+        <a class="nav-link"
+           data-bs-toggle="offcanvas"
+           data-bs-target="#loginOffcanvas">
+
+          <!-- Comentado el icono de login temporalmente -->
+          <!-- <i class="bi bi-person-circle fs-4"></i> -->
+        </a>
+      </li>
+
+      <!-- BUSCAR (abre offcanvas top) -->
+      <li class="nav-item">
+        <a class="nav-link" 
+           data-bs-toggle="offcanvas" 
+           data-bs-target="#buscarOffcanvas">
+          <i class="bi bi-search fs-4"></i>
+        </a>
+      </li>
+
+      <!-- CARRITO (abre offcanvas derecha) -->
+      <li class="nav-item position-relative">
+        <a class="nav-link"
+           data-bs-toggle="offcanvas"
+           data-bs-target="#carritoOffcanvas">
+          <i class="bi bi-bag fs-4"></i>
+        </a>
+
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          2
+        </span>
+      </li>
+
+    </ul>
+
+  </div>
+</nav>
+
+<!-- OFFCANVAS LOGIN -->
+{% include 'app_store/componentes/subcomponentes/login_offcanvas.html' %}
+
+<!-- OFFCANVAS BUSCAR -->
+{% include 'app_store/componentes/subcomponentes/Buscador_offcanvas.html' %}
+
+<!-- OFFCANVAS CARRITO -->
+{% include 'app_store/componentes/subcomponentes/Carrito_offcanvas.html' %}

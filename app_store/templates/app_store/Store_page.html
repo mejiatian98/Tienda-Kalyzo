@@ -1,0 +1,64 @@
+{% load static %}
+{% load moneda %}
+{% load math_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'favicon/kalyzo.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <title>Kalyzo | {% block title %} Tienda {% endblock %}</title>
+</head>
+<body>
+
+    <!-- navbar statico -->
+    {% include 'app_store/componentes/Navbar.html' %}
+
+    <!-- subnavbar -->
+    {% include 'app_store/componentes/Subnavbar.html' %}
+    
+    <!-- Texto animado -->
+    {% include 'app_store/componentes/Texto_animado.html' %}
+
+
+
+    <!-- Contenido -->
+    <div class="container mt-4">
+
+        {% block content %}
+            
+            <!-- Carrousel -->
+            {% include 'app_store/componentes/Carrousel_uno.html' %}
+
+            <!-- Linea separador -->
+            <hr class="hr-separador">
+            
+
+                <div class="row">
+
+                    {% include 'app_store/componentes/Card.html' %}
+
+                </div>
+
+        {% endblock %}
+    </div>
+
+    
+    <!-- Botón de WhatsApp -->
+    {% include 'app_store/componentes/Boton_whatsapp.html' %}
+
+    <!-- Footer -->
+    {% include 'app_store/componentes/Footer.html' %}
+
+
+</body>
+</html>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

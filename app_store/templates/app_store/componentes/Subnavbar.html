@@ -1,0 +1,47 @@
+{% load static %}
+
+<div class="bg-light shadow-sm border-bottom py-2">
+  <div class="container-fluid">
+
+    <!-- Botón móvil -->
+    <button class="btn btn-light d-lg-none" type="button" 
+            data-bs-toggle="collapse"
+            data-bs-target="#subNavbarContent"
+            aria-controls="subNavbarContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <i class="bi bi-list fs-3"></i>
+    </button>
+
+    <!-- Contenido colapsable -->
+    <div class="collapse d-lg-block" id="subNavbarContent">
+
+      <ul class="nav justify-content-center gap-4 my-1 fs-6">
+
+        <li class="nav-item">
+          <a class="nav-link py-0 d-flex align-items-center" href="{% url 'news_products' %}">
+            <i class="bi bi-stars me-1"></i> Nuevos
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link py-0 d-flex align-items-center" href="{% url 'top_selling_products' %}">
+            <i class="bi bi-fire me-1"></i> Más vendidos
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link py-0 d-flex align-items-center" href="{% url 'discounted_products' %}">
+            <i class="bi bi-tag-fill me-1"></i> Ofertas
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link py-0 d-flex align-items-center" href="{% url 'category_products' %}">
+            <i class="bi bi-grid me-1"></i> Categorías
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
