@@ -12,6 +12,45 @@ body {
     padding-top: 70px; /* ajusta según altura del navbar */
 }
 
+/* CSS de variantes seleccion */
+
+.variant-option {
+    width: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.variant-option:hover {
+    border-color: #0d6efd !important;
+    transform: scale(1.05);
+}
+
+.variant-option.variant-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.variant-option.variant-disabled:hover {
+    border-color: initial !important;
+    transform: none;
+}
+
+
+
+/* Badge AGOTADO */
+.badge-agotado {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #dc3545;
+    color: #fff;
+    padding: 6px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    z-index: 10;
+}
+
 
 /* Texto de KALYZO */
 .no-link-style {
@@ -71,9 +110,9 @@ body {
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: #dc3545;
+    background-color: #007000;
     color: white;
-    padding: 2px 5px;
+    padding: 6px 5px;
     font-size: 0.7rem;
     font-weight: bold;
     border-radius: 5px;
