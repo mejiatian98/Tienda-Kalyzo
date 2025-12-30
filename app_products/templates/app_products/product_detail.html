@@ -197,46 +197,96 @@
             </small>
         </div>
 
-        <!-- LISTA -->
-        {% if comments %}
-            {% for comentario in comments %}
-                <div class="card mb-3 shadow-sm">
-                    <div class="card-body">
+        <!-- LISTA DE COMENTARIOS -->
+        <div id="commentsContainer">
+            {% if comments %}
+                {% for comentario in comments|slice:":5" %}
+                    <div class="comment-item card mb-3 shadow-sm">
+                        <div class="card-body">
 
-                        <div class="d-flex justify-content-between mb-2">
-                            <div>
-                                <h6 class="fw-bold mb-0" >
-                                    {{ comentario.name|truncatechars:30 }}
-                                </h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>
+                                    <h6 class="fw-bold mb-0">
+                                        {{ comentario.name|truncatechars:30 }}
+                                    </h6>
 
-                                <div class="text-warning">
-                                    {% for i in "12345" %}
-                                        {% if forloop.counter <= comentario.rating %}
-                                            ★
-                                        {% else %}
-                                            ☆
-                                        {% endif %}
-                                    {% endfor %}
+                                    <div class="text-warning">
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= comentario.rating %}
+                                                ★
+                                            {% else %}
+                                                ☆
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
+
+                                <small class="text-muted">
+                                    {{ comentario.created_at|date:"d M Y" }}
+                                </small>
                             </div>
 
-                            <small class="text-muted">
-                                {{ comentario.created_at|date:"d M Y" }}
-                            </small>
+                            <p class="mb-0">
+                                {{ comentario.comment|truncatechars:300 }}
+                            </p>
+
                         </div>
-
-                        <p class="mb-0">
-                            {{ comentario.comment|truncatechars:300 }}
-                        </p>
-
                     </div>
+                {% endfor %}
+
+                <!-- Comentarios ocultos (para cargar con JavaScript) -->
+                <div id="hiddenComments" style="display: none;">
+                    {% for comentario in comments|slice:"5:" %}
+                        <div class="comment-item card mb-3 shadow-sm" data-index="{{ forloop.counter0 }}">
+                            <div class="card-body">
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <div>
+                                        <h6 class="fw-bold mb-0">
+                                            {{ comentario.name|truncatechars:30 }}
+                                        </h6>
+
+                                        <div class="text-warning">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= comentario.rating %}
+                                                    ★
+                                                {% else %}
+                                                    ☆
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <small class="text-muted">
+                                        {{ comentario.created_at|date:"d M Y" }}
+                                    </small>
+                                </div>
+
+                                <p class="mb-0">
+                                    {{ comentario.comment|truncatechars:300 }}
+                                </p>
+
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
-        {% else %}
-            <p class="text-muted text-center">
-                Aún no hay comentarios. Sé el primero 😊
-            </p>
-        {% endif %}
+
+                <!-- Botón Ver más -->
+                {% if comments|length > 5 %}
+                    <div class="text-center mt-4 mb-3">
+                        <button id="loadMoreBtn" class="btn btn-outline-primary" onclick="loadMoreComments()">
+                            Ver más comentarios
+                        </button>
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <p class="text-muted text-center">
+                    Aún no hay comentarios. Sé el primero 😊
+                </p>
+            {% endif %}
+        </div>
+
     </div>
 
     <!-- ================= FORMULARIO ================= -->
@@ -295,12 +345,18 @@
     <!-- ================= PRODUCTOS SIMILARES ================= -->
     <hr class="separator my-5">
 
+    <h3 class="fw-bold mb-4">Productos similares</h3>
+
     <div class="row">
-        
-        {% for producto in productos %}
-        <h3 class="fw-bold mb-4">Productos similares</h3>
-            {% include 'app_store/componentes/Card.html' with producto=producto %}
-        {% endfor %}
+        {% if productos %}
+            {% for producto in productos %}
+                {% include 'app_store/componentes/Card.html' with producto=producto %}
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center py-3">
+                <p class="text-muted">No hay productos similares disponibles.</p>
+            </div>
+        {% endif %}
     </div>
 
 </div>
