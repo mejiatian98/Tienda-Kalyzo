@@ -63,4 +63,4 @@ class ProductDetailView(DetailView):
                 rating=int(rating)
             )
 
-        return redirect("Product_detail", slug=product.slug, id=product.id)
+        return redirect("product_detail", slug=product.slug, id=product.id)
