@@ -15,72 +15,292 @@
 
         <!-- ================= IMÁGENES ================= -->
         <div class="col-md-6 text-center">
+
             {% if images %}
-                <img src="{{ images.0.image_url }}" 
-                     alt="{{ images.0.alt_text }}" 
-                     class="img-fluid mb-3 rounded">
-                     
-                <div class="d-flex gap-2 justify-content-center">
+                <!-- IMAGEN PRINCIPAL -->
+                <img 
+                    id="mainProductImage"
+                    src="{{ images.0.image_url }}"
+                    alt="{{ images.0.alt_text }}"
+                    class="img-fluid mb-3 rounded"
+                >
+
+                <hr>
+
+                <!-- MINIATURAS -->
+                <div
+                    id="thumbnailContainer"
+                    class="d-flex gap-2 justify-content-center"
+                >
                     {% for img in images %}
-                        <img src="{{ img.image_url }}" alt="" 
-                             class="img-thumbnail"
-                             style="width: 70px; height: 70px; object-fit: cover;">
+                        <img 
+                            src="{{ img.image_url }}"
+                            alt="{{ img.alt_text }}"
+                            class="img-thumbnail product-thumb"
+                            style="width:70px;height:70px;object-fit:cover;cursor:pointer;"
+                            onclick="changeMainImage('{{ img.image_url }}', '{{ img.alt_text }}')"
+                        >
                     {% endfor %}
                 </div>
             {% else %}
-                <p>No hay imágenes disponibles.</p>
+                <p class="text-muted">No hay imágenes disponibles.</p>
             {% endif %}
+
         </div>
 
-
-        <!-- ================= INFORMACIÓN DEL PRODUCTO ================= -->
+        <!-- ================= INFORMACIÓN ================= -->
         <div class="col-md-6">
 
             <h2 class="fw-bold py-3">{{ product.name }}</h2>
 
-            <p class="text-muted">SKU: {{ product.sku }}</p>
+            <!-- ================= PRECIO ================= -->
+            <div id="priceContainer">
+                {% if main_variant %}
+                    {% if main_variant.discount_price %}
+                        <div class="d-flex align-items-center gap-3">
+                            <h4 class="text-muted text-decoration-line-through" style="color:brown;">
+                                {{ main_variant.price|cop }}
+                            </h4>
+                            <h4 class="text-primary fw-bold">
+                                {{ main_variant.discount_price|cop }}
+                            </h4>
+                        </div>
+                    {% else %}
+                        <h4 class="text-primary fw-bold">
+                            {{ main_variant.price|cop }}
+                        </h4>
+                    {% endif %}
+                {% endif %}
+            </div>
 
-            <h3 class="fw-bold mt-2 text-danger">
-                {{ product.price|cop }}
-            </h3>
-
-            <p class="mt-3">{{ product.description|safe }}</p>
-
-            <!-- ================= VARIANTES ================= -->
+            <!-- ================= VARIANTES CON ICONOS ================= -->
             {% if variants %}
-                <div class="mt-4">
-                    <label class="fw-bold">Variantes:</label>
-                    <select class="form-select w-50">
-                        {% for v in variants %}
-                            <option>
-                                {{ v.name }}: {{ v.value }}
-                                {% if v.extra_price > 0 %}
-                                    (+ ${{ v.extra_price|cop }})
+            <div class="mt-4">
+
+                <label class="fw-bold mb-2 d-block">Variantes:</label>
+
+                <div class="d-flex flex-wrap gap-2">
+                    {% for v in variants %}
+                        {% if v.images.first %}
+                            <div
+                                class="variant-option border rounded p-1 text-center {% if v.stock == 0 %}variant-disabled{% endif %}"
+                                data-variant-id="{{ v.id }}"
+                                data-main-image="{{ v.images.first.image_url }}"
+                                data-main-alt="{{ v.images.first.alt_text }}"
+                                data-price="{{ v.price }}"
+                                data-discount-price="{{ v.discount_price|default_if_none:'' }}"
+                                data-stock="{{ v.stock }}"
+                                data-images='[
+                                    {% for img in v.images.all %}
+                                        {
+                                            "url": "{{ img.image_url }}",
+                                            "alt": "{{ img.alt_text }}"
+                                        }{% if not forloop.last %},{% endif %}
+                                    {% endfor %}
+                                ]'
+                                {% if v.stock > 0 %}
+                                    onclick="selectVariantFromData(this)"
                                 {% endif %}
-                            </option>
-                        {% endfor %}
-                    </select>
+                            >
+                                <img
+                                    src="{{ v.images.first.image_url }}"
+                                    alt="{{ v.images.first.alt_text }}"
+                                    class="img-fluid rounded"
+                                    style="height:60px; object-fit:cover;"
+                                >
+                                <small class="d-block mt-1">
+                                    {{ v.color }} {{ v.size }}
+                                </small>
+                                {% if v.stock == 0 %}
+                                    <small class="d-block text-danger fw-bold" style="font-size:0.7rem;">
+                                        Agotado
+                                    </small>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- ================= STOCK ================= -->
+            {% if main_variant %}
+                <div id="stockInfo" class="mt-3">
+                    Stock disponible: {{ main_variant.stock }}
+                </div>
+
+                <!-- ================= SELECTOR DE CANTIDAD ================= -->
+                {% if main_variant.stock > 0 %}
+                    <div id="quantityContainer" class="mt-3">
+                        <label class="fw-bold mb-2 d-block">Cantidad:</label>
+                        <select id="quantitySelect" class="form-select" style="width: 150px;">
+                            {% with max_qty=main_variant.stock|add:0 %}
+                                {% if max_qty > 10 %}
+                                    {% for i in "12345678910" %}
+                                        <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for i in "12345678910" %}
+                                        {% if forloop.counter <= max_qty %}
+                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </select>
+                    </div>
+                {% else %}
+                    <div id="quantityContainer" class="mt-3"></div>
+                {% endif %}
+
+                <!-- ================= BOTÓN DE CARRITO ================= -->
+                <div id="cartButtonContainer">
+                    {% if main_variant.stock > 0 %}
+                        <button class="btn btn-dark w-100 mt-4 fw-bold">
+                            Añadir al carrito
+                        </button>
+                    {% else %}
+                        <button class="btn btn-danger w-100 mt-4 fw-bold" disabled>
+                            Producto agotado
+                        </button>
+                    {% endif %}
                 </div>
             {% endif %}
 
-            <button class="btn btn-dark mt-4 px-4 py-2 fw-bold">
-                Añadir al carrito
-            </button>
+            <!-- ================= DESCRIPCIÓN ================= -->
+            <p class="mt-4">
+                {{ product.description|safe }}
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- ================= COMENTARIOS ================= -->
+    <div class="mt-5">
+
+        <h3 class="fw-bold mb-4">Comentarios</h3>
+
+        <!-- PROMEDIO -->
+        <div class="mb-4">
+            <span class="text-warning fs-5">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= avg_rating %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            </span>
+            <small class="text-muted">
+                ({{ comments|length }} reseñas · Promedio {{ avg_rating }})
+            </small>
+        </div>
+
+        <!-- LISTA -->
+        {% if comments %}
+            {% for comentario in comments %}
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <h6 class="fw-bold mb-0" >
+                                    {{ comentario.name|truncatechars:30 }}
+                                </h6>
+
+                                <div class="text-warning">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= comentario.rating %}
+                                            ★
+                                        {% else %}
+                                            ☆
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <small class="text-muted">
+                                {{ comentario.created_at|date:"d M Y" }}
+                            </small>
+                        </div>
+
+                        <p class="mb-0">
+                            {{ comentario.comment|truncatechars:300 }}
+                        </p>
+
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted text-center">
+                Aún no hay comentarios. Sé el primero 😊
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- ================= FORMULARIO ================= -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+
+            <h5 class="fw-bold mb-3">Deja tu comentario</h5>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Nombre</label>
+                    <input
+                        type="text"
+                        name="name"
+                        class="form-control"
+                        maxlength="30"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Calificación</label>
+
+                    <div id="star-rating" class="fs-3 text-warning" style="cursor:pointer;">
+                        <span data-value="1">☆</span>
+                        <span data-value="2">☆</span>
+                        <span data-value="3">☆</span>
+                        <span data-value="4">☆</span>
+                        <span data-value="5">☆</span>
+                    </div>
+
+                    <input type="hidden" name="rating" id="rating-value" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Comentario</label>
+                    <textarea
+                        name="comment"
+                        class="form-control"
+                        rows="4"
+                        maxlength="300"
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-dark fw-bold">
+                    Publicar comentario
+                </button>
+            </form>
 
         </div>
     </div>
 
-
     <!-- ================= PRODUCTOS SIMILARES ================= -->
-    
     <hr class="separator my-5">
 
     <div class="row">
+        
         {% for producto in productos %}
-        <h3 class="fw-bold mt-5 mb-4">Productos similares</h3>
-            {% include 'app_store/componentes/Card.html' with product=producto %}
+        <h3 class="fw-bold mb-4">Productos similares</h3>
+            {% include 'app_store/componentes/Card.html' with producto=producto %}
         {% endfor %}
-
     </div>
 
 </div>
