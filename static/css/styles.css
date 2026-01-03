@@ -1,15 +1,56 @@
 /* navbar fixed at top */
 .navbar-1 {
-    position: fixed !important;
+    /* position: fixed !important; */
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
-    z-index: 1030 !important;
+        position: relative;
+
+
 }
 
-body {
-    padding-top: 70px; /* ajusta según altura del navbar */
+/* body {
+    padding-top: 0px; valor de 70px si navbar fixed
+} */
+
+/* CSS de variantes seleccion */
+
+.variant-option {
+    width: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.variant-option:hover {
+    border-color: #0d6efd !important;
+    transform: scale(1.05);
+}
+
+.variant-option.variant-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.variant-option.variant-disabled:hover {
+    border-color: initial !important;
+    transform: none;
+}
+
+
+
+/* Badge AGOTADO */
+.badge-agotado {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #dc3545;
+    color: #fff;
+    padding: 6px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    z-index: 10;
 }
 
 
@@ -34,6 +75,60 @@ body {
 
 }
 
+.btn-dark {
+  background-color: #007bff !important;
+    border-color: #007bff !important;
+}
+
+
+.bg-primary {
+  background:
+    radial-gradient(circle at 10% 20%, rgba(0,180,255,0.9), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(0,150,255,0.85), transparent 45%),
+    radial-gradient(circle at 30% 40%, rgba(0,120,240,0.8), transparent 45%),
+    radial-gradient(circle at 40% 10%, rgba(0,90,220,0.85), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(0,160,255,0.8), transparent 50%),
+    radial-gradient(circle at 60% 60%, rgba(0,200,255,0.85), transparent 45%),
+    radial-gradient(circle at 70% 20%, rgba(0,110,230,0.9), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0,70,210,0.85), transparent 45%),
+    radial-gradient(circle at 90% 50%, rgba(0,140,255,0.9), transparent 45%),
+    radial-gradient(circle at 15% 55%, rgba(0,100,200,0.8), transparent 50%),
+
+    radial-gradient(circle at 25% 25%, rgba(0,170,255,0.9), transparent 45%),
+    radial-gradient(circle at 35% 75%, rgba(0,130,255,0.85), transparent 45%),
+    radial-gradient(circle at 45% 45%, rgba(0,80,190,0.85), transparent 50%),
+    radial-gradient(circle at 55% 15%, rgba(0,190,255,0.9), transparent 45%),
+    radial-gradient(circle at 65% 85%, rgba(0,120,220,0.8), transparent 50%),
+    radial-gradient(circle at 75% 35%, rgba(0,160,240,0.85), transparent 45%),
+    radial-gradient(circle at 85% 65%, rgba(0,60,180,0.85), transparent 45%),
+    radial-gradient(circle at 95% 25%, rgba(0,100,255,0.9), transparent 40%),
+
+    linear-gradient(
+      140deg,
+      #001b66,
+      #002f99,
+      #004bcc,
+      #0066ff,
+      #008cff,
+      #00b3ff
+    );
+
+  background-size: 240% 240%;
+  animation: canvaGradient 15s ease-in-out infinite;
+}
+
+@keyframes canvaGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
 
 /* Buscador canva pagina completa */
@@ -50,10 +145,65 @@ body {
     cursor: pointer;
 }
 
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background:
+    radial-gradient(circle at 10% 20%, rgba(0,180,255,0.9), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(0,150,255,0.85), transparent 45%),
+    radial-gradient(circle at 30% 40%, rgba(0,120,240,0.8), transparent 45%),
+    radial-gradient(circle at 40% 10%, rgba(0,90,220,0.85), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(0,160,255,0.8), transparent 50%),
+    radial-gradient(circle at 60% 60%, rgba(0,200,255,0.85), transparent 45%),
+    radial-gradient(circle at 70% 20%, rgba(0,110,230,0.9), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0,70,210,0.85), transparent 45%),
+    radial-gradient(circle at 90% 50%, rgba(0,140,255,0.9), transparent 45%),
+    radial-gradient(circle at 15% 55%, rgba(0,100,200,0.8), transparent 50%),
+
+    radial-gradient(circle at 25% 25%, rgba(0,170,255,0.9), transparent 45%),
+    radial-gradient(circle at 35% 75%, rgba(0,130,255,0.85), transparent 45%),
+    radial-gradient(circle at 45% 45%, rgba(0,80,190,0.85), transparent 50%),
+    radial-gradient(circle at 55% 15%, rgba(0,190,255,0.9), transparent 45%),
+    radial-gradient(circle at 65% 85%, rgba(0,120,220,0.8), transparent 50%),
+    radial-gradient(circle at 75% 35%, rgba(0,160,240,0.85), transparent 45%),
+    radial-gradient(circle at 85% 65%, rgba(0,60,180,0.85), transparent 45%),
+    radial-gradient(circle at 95% 25%, rgba(0,100,255,0.9), transparent 40%),
+
+    linear-gradient(
+      140deg,
+      #001b66,
+      #002f99,
+      #004bcc,
+      #0066ff,
+      #008cff,
+      #00b3ff
+    );
+
+  background-size: 240% 240%;
+  animation: canvaGradient 15s ease-in-out infinite;
+}
+
+@keyframes canvaGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
 
 /* Contenedor de la imagen con altura fija */
 .img-container {
-    height: 180px; /* Mantener todas las imágenes iguales */
+    height: 240px; /* Mantener todas las imágenes iguales */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -71,9 +221,9 @@ body {
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: #dc3545;
+    background-color: #007000;
     color: white;
-    padding: 2px 5px;
+    padding: 6px 5px;
     font-size: 0.7rem;
     font-weight: bold;
     border-radius: 5px;
@@ -104,10 +254,12 @@ body {
 .product-card {
     display: flex;
     flex-direction: column;
-    height: 380px; /* 🔹 Ajusta esta medida a lo que necesites */
+    height: 400px; /* 🔹 Ajusta esta medida a lo que necesites */
     max-height: 580px;
     overflow: hidden; /* Evita expansión hacia abajo */
 }
+
+
 
 /* Cuerpo del card con medida fija */
 .content-area {
@@ -124,28 +276,37 @@ body {
     overflow: hidden;
 }
 
-  
-/* Efecto texto animado derecha a izquierda */
+
+
+/* Texto animado */
 .contenedor-del-texto {
-  overflow: hidden;       /* Oculta lo que se sale */
-  white-space: nowrap;    /* Evita saltos de línea */
-  font-weight: bold;        /* Texto en negrita */
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: bold;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;   /* ← cambio clave */
+  height: 30px;
+  z-index: 900;
+  width: 100%;
 }
 
 .texto-animado {
   display: inline-block;
   animation: mover-texto 15s linear infinite;
-  font-size: 12px;            /* Texto más pequeño */
+  font-size: 12px;
 }
 
 @keyframes mover-texto {
   0% {
-    transform: translateX(100vw);   /* Empieza totalmente fuera de la pantalla por la derecha */
+    transform: translateX(100vw);
   }
   100% {
-    transform: translateX(-100%);   /* Sale completamente por la izquierda */
+    transform: translateX(-100%);
   }
 }
+  
+
 
 
 /* Ajustar img en carrusel */
@@ -162,4 +323,239 @@ body {
 .hr-separador {
     border-top: 2px solid #ccc; /* Cambia el color y grosor según tus necesidades */
     margin: 40px 0; /* Espaciado arriba y abajo */
+}
+
+
+
+.categories-grid {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: left;
+    padding: 20px;
+}
+
+.category-card {
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.35s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-8px);
+}
+
+.category-circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: #0d6efd ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.category-card:hover .category-circle {
+    transform: scale(1.08) rotate(2deg);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+}
+
+.category-initial {
+    font-size: 42px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.category-name {
+    margin-top: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.category-count {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #111827;
+    color: #fff;
+
+    
+}
+
+/* RESPONSIVE*/
+
+
+@media (max-width: 992px) {
+    .categories-grid {
+        gap: 24px;
+        justify-content: center;
+    }
+
+    .category-circle {
+        width: 95px;
+        height: 95px;
+    }
+
+    .category-initial {
+        font-size: 36px;
+    }
+
+    .category-name {
+        font-size: 15px;
+    }
+}
+
+
+@media (max-width: 576px) {
+    .categories-grid {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        gap: 20px;
+        padding: 16px;
+        scroll-behavior: smooth;
+    }
+
+    .categories-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .category-card {
+        flex: 0 0 auto;
+    }
+
+    .category-circle {
+        width: 80px;
+        height: 80px;
+    }
+
+    .category-initial {
+        font-size: 30px;
+    }
+
+    .category-name {
+        font-size: 14px;
+    }
+
+    .category-count {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+}
+
+
+@media (max-width: 400px) {
+    .category-circle {
+        width: 70px;
+        height: 70px;
+    }
+
+    .category-initial {
+        font-size: 26px;
+    }
+}
+
+
+
+/* Aliados para envios */
+.logistic-partners {
+    padding: 40px 20px;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 260px;
+    height: 6px;
+    background: #0d6efd;
+    border-radius: 10px;
+    margin-top: 8px;
+}
+
+/* Aliados para envios */
+.partners-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.partners-grid {
+    display: flex;
+    gap: 30px;
+    padding: 20px 50px; /* espacio para flechas */
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    flex-wrap: nowrap;
+}
+
+.partners-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.partner-card {
+    min-width: 240px;
+    height: 150px;
+    flex: 0 0 auto;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.partner-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.partner-card img {
+    max-width: 110px;
+    max-height: 110px;
+    object-fit: contain;
+}
+
+
+
+.scroll-btn {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: #0d6dfd79;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.scroll-btn.left {
+    left: 0;
+}
+
+.scroll-btn.right {
+    right: 0;
+}
+
+@media (max-width: 576px) {
+    .scroll-btn {
+        display: none;
+    }
 }

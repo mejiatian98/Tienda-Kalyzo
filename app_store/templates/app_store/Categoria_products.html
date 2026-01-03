@@ -21,68 +21,84 @@
 
     <div class="row">
         {% for producto in categoria.products.all|slice:":5" %}
-        <div class="col-6 col-md-4 col-lg-3 mb-4">
+            {% with main_variant=producto.variants.first %}
+                {% if main_variant %}
+                <div class="col-6 col-md-4 col-lg-3 mb-4">
 
-            <!-- CARD -->
-            <div class="card product-card shadow-sm border-0 position-relative">
+                    <!-- CARD -->
+                    <div class="card product-card shadow-sm border-0 position-relative">
 
-                <!-- 🔥 BADGE DE DESCUENTO -->
-                {% if producto.discount_price %}
-                    {% with porcentaje=producto.discount_price|div:producto.price %}
-                    <span class="badge-discount">
-                        -{{ porcentaje|floatformat:0 }}% DESCUENTO
-                    </span>
-                    {% endwith %}
-                {% endif %}
-
-                <!-- LINK AL PRODUCTO -->
-                <a href="{% url 'product_detail' slug=producto.slug id=producto.id %}"
-                   class="text-decoration-none text-dark">
-
-                    <!-- IMAGEN -->
-                    <div class="img-container">
-                        <img src="{{ producto.images.first.image_url }}"
-                             class="card-img-top img-fluid p-3"
-                             alt="{{ producto.name }}">
-                    </div>
-
-                    <!-- CONTENIDO -->
-                    <div class="card-body content-area">
-                        <h6 class="card-title fw-bold">{{ producto.name }}</h6>
-
-                        <small class="text-muted">
-                            {{ producto.description|truncatechars:60 }}
-                        </small>
-                    </div>
-
-                    <!-- 🔥 PRECIOS -->
-                    <div class="card-footer bg-white border-0 d-flex align-items-center justify-content-between mt-auto footer-area">
-
-                        {% if producto.discount_price %}
-                            <div>
-                                <span class="text-danger fw-bold d-block">
-                                    {{ producto.discount_price|cop }}
-                                </span>
-
-                                <small class="text-muted text-decoration-line-through">
-                                    {{ producto.price|cop }}
-                                </small>
-                            </div>
+                        <!-- 🔥 BADGE DE DESCUENTO -->
+                        {% if main_variant.stock == 0 %}
+                            <span class="badge-agotado">
+                                AGOTADO
+                            </span>
                         {% else %}
-                            <p class="text-primary fw-bold mb-0">
-                                {{ producto.price|cop }}
-                            </p>
+                            {% if main_variant.discount_price %}
+                                {% with porcentaje=main_variant.discount_price|div:main_variant.price %}
+                                <span class="badge-discount">
+                                    -{{ porcentaje|floatformat:0 }}% Descuento
+                                </span>
+                                {% endwith %}
+                            {% endif %}
                         {% endif %}
 
-                        <i class="bi bi-bag-plus fs-4 text-primary"></i>
+                        <!-- LINK AL PRODUCTO -->
+                        <a href="{% url 'product_detail' slug=producto.slug id=producto.id %}"
+                           class="text-decoration-none text-dark">
+
+                            <!-- IMAGEN -->
+                            <div class="img-container">
+                                {% if main_variant.images.first %}
+                                    <img src="{{ main_variant.images.first.image_url }}"
+                                         class="card-img-top img-fluid p-3"
+                                         alt="{{ main_variant.images.first.alt_text }}">
+                                {% else %}
+                                    <img src="{% static 'images/no-image.png' %}"
+                                         class="card-img-top img-fluid p-3"
+                                         alt="Sin imagen">
+                                {% endif %}
+                            </div>
+
+                            <!-- CONTENIDO -->
+                            <div class="card-body content-area">
+                                <h6 class="card-title fw-bold">{{ producto.name }}</h6>
+
+                                <small class="text-muted">
+                                    {{ producto.description|truncatechars:60 }}
+                                </small>
+                            </div>
+
+                            <!-- 🔥 PRECIOS -->
+                            <div class="card-footer bg-white border-0 d-flex align-items-center justify-content-between mt-auto footer-area">
+
+                                {% if main_variant.discount_price %}
+                                    <div>
+                                        <span class="text-danger fw-bold d-block">
+                                            {{ main_variant.discount_price|cop }}
+                                        </span>
+
+                                        <small class="text-muted text-decoration-line-through">
+                                            {{ main_variant.price|cop }}
+                                        </small>
+                                    </div>
+                                {% else %}
+                                    <p class="text-primary fw-bold mb-0">
+                                        {{ main_variant.price|cop }}
+                                    </p>
+                                {% endif %}
+
+                                <i class="bi bi-bag-plus fs-4 text-primary"></i>
+                            </div>
+
+                        </a>
+
                     </div>
+                    <!-- FIN CARD -->
 
-                </a>
-
-            </div>
-            <!-- FIN CARD -->
-
-        </div>
+                </div>
+                {% endif %}
+            {% endwith %}
         {% empty %}
             <p class="text-muted">No hay productos en esta categoría.</p>
         {% endfor %}

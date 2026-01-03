@@ -5,11 +5,11 @@
 {% block title %} Resultados de búsqueda {% endblock %}
 
 {% block content %}
+
 {% include 'app_store/componentes/Boton_back.html' %}
 
 <div class="container mt-4">
     
-
     <!-- Título -->
     <h3 class="fw-bold mb-4">
         Resultados para: 
@@ -17,18 +17,26 @@
     </h3>
 
     <!-- Si no hay productos -->
-    {% if productos.count == 0 %}
+    {% if not productos %}
         <div class="alert alert-warning text-center py-4 shadow-sm">
             <i class="bi bi-exclamation-circle me-2"></i>
-            No se encontraron productos relacionados.
+            No se encontraron productos relacionados con "{{ query }}".
         </div>
     {% else %}
 
-    <!-- GRID DE PRODUCTOS -->
-     <!-- GRID DE PRODUCTOS -->
-    <div class="row">
-        {% include 'app_store/componentes/Card.html' %}
-    </div>
+        <!-- GRID DE PRODUCTOS -->
+        <div class="row">
+            {% for producto in productos %}
+                {% include 'app_store/componentes/Card.html' with producto=producto %}
+            {% endfor %}
+        </div>
+
+        <!-- Contador de resultados -->
+        <div class="mt-4">
+            <p class="text-muted">
+                Se encontraron {{ productos.count }} producto{{ productos.count|pluralize }} relacionados.
+            </p>
+        </div>
     {% endif %}
 </div>
 

@@ -2,62 +2,75 @@
 {% load math_filters %}
 
 {% for producto in productos %}
+
 <div class="col-6 col-md-4 col-lg-3 mb-4">
 
     <a href="{% url 'product_detail' slug=producto.slug id=producto.id %}"
        class="text-decoration-none text-dark">
 
         <div class="card product-card shadow-sm border-0 position-relative">
+            {% with variante=producto.variants.first %}
 
-            <!-- 🔥 ETIQUETA DESCUENTO -->
-            {% if producto.discount_price %}
-                {% with porcentaje=producto.discount_price|div:producto.price %}
-                <span class="badge-discount">
-                    -{{ porcentaje|floatformat:0 }}% Descuento
-                </span>
-                {% endwith %}
-            {% endif %}
-
-            <!-- IMG -->
-            <div class="img-container">
-                <img src="{{ producto.images.first.image_url }}"
-                     class="card-img-top img-fluid p-3"
-                     alt="{{ producto.name }}">
-            </div>
-
-            <!-- CONTENIDO -->
-            <div class="card-body content-area">
-                <h6 class="card-title fw-bold">{{ producto.name }}</h6>
-
-                <small class="text-muted">
-                    {{ producto.description|truncatechars:60 }}
-                </small>
-            </div>
-
-            <!-- 🔥 PRECIOS -->
-            <div class="card-footer bg-white border-0 d-flex align-items-center justify-content-between mt-auto footer-area">
-
-                {% if producto.discount_price %}
-                    <div>
-                        <span class="text-primary fw-bold d-block">
-                            {{ producto.discount_price|cop }}
+                <!-- 🔥 ETIQUETA DESCUENTO -->
+                {% if variante %}
+                    {% if variante.stock == 0 %}
+                        <span class="badge-agotado">AGOTADO</span>
+                    {% elif variante.discount_price %}
+                        {% with porcentaje=variante.discount_price|div:variante.price %}
+                        <span class="badge-discount">
+                            -{{ porcentaje|floatformat:0 }}% Descuento
                         </span>
-
-                        <small class="text-muted text-decoration-line-through" style="color: brown !important;">
-                            {{ producto.price|cop }}
-                        </small>
-                    </div>
-
-                {% else %}
-                    <p class="text-primary fw-bold mb-0">
-                        {{ producto.price|cop }}
-                    </p>
+                        {% endwith %}
+                    {% endif %}
                 {% endif %}
 
-                <a href="#"><i class="bi bi-bag-plus fs-4 text-primary"></i></a>
+                
+                <!-- IMG -->
+                <div class="img-container">
+                    {% if variante and variante.images.first %}
+                        <img src="{{ variante.images.first.image_url }}"
+                            class="card-img-top img-fluid p-3"
+                            alt="{{ producto.name }}">
+                    {% else %}
+                        <img src="#"
+                            class="card-img-top img-fluid p-3"
+                            alt="Sin imagen">
+                    {% endif %}
+                </div>
 
-            </div>
+                
+                <!-- CONTENIDO -->
+                <div class="card-body content-area">
+                    <h6 class="card-title fw-bold">{{ producto.name }}</h6>
 
+                    <small class="text-muted">
+                        {{ producto.description|truncatechars:60 }}
+                    </small>
+                </div>
+
+                <!-- 🔥 PRECIOS -->
+                <div class="card-footer bg-white border-0 d-flex align-items-center justify-content-between mt-auto footer-area">
+                    
+
+                    {% if variante %}
+                        {% if variante.discount_price %}
+                            <div>
+                                <span class="text-primary fw-bold d-block">
+                                    {{ variante.discount_price|cop }}
+                                </span>
+                                <small class="text-muted text-decoration-line-through">
+                                    {{ variante.price|cop }}
+                                </small>
+                            </div>
+                        {% else %}
+                            <p class="text-primary fw-bold mb-0">
+                                {{ variante.price|cop }}
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                    <a href="#"><i class="bi bi-bag-plus fs-4 text-primary"></i></a>
+                </div>
+            {% endwith %}
         </div>
     </a>
 
@@ -72,3 +85,5 @@
 </div>
 
 {% endfor %}
+
+

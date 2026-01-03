@@ -17,15 +17,16 @@
     <title>Kalyzo | {% block title %} Tienda {% endblock %}</title>
 </head>
 <body>
+    
+    <!-- Texto animado -->
+    {% include 'app_store/componentes/Texto_animado.html' %}    
+    
+    {% include 'app_store/componentes/Navbar.html' %}
 
     <!-- navbar statico -->
-    {% include 'app_store/componentes/Navbar.html' %}
 
     <!-- subnavbar -->
     {% include 'app_store/componentes/Subnavbar.html' %}
-    
-    <!-- Texto animado -->
-    {% include 'app_store/componentes/Texto_animado.html' %}
 
 
 
@@ -39,7 +40,11 @@
 
             <!-- Linea separador -->
             <hr class="hr-separador">
-            
+
+                            {% include 'app_store/componentes/Filtrar_categoria.html' %}
+
+                        <hr class="hr-separador">
+
 
                 <div class="row">
 
@@ -47,8 +52,14 @@
 
                 </div>
 
+                <div class="row">
+                    {% include 'app_store/componentes/Aliados_logisticos.html' %}
+                </div>
+
+
         {% endblock %}
     </div>
+
 
     
     <!-- Botón de WhatsApp -->
@@ -62,3 +73,7 @@
 </html>
 
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script defer src="{% static 'js/product_visual.js' %}"></script>
+<script defer src="{% static 'js/rating_star.js' %}"></script>
+<script defer src="{% static 'js/variante_product.js' %}"></script>
+<script defer src="{% static 'js/ver_mas_comentarios.js' %}"></script>
