@@ -56,9 +56,9 @@ class OrderItem(models.Model):
 # ---------------------------
 
 class ProviderWebhookLog(models.Model):
-    event_type = models.CharField(max_length=100)
-    data = models.JSONField()
-    received_at = models.DateTimeField(auto_now_add=True)
+    event_type = models.CharField(max_length=100) # Tipo de evento recibido
+    data = models.JSONField() # Datos completos del webhook
+    received_at = models.DateTimeField(auto_now_add=True)# Fecha y hora de recepción
 
     def __str__(self):
         return f"Webhook {self.event_type} - {self.received_at}"
