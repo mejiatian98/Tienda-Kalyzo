@@ -17,14 +17,13 @@
     <title>Kalyzo | {% block title %} Tienda {% endblock %}</title>
 </head>
 <body>
-
-    <!-- navbar statico -->
-    {% include 'app_store/componentes/Navbar.html' %}
-
-    
     
     <!-- Texto animado -->
-    {% include 'app_store/componentes/Texto_animado.html' %}
+    {% include 'app_store/componentes/Texto_animado.html' %}    
+    
+    {% include 'app_store/componentes/Navbar.html' %}
+
+    <!-- navbar statico -->
 
     <!-- subnavbar -->
     {% include 'app_store/componentes/Subnavbar.html' %}
@@ -41,7 +40,11 @@
 
             <!-- Linea separador -->
             <hr class="hr-separador">
-            
+
+                            {% include 'app_store/componentes/Filtrar_categoria.html' %}
+
+                        <hr class="hr-separador">
+
 
                 <div class="row">
 
@@ -49,8 +52,14 @@
 
                 </div>
 
+                <div class="row">
+                    {% include 'app_store/componentes/Aliados_logisticos.html' %}
+                </div>
+
+
         {% endblock %}
     </div>
+
 
     
     <!-- Botón de WhatsApp -->
