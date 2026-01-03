@@ -1,6 +1,6 @@
 /* navbar fixed at top */
 .navbar-1 {
-    position: fixed !important;
+    /* position: fixed !important; */
     top: 0;
     left: 0;
     right: 0;
@@ -8,9 +8,9 @@
     z-index: 1030 !important;
 }
 
-body {
-    padding-top: 70px; /* ajusta según altura del navbar */
-}
+/* body {
+    padding-top: 0px; valor de 70px si navbar fixed
+} */
 
 /* CSS de variantes seleccion */
 
@@ -73,6 +73,60 @@ body {
 
 }
 
+.btn-dark {
+  background-color: #007bff !important;
+    border-color: #007bff !important;
+}
+
+
+.bg-primary {
+  background:
+    radial-gradient(circle at 10% 20%, rgba(0,180,255,0.9), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(0,150,255,0.85), transparent 45%),
+    radial-gradient(circle at 30% 40%, rgba(0,120,240,0.8), transparent 45%),
+    radial-gradient(circle at 40% 10%, rgba(0,90,220,0.85), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(0,160,255,0.8), transparent 50%),
+    radial-gradient(circle at 60% 60%, rgba(0,200,255,0.85), transparent 45%),
+    radial-gradient(circle at 70% 20%, rgba(0,110,230,0.9), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0,70,210,0.85), transparent 45%),
+    radial-gradient(circle at 90% 50%, rgba(0,140,255,0.9), transparent 45%),
+    radial-gradient(circle at 15% 55%, rgba(0,100,200,0.8), transparent 50%),
+
+    radial-gradient(circle at 25% 25%, rgba(0,170,255,0.9), transparent 45%),
+    radial-gradient(circle at 35% 75%, rgba(0,130,255,0.85), transparent 45%),
+    radial-gradient(circle at 45% 45%, rgba(0,80,190,0.85), transparent 50%),
+    radial-gradient(circle at 55% 15%, rgba(0,190,255,0.9), transparent 45%),
+    radial-gradient(circle at 65% 85%, rgba(0,120,220,0.8), transparent 50%),
+    radial-gradient(circle at 75% 35%, rgba(0,160,240,0.85), transparent 45%),
+    radial-gradient(circle at 85% 65%, rgba(0,60,180,0.85), transparent 45%),
+    radial-gradient(circle at 95% 25%, rgba(0,100,255,0.9), transparent 40%),
+
+    linear-gradient(
+      140deg,
+      #001b66,
+      #002f99,
+      #004bcc,
+      #0066ff,
+      #008cff,
+      #00b3ff
+    );
+
+  background-size: 240% 240%;
+  animation: canvaGradient 15s ease-in-out infinite;
+}
+
+@keyframes canvaGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
 
 /* Buscador canva pagina completa */
@@ -88,6 +142,61 @@ body {
 .card{
     cursor: pointer;
 }
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background:
+    radial-gradient(circle at 10% 20%, rgba(0,180,255,0.9), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(0,150,255,0.85), transparent 45%),
+    radial-gradient(circle at 30% 40%, rgba(0,120,240,0.8), transparent 45%),
+    radial-gradient(circle at 40% 10%, rgba(0,90,220,0.85), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(0,160,255,0.8), transparent 50%),
+    radial-gradient(circle at 60% 60%, rgba(0,200,255,0.85), transparent 45%),
+    radial-gradient(circle at 70% 20%, rgba(0,110,230,0.9), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0,70,210,0.85), transparent 45%),
+    radial-gradient(circle at 90% 50%, rgba(0,140,255,0.9), transparent 45%),
+    radial-gradient(circle at 15% 55%, rgba(0,100,200,0.8), transparent 50%),
+
+    radial-gradient(circle at 25% 25%, rgba(0,170,255,0.9), transparent 45%),
+    radial-gradient(circle at 35% 75%, rgba(0,130,255,0.85), transparent 45%),
+    radial-gradient(circle at 45% 45%, rgba(0,80,190,0.85), transparent 50%),
+    radial-gradient(circle at 55% 15%, rgba(0,190,255,0.9), transparent 45%),
+    radial-gradient(circle at 65% 85%, rgba(0,120,220,0.8), transparent 50%),
+    radial-gradient(circle at 75% 35%, rgba(0,160,240,0.85), transparent 45%),
+    radial-gradient(circle at 85% 65%, rgba(0,60,180,0.85), transparent 45%),
+    radial-gradient(circle at 95% 25%, rgba(0,100,255,0.9), transparent 40%),
+
+    linear-gradient(
+      140deg,
+      #001b66,
+      #002f99,
+      #004bcc,
+      #0066ff,
+      #008cff,
+      #00b3ff
+    );
+
+  background-size: 240% 240%;
+  animation: canvaGradient 15s ease-in-out infinite;
+}
+
+@keyframes canvaGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
 
 /* Contenedor de la imagen con altura fija */
@@ -148,6 +257,8 @@ body {
     overflow: hidden; /* Evita expansión hacia abajo */
 }
 
+
+
 /* Cuerpo del card con medida fija */
 .content-area {
     flex: 1;
@@ -163,28 +274,38 @@ body {
     overflow: hidden;
 }
 
-  
-/* Efecto texto animado derecha a izquierda */
+
+
+/* Texto animado */
 .contenedor-del-texto {
-  overflow: hidden;       /* Oculta lo que se sale */
-  white-space: nowrap;    /* Evita saltos de línea */
-  font-weight: bold;        /* Texto en negrita */
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: bold;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;      /* ¡Esta es la clave! */
+  top: 0;                /* Se pega arriba cuando haces scroll */
+  height: 30px;
+  z-index: 1030;
+  width: 100%;
 }
 
 .texto-animado {
   display: inline-block;
   animation: mover-texto 15s linear infinite;
-  font-size: 12px;            /* Texto más pequeño */
+  font-size: 12px;
 }
 
 @keyframes mover-texto {
   0% {
-    transform: translateX(100vw);   /* Empieza totalmente fuera de la pantalla por la derecha */
+    transform: translateX(100vw);
   }
   100% {
-    transform: translateX(-100%);   /* Sale completamente por la izquierda */
+    transform: translateX(-100%);
   }
 }
+  
+
 
 
 /* Ajustar img en carrusel */

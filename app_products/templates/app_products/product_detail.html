@@ -156,7 +156,7 @@
                 <!-- ================= BOTÓN DE CARRITO ================= -->
                 <div id="cartButtonContainer">
                     {% if main_variant.stock > 0 %}
-                        <button class="btn btn-dark w-100 mt-4 fw-bold">
+                        <button class="btn btn-primary w-100 mt-4 fw-bold">
                             Añadir al carrito
                         </button>
                     {% else %}
@@ -290,8 +290,8 @@
     </div>
 
     <!-- ================= FORMULARIO ================= -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-body">
+    <div class="mb-4 ">
+        <div class="p-4">
 
             <h5 class="fw-bold mb-3">Deja tu comentario</h5>
 
@@ -342,13 +342,17 @@
         </div>
     </div>
 
+    {% include 'app_store/componentes/Certificado_entregas_seguro.html' %}
+
+
     <!-- ================= PRODUCTOS SIMILARES ================= -->
     <hr class="separator my-5">
 
-    <h3 class="fw-bold mb-4">Productos similares</h3>
+    
 
     <div class="row">
         {% if productos %}
+        <h3 class="fw-bold mb-4">Productos similares</h3>
             {% for producto in productos %}
                 {% include 'app_store/componentes/Card.html' with producto=producto %}
             {% endfor %}
