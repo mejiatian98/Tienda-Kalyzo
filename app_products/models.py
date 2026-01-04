@@ -7,7 +7,7 @@ class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)  # Nombre de la categoría
     slug = models.SlugField(unique=True)  # Slug para URL
     description = models.TextField(blank=True)  # Descripción opcional
-    imagen_category = models.URLField(blank=True, null=True)  # Imagen representativa
+    imagen_category = models.ImageField(upload_to="categories/", blank=True, null=True)  # Imagen de la categoría, se guarde en aws s3 bucket
 
 
     class Meta:
@@ -34,7 +34,7 @@ class Product(models.Model):
     slug = models.SlugField(unique=True)  # URL amigable
     description = models.TextField(blank=True)  # Descripción larga
     sales_count = models.IntegerField(default=0)  # Ranking de ventas
-    is_active = models.BooleanField(default=True)  # Visible en tienda
+    is_active = models.BooleanField(default=True, choices=((True, "Activo"), (False, "Inactivo")),)  # Producto activo
     is_featured = models.BooleanField(default=False)  # Producto destacado
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha creación
 

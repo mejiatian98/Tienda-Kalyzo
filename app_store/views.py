@@ -30,11 +30,10 @@ class CategoriaView(View):
             "products__variants"
         ).filter(products__is_active=True).distinct()
 
-        context = {
+        return render(request, "Categoria_products.html", {
             "categorias": categorias
-        }
+        })
 
-        return render(request, "Categoria_products.html", context)
 
 
 # Vista para mostrar productos de una categoría específica

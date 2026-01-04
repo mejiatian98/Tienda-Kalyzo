@@ -1,0 +1,5 @@
+1#### Al ver las categorias se vea la imagen refrente a esa categorias ✅
+
+2### Quiero que se relacione el producto con las medidas, tallas, colores y 
+se vea en iconos aparte para que el cliente seleccione las variantes, al 
+seleccionar se haga un script que cambie la imagen solo del color seleccionado.
