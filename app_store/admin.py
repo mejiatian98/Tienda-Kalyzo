@@ -68,7 +68,7 @@ class OptionAdmin(admin.ModelAdmin):
 
 @admin.register(OptionValue)
 class OptionValueAdmin(admin.ModelAdmin):
-    list_display = ("option", "value", "hex_color", "order")
+    list_display = ("option", "value", "order")
     list_filter = ("option",)
     ordering = ("option", "order")
 
