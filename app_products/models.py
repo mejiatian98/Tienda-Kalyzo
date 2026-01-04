@@ -75,7 +75,6 @@ class OptionValue(models.Model):
     )  # Opción padre
 
     value = models.CharField(max_length=50)  # Valor visible
-    hex_color = models.CharField(max_length=7, blank=True, null=True)  # Para colores
     order = models.PositiveIntegerField(default=0)  # Orden visual
 
     class Meta:
