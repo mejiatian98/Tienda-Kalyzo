@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import  ProductDetailView
+from app_products import views
 
 urlpatterns = [
-    path('<slug:slug>/p/<int:id>/', ProductDetailView.as_view(), name="product_detail"),
+    path('', views.AllProductDetailView.as_view(), name="all_products"),
+    path('<slug:slug>/p/<int:id>/', views.ProductDetailView.as_view(), name="product_detail"),
 
 
 ]

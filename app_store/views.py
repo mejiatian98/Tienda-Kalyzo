@@ -17,7 +17,7 @@ class StoreView(View):
                     queryset=ProductVariant.objects.filter(is_active=True).prefetch_related("images")
                 )
             )
-            .order_by("?")
+            .order_by("?") # Orden aleatorio
         )
 
         return render(request, "store_page.html", {"productos": productos})
