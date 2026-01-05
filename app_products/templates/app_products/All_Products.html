@@ -1,0 +1,25 @@
+{% extends 'Store_page.html' %}
+{% load static %}
+{% load moneda %}
+{% load math_filters %}
+
+{% block title %} Todos los productos {% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb -->
+{% include 'app_store/componentes/Breadcrumb.html' %}
+
+    <h3 class="fw-bold mb-4">Todos los productos</h3>
+
+    <div class="row">
+        {% for producto in productos %}
+            {% include 'app_store/componentes/Card.html' with producto=producto %}
+        {% empty %}
+            <p class="text-muted">No hay productos en esta categoría.</p>
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}

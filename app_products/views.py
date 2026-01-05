@@ -1,9 +1,23 @@
 from django.views.generic import DetailView
 from .models import Product, CommentPublic
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views import View
 
 
+
+
+# Mostrar todos los productos
+class AllProductDetailView(View):
+    def get(self, request):
+        productos = Product.objects.filter(is_active=True).order_by("?")
+        return render(
+            request,
+            "All_Products.html",
+            {"productos": productos}
+        )
+
+    
+# Detalle del producto
 class ProductDetailView(DetailView):
     model = Product
     template_name = "Product_detail.html"
@@ -16,7 +30,11 @@ class ProductDetailView(DetailView):
         product = self.object
 
         # Variantes activas
-        variants = product.variants.filter(is_active=True)
+        variants = product.variants.filter(is_active=True).prefetch_related("options__option_value__option", "images")
+        context["has_talla"] = variants.filter(
+            options__option_value__option__name="Talla"
+        ).exists()
+
         context["variants"] = variants
 
         # Variante principal (primera)
