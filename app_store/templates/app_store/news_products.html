@@ -4,14 +4,17 @@
 {% block title %} Productos Nuevos {% endblock %}
 
 {% block content %}
-{% include 'app_store/componentes/Boton_back.html' %}
+<!-- Breadcrumb -->
+{% include 'app_store/componentes/Breadcrumb.html' %}
 
     <h3 class="fw-bold mb-4">Productos Nuevos</h3>
 
     <div class="row">
-
-        {% include 'app_store/componentes/Card.html' %}
-
+        {% for producto in productos %}
+            {% include 'app_store/componentes/Card.html' with producto=producto %}
+        {% empty %}
+            <p class="text-muted">No hay productos en esta categoría.</p>
+        {% endfor %}
     </div>
 
 

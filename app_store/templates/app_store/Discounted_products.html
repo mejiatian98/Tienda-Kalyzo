@@ -2,26 +2,21 @@
 {% load static %}
 {% load moneda %}
 {% load math_filters %}
-{% block title %} Productos Nuevos {% endblock %}
+{% block title %} Productos Oferta {% endblock %}
 
 {% block content %}
-{% include 'app_store/componentes/Boton_back.html' %}
+<!-- Breadcrumb -->
+{% include 'app_store/componentes/Breadcrumb.html' %}
 
-<h3 class="fw-bold mb-4">Productos en Oferta</h3>
+    <h3 class="fw-bold mb-4">Productos en Oferta</h3>
 
-<div class="row">
-
-    {% if productos %}
+    <div class="row">
         {% for producto in productos %}
             {% include 'app_store/componentes/Card.html' with producto=producto %}
+        {% empty %}
+            <p class="text-muted">No hay productos en esta categoría.</p>
         {% endfor %}
-    {% else %}
-        <div class="col-12 text-center py-5">
-            <p class="text-muted">No hay productos en oferta en este momento.</p>
-        </div>
-    {% endif %}
-
-</div>
+    </div>
 
 
 {% endblock %}

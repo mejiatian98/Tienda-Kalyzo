@@ -7,83 +7,101 @@
 
 {% block content %}
 
-{% include 'app_store/componentes/Boton_back.html' %}
+<!-- Breadcrumb -->
+{% include 'app_store/componentes/Breadcrumb.html' %}
 
-<div class="container mt-4">
 
-    <div class="row">
+<div class="row product-detail-row">
 
-        <!-- ================= IMÁGENES ================= -->
-        <div class="col-md-6 text-center">
+    <!-- ================= COLUMNA IZQUIERDA Imagenes, descripcion================= -->
+    <div class="col-lg-7 mb-4">
+        <div class="product-box p-4 rounded shadow-sm h-100">
 
             {% if images %}
-                <!-- IMAGEN PRINCIPAL -->
-                <img 
-                    id="mainProductImage"
-                    src="{{ images.0.image_url }}"
-                    alt="{{ images.0.alt_text }}"
-                    class="img-fluid mb-3 rounded"
-                >
+                <div class="product-images d-flex flex-column flex-md-row">
 
-                <hr>
-
-                <!-- MINIATURAS -->
-                <div
-                    id="thumbnailContainer"
-                    class="d-flex gap-2 justify-content-center"
-                >
-                    {% for img in images %}
+                    <!-- IMAGEN PRINCIPAL -->
+                    <div class="main-image flex-grow-1 text-center">
                         <img 
-                            src="{{ img.image_url }}"
-                            alt="{{ img.alt_text }}"
-                            class="img-thumbnail product-thumb"
-                            style="width:70px;height:70px;object-fit:cover;cursor:pointer;"
-                            onclick="changeMainImage('{{ img.image_url }}', '{{ img.alt_text }}')"
+                            id="mainProductImage"
+                            src="{{ images.0.image_url }}"
+                            alt="{{ images.0.alt_text }}"
+                            class="main-product-image"
                         >
-                    {% endfor %}
+                    </div>
+
+                    <!-- MINIATURAS -->
+                    <div id="thumbnailContainer" class="thumbnail-column me-md-3 mb-3 mb-md-0">
+                        {% for img in images %}
+                            <img 
+                                src="{{ img.image_url }}"
+                                alt="{{ img.alt_text }}"
+                                class="product-thumb mb-2"
+                                onclick="changeMainImage('{{ img.image_url }}', '{{ img.alt_text }}')"
+                            >
+                        {% endfor %}
+                    </div>
+
                 </div>
             {% else %}
                 <p class="text-muted">No hay imágenes disponibles.</p>
             {% endif %}
 
+            <!-- ================= DESCRIPCIÓN ================= -->
+            <div class="product-description mt-4">
+                {{ product.description|safe }}
+            </div>
+
         </div>
+    </div>
 
-        <!-- ================= INFORMACIÓN ================= -->
-        <div class="col-md-6">
+    <!-- ================= COLUMNA DERECHA ================= -->
+    <div class="col-lg-5 mb-4">
+        <div class="product-box p-4 rounded shadow-sm h-100">
 
-            <h2 class="fw-bold py-3">{{ product.name }}</h2>
+            <h2 class="fw-bold mb-3">{{ product.name }}</h2>
+            <p class="text-muted">{{ product.category.name }}</p>
 
             <!-- ================= PRECIO ================= -->
             <div id="priceContainer">
                 {% if main_variant %}
-                    {% if main_variant.discount_price %}
-                        <div class="d-flex align-items-center gap-3">
-                            <h4 class="text-muted text-decoration-line-through" style="color:brown;">
-                                {{ main_variant.price|cop }}
-                            </h4>
-                            <h4 class="text-primary fw-bold">
-                                {{ main_variant.discount_price|cop }}
-                            </h4>
-                        </div>
-                    {% else %}
-                        <h4 class="text-primary fw-bold">
+                {% if main_variant.discount_price %}
+
+                    <div class="price-line">
+                        <span class="price-label">Antes:</span>
+                        <span class="price-old">
                             {{ main_variant.price|cop }}
-                        </h4>
-                    {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="price-line">
+                        <span class="price-label">Ahora:</span>
+                        <span class="price-new">
+                            {{ main_variant.discount_price|cop }}
+                        </span>
+                    </div>
+
+                {% else %}
+                    <div class="price-line">
+                        <span class="price-label">Precio:</span>
+                        <span class="price-new">
+                            {{ main_variant.price|cop }}
+                        </span>
+                    </div>
                 {% endif %}
+            {% endif %}
             </div>
 
-            <!-- ================= VARIANTES CON ICONOS ================= -->
+            <!-- ================= VARIANTES ================= -->
             {% if variants %}
             <div class="mt-4">
-
-                <label class="fw-bold mb-2 d-block">Variantes:</label>
+                <label class="fw-bold mb-2 d-block">Opciones disponibles</label>
 
                 <div class="d-flex flex-wrap gap-2">
                     {% for v in variants %}
                         {% if v.images.first %}
                             <div
-                                class="variant-option border rounded p-1 text-center {% if v.stock == 0 %}variant-disabled{% endif %}"
+                                class="variant-option border rounded p-2 text-center {% if v.stock == 0 %}variant-disabled{% endif %}"
                                 data-variant-id="{{ v.id }}"
                                 data-main-image="{{ v.images.first.image_url }}"
                                 data-main-alt="{{ v.images.first.alt_text }}"
@@ -92,10 +110,7 @@
                                 data-stock="{{ v.stock }}"
                                 data-images='[
                                     {% for img in v.images.all %}
-                                        {
-                                            "url": "{{ img.image_url }}",
-                                            "alt": "{{ img.alt_text }}"
-                                        }{% if not forloop.last %},{% endif %}
+                                        {"url":"{{ img.image_url }}","alt":"{{ img.alt_text }}"}{% if not forloop.last %},{% endif %}
                                     {% endfor %}
                                 ]'
                                 {% if v.stock > 0 %}
@@ -105,16 +120,13 @@
                                 <img
                                     src="{{ v.images.first.image_url }}"
                                     alt="{{ v.images.first.alt_text }}"
-                                    class="img-fluid rounded"
+                                    class="img-fluid rounded mb-1"
                                     style="height:60px; object-fit:cover;"
-                                >{{ v.images.first.alt_text }}
-                                <small class="d-block mt-1">
-                                    {{ v.color }} {{ v.size }}
-                                </small>
+                                >
+                                <!-- <small class="d-block">{{ v.images.first.color }}</small> -->
+                    
                                 {% if v.stock == 0 %}
-                                    <small class="d-block text-danger fw-bold" style="font-size:0.7rem;">
-                                        Agotado
-                                    </small>
+                                    <small class="text-danger fw-bold">Agotado</small>
                                 {% endif %}
                             </div>
                         {% endif %}
@@ -153,40 +165,34 @@
                     <div id="quantityContainer" class="mt-3"></div>
                 {% endif %}
 
-                <!-- ================= BOTÓN DE CARRITO ================= -->
-                <div id="cartButtonContainer">
+                <!-- ================= BOTÓN ================= -->
+                <div id="cartButtonContainer" class="mt-4">
                     {% if main_variant.stock > 0 %}
-                        <button class="btn btn-primary w-100 mt-4 fw-bold">
+                        <button class="btn btn-primary w-100 fw-bold">
                             Añadir al carrito
                         </button>
                     {% else %}
-                        <button class="btn btn-danger w-100 mt-4 fw-bold" disabled>
+                        <button class="btn btn-danger w-100 fw-bold" disabled>
                             Producto agotado
                         </button>
                     {% endif %}
                 </div>
             {% endif %}
 
-            <!-- ================= DESCRIPCIÓN ================= -->
-            <p class="mt-4">
-                {{ product.description|safe }}
-            </p>
-
         </div>
-
     </div>
 
-    <!-- ================= COMENTARIOS ================= -->
-
-    {% include 'app_products/componentes/Comments.html' %}
-
-    <!-- ================= PRODUCTOS SIMILARES ================= -->
-    <hr class="separator my-5">
-
-    
-
-    {% include 'app_products/componentes/Similar_Products.html' %}
-
 </div>
+
+<!-- ================= COMENTARIOS ================= -->
+<div class="col-lg-7 mb-4">
+{% include 'app_products/componentes/Comments.html' %}
+</div>
+
+<!-- ================= PRODUCTOS SIMILARES ================= -->
+<hr class="separator my-5">
+
+{% include 'app_products/componentes/Similar_Products.html' %}
+
 
 {% endblock %}

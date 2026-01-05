@@ -1,17 +1,15 @@
 {% load moneda %}
 {% load math_filters %}
 
-{% for producto in productos %}
-
 <div class="col-6 col-md-4 col-lg-3 mb-4">
 
     <a href="{% url 'product_detail' slug=producto.slug id=producto.id %}"
        class="text-decoration-none text-dark">
 
         <div class="card product-card shadow-sm border-0 position-relative">
+
             {% with variante=producto.variants.first %}
 
-                <!-- 🔥 ETIQUETA DESCUENTO -->
                 {% if variante %}
                     {% if variante.stock == 0 %}
                         <span class="badge-agotado">AGOTADO</span>
@@ -24,38 +22,33 @@
                     {% endif %}
                 {% endif %}
 
-                
                 <!-- IMG -->
                 <div class="img-container">
                     {% if variante and variante.images.first %}
                         <img src="{{ variante.images.first.image_url }}"
-                            class="card-img-top img-fluid p-3"
-                            alt="{{ producto.name }}">
+                             class="card-img-top img-fluid p-3"
+                             alt="{{ producto.name }}">
                     {% else %}
                         <img src="#"
-                            class="card-img-top img-fluid p-3"
-                            alt="Sin imagen">
+                             class="card-img-top img-fluid p-3"
+                             alt="Sin imagen">
                     {% endif %}
                 </div>
 
-                
                 <!-- CONTENIDO -->
                 <div class="card-body content-area">
                     <h6 class="card-title fw-bold">{{ producto.name }}</h6>
-
                     <small class="text-muted">
                         {{ producto.description|truncatechars:60 }}
                     </small>
                 </div>
 
-                <!-- 🔥 PRECIOS -->
+                <!-- PRECIOS -->
                 <div class="card-footer bg-white border-0 d-flex align-items-center justify-content-between mt-auto footer-area">
-                    
-
                     {% if variante %}
                         {% if variante.discount_price %}
                             <div>
-                                <span class="text-primary fw-bold d-block">
+                                <span class="text-primary fw-bold d-block fs-5">
                                     {{ variante.discount_price|cop }}
                                 </span>
                                 <small class="text-muted text-decoration-line-through">
@@ -68,22 +61,13 @@
                             </p>
                         {% endif %}
                     {% endif %}
-                    <a href="#"><i class="bi bi-bag-plus fs-4 text-primary"></i></a>
+                    {% if variante and variante.stock > 0 %}
+                        <a href="#"><i class="bi bi-bag-plus fs-4 text-primary"></i></a>
+                    {% endif %}
+                    
                 </div>
+
             {% endwith %}
         </div>
     </a>
-
 </div>
-
-{% empty %}
-<div class="col-12">
-    <div class="alert alert-warning text-center py-4 shadow-sm">
-        <i class="bi bi-exclamation-circle me-2"></i>
-        No hay productos disponibles.
-    </div>
-</div>
-
-{% endfor %}
-
-

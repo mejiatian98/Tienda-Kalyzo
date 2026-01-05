@@ -1,29 +1,65 @@
 <!-- ================= COMENTARIOS ================= -->
-<div class="mt-5">
 
-    <h3 class="fw-bold mb-4">Comentarios</h3>
 
-    <!-- PROMEDIO -->
-    <div class="mb-4">
-        <span class="text-warning fs-5">
-            {% for i in "12345" %}
-                {% if forloop.counter <= avg_rating %}
-                    ★
-                {% else %}
-                    ☆
-                {% endif %}
-            {% endfor %}
-        </span>
-        <small class="text-muted">
-            ({{ comments|length }} reseñas · Promedio {{ avg_rating }})
-        </small>
-    </div>
+<h3 class="fw-bold mb-4">Comentarios</h3>
 
-    <!-- LISTA DE COMENTARIOS -->
-    <div id="commentsContainer">
-        {% if comments %}
-            {% for comentario in comments|slice:":5" %}
-                <div class="comment-item card mb-3 shadow-sm">
+<!-- PROMEDIO -->
+<div class="mb-4">
+    <span class="text-warning fs-5">
+        {% for i in "12345" %}
+            {% if forloop.counter <= avg_rating %}
+                ★
+            {% else %}
+                ☆
+            {% endif %}
+        {% endfor %}
+    </span>
+    <small class="text-muted">
+        ({{ comments|length }} reseñas · Promedio {{ avg_rating }})
+    </small>
+</div>
+
+<!-- LISTA DE COMENTARIOS -->
+<div id="commentsContainer">
+    {% if comments %}
+        {% for comentario in comments|slice:":5" %}
+            <div class="comment-item card mb-3 shadow-sm">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <div>
+                            <h6 class="fw-bold mb-0">
+                                {{ comentario.name|truncatechars:30 }}
+                            </h6>
+
+                            <div class="text-warning">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= comentario.rating %}
+                                        ★
+                                    {% else %}
+                                        ☆
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <small class="text-muted">
+                            {{ comentario.created_at|date:"d M Y" }}
+                        </small>
+                    </div>
+
+                    <p class="mb-0">
+                        {{ comentario.comment|truncatechars:300 }}
+                    </p>
+
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- Comentarios ocultos (para cargar con JavaScript) -->
+        <div id="hiddenComments" style="display: none;">
+            {% for comentario in comments|slice:"5:" %}
+                <div class="comment-item card mb-3 shadow-sm" data-index="{{ forloop.counter0 }}">
                     <div class="card-body">
 
                         <div class="d-flex justify-content-between mb-2">
@@ -55,111 +91,74 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
 
-            <!-- Comentarios ocultos (para cargar con JavaScript) -->
-            <div id="hiddenComments" style="display: none;">
-                {% for comentario in comments|slice:"5:" %}
-                    <div class="comment-item card mb-3 shadow-sm" data-index="{{ forloop.counter0 }}">
-                        <div class="card-body">
-
-                            <div class="d-flex justify-content-between mb-2">
-                                <div>
-                                    <h6 class="fw-bold mb-0">
-                                        {{ comentario.name|truncatechars:30 }}
-                                    </h6>
-
-                                    <div class="text-warning">
-                                        {% for i in "12345" %}
-                                            {% if forloop.counter <= comentario.rating %}
-                                                ★
-                                            {% else %}
-                                                ☆
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-
-                                <small class="text-muted">
-                                    {{ comentario.created_at|date:"d M Y" }}
-                                </small>
-                            </div>
-
-                            <p class="mb-0">
-                                {{ comentario.comment|truncatechars:300 }}
-                            </p>
-
-                        </div>
-                    </div>
-                {% endfor %}
+        <!-- Botón Ver más -->
+        {% if comments|length > 5 %}
+            <div class="text-center mt-4 mb-3">
+                <button id="loadMoreBtn" class="btn btn-outline-primary" onclick="loadMoreComments()">
+                    Ver más comentarios
+                </button>
             </div>
-
-            <!-- Botón Ver más -->
-            {% if comments|length > 5 %}
-                <div class="text-center mt-4 mb-3">
-                    <button id="loadMoreBtn" class="btn btn-outline-primary" onclick="loadMoreComments()">
-                        Ver más comentarios
-                    </button>
-                </div>
-            {% endif %}
-
-        {% else %}
-            <p class="text-muted text-center">
-                Aún no hay comentarios. Sé el primero 😊
-            </p>
         {% endif %}
-    </div>
 
+    {% else %}
+        <p class="text-muted text-center">
+            Aún no hay comentarios. Sé el primero 😊
+        </p>
+    {% endif %}
 </div>
 
+
+
 <!-- ================= FORMULARIO ================= -->
-<div class="mb-4 ">
-    <div class="p-4">
 
-        <h5 class="fw-bold mb-3">Deja tu comentario</h5>
+<div class="p-4">
 
-        <form method="POST">
-            {% csrf_token %}
+    <h5 class="fw-bold mb-3">Deja tu comentario</h5>
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Nombre</label>
-                <input
-                    type="text"
-                    name="name"
-                    class="form-control"
-                    maxlength="30"
-                    required
-                >
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Nombre</label>
+            <input
+                type="text"
+                name="name"
+                class="form-control"
+                maxlength="30"
+                required
+            >
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Calificación</label>
+
+            <div id="star-rating" class="fs-3 text-warning" style="cursor:pointer;">
+                <span data-value="1">☆</span>
+                <span data-value="2">☆</span>
+                <span data-value="3">☆</span>
+                <span data-value="4">☆</span>
+                <span data-value="5">☆</span>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Calificación</label>
+            <input type="hidden" name="rating" id="rating-value" required>
+        </div>
 
-                <div id="star-rating" class="fs-3 text-warning" style="cursor:pointer;">
-                    <span data-value="1">☆</span>
-                    <span data-value="2">☆</span>
-                    <span data-value="3">☆</span>
-                    <span data-value="4">☆</span>
-                    <span data-value="5">☆</span>
-                </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Comentario</label>
+            <textarea
+                name="comment"
+                class="form-control"
+                rows="4"
+                maxlength="300"
+                required
+            ></textarea>
+        </div>
 
-                <input type="hidden" name="rating" id="rating-value" required>
-            </div>
+        <button type="submit" class="btn btn-dark fw-bold">
+            Publicar comentario
+        </button>
+    </form>
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Comentario</label>
-                <textarea
-                    name="comment"
-                    class="form-control"
-                    rows="4"
-                    maxlength="300"
-                    required
-                ></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-dark fw-bold">
-                Publicar comentario
-            </button>
-        </form>
-
-    </div>
 </div>

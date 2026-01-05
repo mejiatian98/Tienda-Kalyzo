@@ -54,34 +54,51 @@ function selectVariantFromData(element) {
     selectVariant(imageUrl, altText, price, discountPrice, stock, images);
 }
 
+
+
+// Función principal para actualizar la interfaz al seleccionar una variante
 function selectVariant(imageUrl, altText, price, discountPrice, stock, images) {
     console.log('=== Iniciando selectVariant ===');
     console.log('Stock recibido:', stock, 'Tipo:', typeof stock);
-    
+
     const stockInt = parseInt(stock);
     console.log('Stock convertido:', stockInt);
-    
+
     // Imagen principal
     changeMainImage(imageUrl, altText);
 
-    // Miniaturas
+    // Contenedor de miniaturas
     const thumbContainer = document.getElementById("thumbnailContainer");
+
+    // Limpia miniaturas anteriores
     thumbContainer.innerHTML = "";
 
+    // Asegura layout vertical
+    thumbContainer.classList.add("thumbnail-column");
+
+    // Crear miniaturas
     images.forEach(img => {
         const thumb = document.createElement("img");
         thumb.src = img.url;
         thumb.alt = img.alt;
-        thumb.className = "img-thumbnail product-thumb";
-        thumb.style.width = "70px";
-        thumb.style.height = "70px";
-        thumb.style.objectFit = "cover";
-        thumb.style.cursor = "pointer";
-        thumb.onclick = () => changeMainImage(img.url, img.alt);
+
+        // 🔥 SOLO CLASES CSS (no inline)
+        thumb.classList.add("product-thumb", "img-thumbnail");
+
+        thumb.addEventListener("click", () => {
+        document.querySelectorAll(".product-thumb").forEach(t => t.classList.remove("active"));
+        thumb.classList.add("active");
+            changeMainImage(img.url, img.alt);
+        });
+
         thumbContainer.appendChild(thumb);
     });
 
-    // Precio
+
+
+
+
+    // Precio 
     const priceContainer = document.getElementById("priceContainer");
     if (discountPrice) {
         priceContainer.innerHTML = `
