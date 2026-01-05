@@ -32,7 +32,9 @@ class Product(models.Model):
 
     name = models.CharField(max_length=200)  # Nombre del producto
     slug = models.SlugField(unique=True)  # URL amigable
-    description = models.TextField(blank=True)  # Descripción larga
+    description_short = models.TextField(blank=True)  # Descripción corta
+    description_long = models.TextField(blank=True)  # Descripción larga
+    warranty = models.TextField(blank=True)  # Garantia
     sales_count = models.IntegerField(default=0)  # Ranking de ventas
     is_active = models.BooleanField(default=True, choices=((True, "Activo"), (False, "Inactivo")),)  # Producto activo
     is_featured = models.BooleanField(default=False)  # Producto destacado
@@ -55,7 +57,12 @@ class Product(models.Model):
 #   VARIANTES DE PRODUCTOS
 # ---------------------------
 class Option(models.Model):
-    name = models.CharField(max_length=50, unique=True)  # Color, Talla, Material
+    name = models.CharField(choices=[
+        ("Color", "Color"),
+        ("Peso", "Peso"),
+        ("Medida", "Medida"),
+        ("Material", "Material"),
+    ], max_length=50, unique=True) # Color, Peso, Medida, Material
 
     def __str__(self):
         return self.name

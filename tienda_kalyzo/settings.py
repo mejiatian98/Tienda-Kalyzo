@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "app_customers",
     "app_orders",
 
-    'storages',
+    #'storages',
 
 ]
 

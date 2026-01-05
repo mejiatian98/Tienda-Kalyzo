@@ -1,0 +1,72 @@
+<!-- ================= ESPECIFICACIONES DEL PRODUCTO ================= -->
+<div class="product-specs me-2">
+
+    <!-- TABS -->
+    <ul class="nav nav-tabs" id="productTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button
+                class="nav-link active"
+                id="details-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#details"
+                type="button"
+                role="tab"
+            >
+                Detalles
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button
+                class="nav-link"
+                id="warranty-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#warranty"
+                type="button"
+                role="tab"
+            >
+                Garantías
+            </button>
+        </li>
+    </ul>
+
+    <!-- CONTENIDO -->
+    <div class="tab-content border border-top-0 rounded-bottom p-4 bg-white">
+
+        <!-- DETALLES (DESCRIPCIÓN LARGA) -->
+        <div
+            class="tab-pane fade show active"
+            id="details"
+            role="tabpanel"
+        >
+            {% if product.description_long %}
+                <div class="text-muted">
+                    {{ product.description_long|linebreaks }}
+                </div>
+            {% else %}
+                <p class="text-center text-muted mb-0">
+                    Este producto no cuenta con una descripción detallada.
+                </p>
+            {% endif %}
+        </div>
+
+        <!-- GARANTÍA -->
+        <div
+            class="tab-pane fade"
+            id="warranty"
+            role="tabpanel"
+        >
+            {% if product.warranty %}
+                <div class="text-muted">
+                    {{ product.warranty|linebreaks }}
+                </div>
+            {% else %}
+                <p class="text-center text-muted mb-0">
+                    Este producto no cuenta con información de garantía.
+                </p>
+            {% endif %}
+        </div>
+
+
+    </div>
+</div>
