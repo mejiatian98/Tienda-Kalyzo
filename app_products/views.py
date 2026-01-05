@@ -31,8 +31,9 @@ class ProductDetailView(DetailView):
 
         # Variantes activas
         variants = product.variants.filter(is_active=True).prefetch_related("options__option_value__option", "images")
-        context["has_talla"] = variants.filter(
-            options__option_value__option__name="Talla"
+        context["has_medida"] = variants.filter(
+            options__option_value__option__name="Medida", 
+
         ).exists()
 
         context["variants"] = variants

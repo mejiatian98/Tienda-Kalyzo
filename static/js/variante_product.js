@@ -104,17 +104,17 @@ function selectVariant(imageUrl, altText, price, discountPrice, stock, images, o
         ? `<button class="btn btn-dark w-100 mt-4 fw-bold">Añadir al carrito</button>`
         : `<button class="btn btn-danger w-100 mt-4 fw-bold" disabled>Producto agotado</button>`;
 
-    // ================= TALLAS =================
-    const tallaContainer = document.getElementById("tallaContainer");
-    const tallaButtons = document.getElementById("tallaButtons");
+    // ================= MEDIDAS =================
+    const medidaContainer = document.getElementById("medidaContainer");
+    const medidaButtons = document.getElementById("medidaButtons");
 
-    const tallas = options.filter(o => o.option === "Talla");
+    const medidas = options.filter(o => o.option === "Medida");
 
-    if (tallas.length > 0) {
-        tallaContainer.classList.remove("d-none");
-        tallaButtons.innerHTML = "";
+    if (medidas.length > 0) {
+        medidaContainer.classList.remove("d-none");
+        medidaButtons.innerHTML = "";
 
-        tallas.forEach(t => {
+        medidas.forEach(t => {
             const btn = document.createElement("button");
             btn.type = "button";
             btn.className = "btn btn-outline-primary btn-sm";
@@ -122,15 +122,15 @@ function selectVariant(imageUrl, altText, price, discountPrice, stock, images, o
 
             btn.addEventListener("click", () => {
                 document
-                    .querySelectorAll("#tallaButtons button")
+                    .querySelectorAll("#medidaButtons button")
                     .forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
             });
 
-            tallaButtons.appendChild(btn);
+            medidaButtons.appendChild(btn);
         });
     } else {
-        tallaContainer.classList.add("d-none");
-        tallaButtons.innerHTML = "";
+        medidaContainer.classList.add("d-none");
+        medidaButtons.innerHTML = "";
     }
 }
