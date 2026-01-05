@@ -66,3 +66,4 @@ class ProductDetailView(DetailView):
         return redirect("product_detail", slug=product.slug, id=product.id)
     
 
+

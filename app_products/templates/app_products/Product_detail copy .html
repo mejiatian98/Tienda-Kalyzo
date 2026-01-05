@@ -1,0 +1,196 @@
+{% extends 'Store_page.html' %}
+{% load static %}
+{% load moneda %}
+{% load math_filters %}
+
+{% block title %} {{ product.name }} {% endblock %}
+
+{% block content %}
+
+{% include 'app_store/componentes/Boton_back.html' %}
+
+<div class="container mt-4">
+
+    <div class="row product-detail">
+
+    <!-- ================= IMAGEN PRINCIPAL ================= -->
+    <div class="col-md-6">
+        <div class="product-image-box">
+            <img id="mainProductImage"
+                 src="{{ selected_variant.main_image.image_url }}"
+                 class="img-fluid rounded"
+                 alt="{{ product.name }}">
+        </div>
+
+        <!-- MINIATURAS -->
+        <div class="variant-thumbnails mt-3">
+            {% for image in selected_variant.images.all %}
+                <img src="{{ image.image_url }}"
+                     class="thumbnail-img"
+                     onclick="changeMainImage('{{ image.image_url }}')">
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ================= INFO PRODUCTO ================= -->
+    <div class="col-md-6">
+
+        <h1 class="product-title">{{ product.name }}</h1>
+
+        <p class="text-muted">{{ product.category.name }}</p>
+
+        <p class="product-description">
+            {{ product.description }}
+        </p>
+
+        <!-- ================= VARIANTES ================= -->
+        <div class="variant-section mt-4">
+            <h6>Opciones disponibles</h6>
+
+            <div class="variant-list">
+                {% for variant in variants %}
+                    <button class="variant-btn {% if variant == selected_variant %}active{% endif %}"
+                            onclick="selectVariant(
+                                '{{ variant.id }}',
+                                '{{ variant.price }}',
+                                '{{ variant.stock }}',
+                                '{{ variant.main_image.image_url }}'
+                            )">
+                        {% for opt in variant.options.all %}
+                            {{ opt.option_value.value }}
+                        {% endfor %}
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ================= PRECIO ================= -->
+        <h3 class="price mt-3">
+            $<span id="variantPrice">{{ selected_variant.price }}</span>
+        </h3>
+
+        <!-- ================= STOCK ================= -->
+        <p class="stock mt-2">
+            Stock disponible:
+            <strong id="variantStock">{{ selected_variant.stock }}</strong>
+        </p>
+
+        <!-- ================= CANTIDAD ================= -->
+        <div class="quantity-box mt-3">
+            <label>Cantidad</label>
+            <input type="number"
+                   id="quantity"
+                   class="form-control"
+                   min="1"
+                   max="{{ selected_variant.stock }}"
+                   value="1">
+        </div>
+
+        <!-- ================= BOTÓN CARRITO ================= -->
+        <button class="btn btn-primary btn-lg mt-4 w-100">
+            Agregar al carrito
+        </button>
+
+    </div>
+</div>
+
+
+    <!-- ================= COMENTARIOS ================= -->
+
+    {% include 'app_products/componentes/Comments.html' %}
+
+    <!-- ================= PRODUCTOS SIMILARES ================= -->
+    <hr class="separator my-5">
+
+    
+
+    {% include 'app_products/componentes/Similar_Products.html' %}
+
+</div>
+
+
+<script>
+    function changeMainImage(url) {
+    document.getElementById("mainProductImage").src = url;
+}
+
+function selectVariant(id, price, stock, image) {
+    document.getElementById("variantPrice").innerText = price;
+    document.getElementById("variantStock").innerText = stock;
+    document.getElementById("quantity").max = stock;
+    document.getElementById("mainProductImage").src = image;
+
+    document.querySelectorAll(".variant-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    event.target.classList.add("active");
+}
+
+</script>
+
+
+<style>
+    .product-title {
+    font-weight: 700;
+}
+
+.product-description {
+    color: #555;
+    line-height: 1.6;
+}
+
+.product-image-box img {
+    width: 100%;
+    border: 1px solid #eee;
+}
+
+.variant-thumbnails {
+    display: flex;
+    gap: 10px;
+}
+
+.thumbnail-img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.variant-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.variant-btn {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.variant-btn.active {
+    border-color: #000;
+    background: #000;
+    color: #fff;
+}
+
+.price {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.stock {
+    color: green;
+}
+
+.quantity-box input {
+    width: 120px;
+}
+
+</style>
+
+{% endblock %}
