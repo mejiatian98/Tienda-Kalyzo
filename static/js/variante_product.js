@@ -94,15 +94,7 @@ function selectVariant(imageUrl, altText, price, discountPrice, stock, images, o
         `;
     }
 
-    // Stock
-    document.getElementById("stockInfo").innerText = "Stock disponible: " + stockInt;
-    updateQuantitySelector(stockInt);
 
-    // Botón carrito
-    const cartButtonContainer = document.getElementById("cartButtonContainer");
-    cartButtonContainer.innerHTML = stockInt > 0
-        ? `<button class="btn btn-dark w-100 mt-4 fw-bold">Añadir al carrito</button>`
-        : `<button class="btn btn-danger w-100 mt-4 fw-bold" disabled>Producto agotado</button>`;
 
     // ================= MEDIDAS =================
     const medidaContainer = document.getElementById("medidaContainer");

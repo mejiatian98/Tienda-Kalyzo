@@ -18,13 +18,17 @@
         COLUMNA IZQUIERDA
         Imágenes + descripción + specs + comentarios
     ======================================================= -->
-    <div class="col-lg-7 mb-4">
+    <div class="col-lg-7 mb-4 order-1 order-lg-1">
+
+        
 
         <!-- ================= CAJA PRODUCTO ================= -->
         <div class="product-box p-4 rounded shadow-sm">
+            
 
             {% if images %}
             <div class="product-images d-flex flex-column flex-md-row">
+                
 
                 <!-- IMAGEN PRINCIPAL -->
                 <div class="main-image flex-grow-1 text-center">
@@ -46,6 +50,7 @@
                         onclick="changeMainImage('{{ img.image_url }}', '{{ img.alt_text }}')"
                     >
                     {% endfor %}
+                    
                 </div>
 
             </div>
@@ -53,12 +58,18 @@
                 <p class="text-muted">No hay imágenes disponibles.</p>
             {% endif %}
 
+            <hr class="hr-separador">
+
+
             <!-- ================= DESCRIPCIÓN ================= -->
-            <div class="product-description mt-4">
+            <div class="product-description mb-4">
                 {{ product.description_short|safe }}
             </div>
+            
+            
 
         </div>
+        
 
         <!-- ================= ESPECIFICACIONES ================= -->
         <div class="mt-4">
@@ -79,7 +90,7 @@
         COLUMNA DERECHA (STICKY)
         Variantes / compra
     ======================================================= -->
-    <div class="col-lg-5 mb-4">
+    <div class="col-lg-5 mb-4 order-2 order-lg-2">
 
         <div class="sidebar-sticky product-box p-4 rounded shadow-sm">
             {% include 'app_products/componentes/Variant_Right.html' %}
