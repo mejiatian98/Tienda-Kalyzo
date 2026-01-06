@@ -53,7 +53,7 @@ function selectVariant(imageUrl, altText, price, discountPrice, stock, images, o
         const thumb = document.createElement("img");
         thumb.src = img.url;
         thumb.alt = img.alt;
-        thumb.classList.add("product-thumb", "img-thumbnail");
+        thumb.classList.add("product-thumb");
 
         thumb.addEventListener("click", () => {
             document.querySelectorAll(".product-thumb").forEach(t => t.classList.remove("active"));
