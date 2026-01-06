@@ -1,24 +1,6 @@
 <div>
     <!-- ================= COMENTARIOS ================= -->
-
-
     <h3 class="fw-bold mb-4">Comentarios</h3>
-
-    <!-- PROMEDIO -->
-    <div class="mb-4">
-        <span class="text-warning fs-5">
-            {% for i in "12345" %}
-                {% if forloop.counter <= avg_rating %}
-                    ★
-                {% else %}
-                    ☆
-                {% endif %}
-            {% endfor %}
-        </span>
-        <small class="text-muted">
-            ({{ comments|length }} reseñas · Promedio {{ avg_rating }})
-        </small>
-    </div>
 
     <!-- LISTA DE COMENTARIOS -->
     <div id="commentsContainer">
