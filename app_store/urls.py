@@ -7,9 +7,10 @@ urlpatterns = [
     path("categoria_productos/<slug:slug>/c/<int:id>/kal-y-zo", views.CategoriaProductosView.as_view(), name="category_specific_products"),
     path("nuevos_productos/", views.NewsProductsView.as_view(), name="news_products"),
     path("buscar/", views.SearchProductsView.as_view(), name="search_products"),
-    path("top_ventas/", views.TopSellingProductsView.as_view(), name="top_selling_products"),
-    path("productos_oferta/", views.DiscountedProductsView.as_view(), name="discounted_products"),
+    path("top ventas/", views.TopSellingProductsView.as_view(), name="top_selling_products"),
+    path("productos oferta/", views.DiscountedProductsView.as_view(), name="discounted_products"),
 
+    
     
     
     
