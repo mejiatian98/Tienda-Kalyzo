@@ -5,3 +5,6 @@ se vea en iconos aparte para que el cliente seleccione las variantes, al
 seleccionar se haga un script que cambie la imagen solo del color seleccionado.
 
 3### Que cuando se haga scroll baje el contenedor de donde estan las variantes de los productos
+
+4## Organizar el modelo para stock ya que la variante depende del stock ejemplo la camiseta de color 
+azul, el azul puede tener dos medidas X con stock 5 y XXL con stock 10, Se debe organizar los modelos. --------------Aun tengo la confusion
