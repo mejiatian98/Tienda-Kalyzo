@@ -3,31 +3,23 @@
 {% load moneda %}
 {% load math_filters %}
 
-{% block title %} {{ categoria.name }} {% endblock %}
+{% block title %} Todos los productos {% endblock %}
 
 {% block content %}
 
 <!-- Breadcrumb -->
 {% include 'app_store/componentes/Breadcrumb.html' %}
 
-<div class="mb-4">
-    <h3 class="fw-bold mb-4">
-        {{ categoria.name }}
-    </h3>
+    <h3 class="fw-bold mb-4">Todos los productos</h3>
 
     <div class="row">
-
         {% for producto in productos %}
             {% include 'app_store/componentes/Card.html' with producto=producto %}
         {% empty %}
-            <div class="col-12 text-center py-5">
-                <p class="text-muted">
-                    No hay productos disponibles en esta categoría.
-                </p>
-            </div>
+            <p class="text-muted">No hay productos en esta categoría.</p>
         {% endfor %}
-
     </div>
-</div>
+
+
 
 {% endblock %}

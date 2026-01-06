@@ -1,5 +1,6 @@
 {% load static %}
 {% load moneda %}
+{% load breadcrumbs %}
 {% load math_filters %}
 
 <!DOCTYPE html>
@@ -47,9 +48,11 @@
 
 
                 <div class="row">
-
-                    {% include 'app_store/componentes/Card.html' %}
-
+                    {% for producto in productos %}
+                        {% include 'app_store/componentes/Card.html' with producto=producto %}
+                    {% empty %}
+                        <p class="text-muted">Aún no hay productos disponibles.</p>
+                    {% endfor %}
                 </div>
 
                 <div class="row">

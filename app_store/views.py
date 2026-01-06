@@ -3,6 +3,7 @@ from django.views import View
 from django.db.models import Prefetch
 from app_products.models import Product, Category, ProductVariant
 from django.shortcuts import get_object_or_404
+from django.db.models import Count
 
 # Pagina principal de la tienda
 class StoreView(View):
@@ -16,7 +17,7 @@ class StoreView(View):
                     queryset=ProductVariant.objects.filter(is_active=True).prefetch_related("images")
                 )
             )
-            .order_by("?")
+            .order_by("?") # Orden aleatorio
         )
 
         return render(request, "store_page.html", {"productos": productos})
@@ -25,41 +26,50 @@ class StoreView(View):
 # Vista para mostrar las categorías con sus productos
 class CategoriaView(View):
     def get(self, request):
-        categorias = Category.objects.prefetch_related(
-            "products__variants__images",
-            "products__variants"
-        ).filter(products__is_active=True).distinct()
+        categorias = (
+            Category.objects
+            .filter(products__is_active=True)
+            .annotate(total_products=Count('products', distinct=True))
+            .prefetch_related('products')
+            .distinct()
+        )
 
         context = {
             "categorias": categorias
         }
 
-        return render(request, "Categoria_products.html", context)
+        return render(request, "Pages_category.html", context)
 
 
 # Vista para mostrar productos de una categoría específica
 class CategoriaProductosView(View):
-    def get(self, request, slug, id):
-        # Buscar la categoría por ID
-        categoria = get_object_or_404(Category, id=id)
+    def get(self, request, slug):
+        # Categoría seleccionada
+        categoria = get_object_or_404(Category, slug=slug)
 
-        # Filtrar los productos de esa categoría con sus variantes e imágenes
+        # Productos activos de esa categoría
         productos = (
             Product.objects
-            .filter(is_active=True, category=categoria)
-            .prefetch_related("variants__images", "variants")
+            .filter(
+                is_active=True,
+                category=categoria,
+                variants__is_active=True
+            )
+            .distinct()
+            .prefetch_related(
+                Prefetch(
+                    "variants",
+                    queryset=ProductVariant.objects.filter(is_active=True).prefetch_related("images")
+                )
+            )
         )
-
-        # 🔥 Listado de todas las categorías (para el sidebar)
-        categorias = Category.objects.filter(products__is_active=True).distinct()
 
         context = {
             "categoria": categoria,
             "productos": productos,
-            "categorias": categorias,
         }
 
-        return render(request, "Pages_category.html", context)
+        return render(request, "Categoria_products.html", context)
 
 
 # Vista para mostrar los productos más nuevos
@@ -118,3 +128,6 @@ class DiscountedProductsView(View):
         }
 
         return render(request, "Discounted_products.html", context)
+    
+
+    

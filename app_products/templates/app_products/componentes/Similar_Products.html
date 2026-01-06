@@ -1,0 +1,12 @@
+<div class="row">
+    {% if productos %}
+    <h3 class="fw-bold mb-4">Productos similares</h3>
+        {% for producto in productos %}
+            {% include 'app_store/componentes/Card.html' with producto=producto %}
+        {% endfor %}
+    {% else %}
+        <div class="col-12 text-center py-3">
+            <p class="text-muted">No hay productos similares disponibles.</p>
+        </div>
+    {% endif %}
+</div>

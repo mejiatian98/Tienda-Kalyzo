@@ -41,29 +41,43 @@
       <!-- CATEGORÍAS -->
       <h6 class="text-muted mb-3 mt-3">Categorías disponibles</h6>
 
-      <div class="list-group shadow-sm rounded">
+
 
         {% for categoria in categorias %}
-        <a href="{% url 'category_specific_products' categoria.slug categoria.id %}"
-          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3">
+            <div class="col-12 col-sm-6 col-lg-1">
 
-          <!-- NOMBRE + DESCRIPCIÓN -->
-          <div class="d-flex flex-column">
-            <span class="fw-semibold">{{ categoria.name }}</span>
+                <a href="{% url 'category_products' categoria.slug %}"
+                   class="category-card text-decoration-none">
 
-            {% if categoria.description %}
-            <small class="text-muted">{{ categoria.description}}</small>
-            {% endif %}
-          </div>
+                    <div class="category-card-inner text-center">
 
-          <!-- CONTADOR -->
-          <span class="badge bg-primary rounded-pill">
-            {{ categoria.products.count }}
-          </span>
+                        {% if categoria.imagen_category %}
+                            <img src="{{ categoria.imagen_category.url }}"
+                                 alt="{{ categoria.name }}"
+                                 class="category-card-img">
+                        {% else %}
+                            <img src="{% static 'images/no-image.png' %}"
+                                 alt="Sin imagen"
+                                 class="category-card-img">
+                        {% endif %}
 
-        </a>
+                        <!-- OVERLAY -->
+                        <div class="category-card-overlay"></div>
+
+                        <!-- TEXTO -->
+                        <div class="category-card-content">
+                            <h6 class="mb-0 fw-bold fs-4">{{ categoria.name }}</h6>
+                            <small>{{ categoria.total_products }} productos</small>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
         {% empty %}
-            <p class="text-muted">No hay productos</p>
+            <p class="text-muted">No hay categorías disponibles.</p>
         {% endfor %}
 
       </div>
