@@ -1,19 +1,6 @@
-{% extends 'Store_page.html' %}
 {% load static %}
-{% load moneda %}
-{% load math_filters %}
 
-{% block title %}Categorías{% endblock %}
-
-{% block content %}
-
-<!-- Breadcrumb -->
-{% include 'app_store/componentes/Breadcrumb.html' %}
-
-<section class="categories-wrapper">
-
-
-    <div class="categories-grid">
+<div class="categories-wrapper">
     <h5 class="section-title">Categorías</h5>
 
     <div class="categories-grid">
@@ -45,11 +32,7 @@
 </a>
 
         {% empty %}
-            <p class="text-muted">No hay categorías disponibles con prodcutos.</p>
+            <p class="text-muted">No hay categorías disponibles.</p>
         {% endfor %}
     </div>
 </div>
-
-</section>
-
-{% endblock %}
