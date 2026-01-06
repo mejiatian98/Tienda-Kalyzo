@@ -3,3 +3,5 @@
 2### Quiero que se relacione el producto con las medidas, tallas, colores y 
 se vea en iconos aparte para que el cliente seleccione las variantes, al 
 seleccionar se haga un script que cambie la imagen solo del color seleccionado.
+
+3### Que cuando se haga scroll baje el contenedor de donde estan las variantes de los productos
