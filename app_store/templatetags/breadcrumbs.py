@@ -38,7 +38,7 @@ def breadcrumbs(context):
 
         crumbs.append({
             'name': category.name,
-            'url': f'categorias/{category.slug}/'
+            'url': f'productos/{category.slug}/'
         })
 
         crumbs.append({
