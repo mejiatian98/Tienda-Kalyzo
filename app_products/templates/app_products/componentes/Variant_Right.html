@@ -12,8 +12,7 @@ top: 20px; /* distancia desde arriba */
 <!-- ================= COLUMNA DERECHA ================= -->
 
 
-<h2 class="fw-bold mb-3">{{ product.name }}</h2>
-<p class="text-muted">{{ product.category.name }}</p>
+<h4 class="fw-bold mb-3">{{ product.name }}</h4>
 
 <!-- ================= PRECIO ================= -->
 <div id="priceContainer">
@@ -146,9 +145,14 @@ top: 20px; /* distancia desde arriba */
     {% endif %}
 
     <!-- ================= BOTÓN ================= -->
-    <div id="cartButtonContainer" class="mt-4">
+    <div id="cartButtonContainer" class="mt-4 d-flex justify-content-center">
         {% if main_variant.stock > 0 %}
-            <button class="btn btn-primary w-100 fw-bold">
+            <a href="#">
+                <button class="btn btn-primary w-10 fw-bold m-1">
+                    Añadir al carrito
+                </button>
+            </a>
+            <button class="btn btn-primary w-100 fw-bold m-1">
                 Añadir al carrito
             </button>
         {% else %}
