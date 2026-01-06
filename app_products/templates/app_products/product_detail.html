@@ -18,8 +18,7 @@
         COLUMNA IZQUIERDA
         Imágenes + descripción + specs + comentarios
     ======================================================= -->
-    <div class="col-lg-7 mb-4 order-1 order-lg-1">
-
+    <div class="col-lg-7 mb-4">
         
 
         <!-- ================= CAJA PRODUCTO ================= -->
@@ -46,7 +45,7 @@
                     <img 
                         src="{{ img.image_url }}"
                         alt="{{ img.alt_text }}"
-                        class="product-thumb mb-2"
+                        class="product-thumb"
                         onclick="changeMainImage('{{ img.image_url }}', '{{ img.alt_text }}')"
                     >
                     {% endfor %}
@@ -65,24 +64,21 @@
             <div class="product-description mb-4">
                 {{ product.description_short|safe }}
             </div>
+
+        </div>
+
+        <div>
+            <!-- ================= ESPECIFICACIONES ================= -->
+            <div class="mt-4">
+                {% include 'app_products/componentes/Product_Specifications.html' %}
+            </div>
             
-            
 
+            <!-- ================= COMENTARIOS ================= -->
+            <div class="mt-4">
+                {% include 'app_products/componentes/Comments.html' %}
+            </div>
         </div>
-        
-
-        <!-- ================= ESPECIFICACIONES ================= -->
-        <div class="mt-4">
-            {% include 'app_products/componentes/Product_Specifications.html' %}
-        </div>
-        
-
-        <!-- ================= COMENTARIOS ================= -->
-        <div class="mt-4">
-            {% include 'app_products/componentes/Comments.html' %}
-        </div>
-
-
     </div>
 
 
@@ -90,14 +86,13 @@
         COLUMNA DERECHA (STICKY)
         Variantes / compra
     ======================================================= -->
-    <div class="col-lg-5 mb-4 order-2 order-lg-2">
+    <div class="col-lg-5 mb-4">
 
         <div class="sidebar-sticky product-box p-4 rounded shadow-sm">
             {% include 'app_products/componentes/Variant_Right.html' %}
         </div>
-
+        
     </div>
-
 </div>
 
 <!-- ================= PRODUCTOS SIMILARES ================= -->
