@@ -14,14 +14,11 @@
                     {% if variante.stock == 0 %}
                         <span class="badge-agotado">AGOTADO</span>
                     {% elif variante.discount_price %}
-                        {% with porcentaje=variante.discount_price|div:variante.price %}
                         <span class="badge-discount">
-                            -{{ porcentaje|floatformat:0 }}% Descuento
+                            -{{ variante.discount_percentage }}% Descuento
                         </span>
-                        {% endwith %}
                     {% endif %}
                 {% endif %}
-
                 <!-- IMG -->
                 <div class="img-container">
                     {% if variante.main_image %}
@@ -64,9 +61,19 @@
                     {% if variante and variante.stock > 0 %}
                         <a href="#"><i class="bi bi-bag-plus fs-4 text-primary"></i></a>
                     {% endif %}
-                    
                 </div>
-
+                <!-- Rating de producto -->
+                <span class="text-warning fs-6 px-3 mb-2 d-flex align-items-end justify-content-end">
+                    {% with rating=producto.avg_rating|default:0 %}
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= rating %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                </span>
             {% endwith %}
         </div>
     </a>

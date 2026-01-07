@@ -4,36 +4,37 @@ from django.db.models import Prefetch
 from app_products.models import Product, Category, ProductVariant
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
+from django.db.models import Avg
 
 # Pagina principal de la tienda
-
 class StoreView(View):
     def get(self, request):
+
+        variants_prefetch = Prefetch(
+            "variants",
+            queryset=ProductVariant.objects
+                .filter(is_active=True)
+                .prefetch_related("images")
+        )
 
         featured_products = (
             Product.objects
             .filter(is_active=True, is_featured=True)
-            .prefetch_related(
-                Prefetch(
-                    "variants",
-                    queryset=ProductVariant.objects
-                        .filter(is_active=True)
-                        .prefetch_related("images")
-                )
+            .annotate(
+                avg_rating=Avg("comments__rating"),
+                rating_count=Count("comments")
             )
+            .prefetch_related(variants_prefetch)
         )
 
         productos = (
             Product.objects
             .filter(is_active=True)
-            .prefetch_related(
-                Prefetch(
-                    "variants",
-                    queryset=ProductVariant.objects
-                        .filter(is_active=True)
-                        .prefetch_related("images")
-                )
+            .annotate(
+                avg_rating=Avg("comments__rating"),
+                rating_count=Count("comments")
             )
+            .prefetch_related(variants_prefetch)
             .order_by("?")
         )
 
@@ -45,8 +46,8 @@ class StoreView(View):
                 "productos": productos,
             }
         )
-
-
+      
+        
 
 # Vista para mostrar las categorías con sus productos
 class CategoriaView(View):
