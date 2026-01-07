@@ -1,4 +1,5 @@
 from django import template
+from django.urls import reverse
 
 register = template.Library()
 
@@ -38,8 +39,9 @@ def breadcrumbs(context):
 
         crumbs.append({
             'name': category.name,
-            'url': f'productos/{category.slug}/'
+            'url': reverse('category_products', kwargs={'slug': category.slug})
         })
+
 
         crumbs.append({
             'name': product.name,

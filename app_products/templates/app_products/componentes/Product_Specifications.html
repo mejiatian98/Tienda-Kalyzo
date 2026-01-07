@@ -40,9 +40,20 @@
             role="tabpanel"
         >
             {% if product.description_long %}
-                <div class="text-muted">
+                <div
+                    id="detailsContent"
+                    class="details-content collapsed text-muted"
+                >
                     {{ product.description_long|linebreaks }}
                 </div>
+
+                <button
+                    id="toggleDetailsBtn"
+                    class="btn btn-link p-0 mt-2"
+                    type="button"
+                >
+                    Ver más
+                </button>
             {% else %}
                 <p class="text-center text-muted mb-0">
                     Este producto no cuenta con una descripción detallada.
@@ -66,7 +77,60 @@
                 </p>
             {% endif %}
         </div>
-
-
     </div>
 </div>
+
+
+<style>
+    .details-content {
+    transition: max-height 0.4s ease;
+    overflow: hidden;
+}
+
+/* Estado colapsado */
+.details-content.collapsed {
+    max-height: 100px; /* ajusta según diseño */
+    position: relative;
+}
+
+/* Fade inferior */
+.details-content.collapsed::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(
+        rgba(255, 255, 255, 0),
+        #fff
+    );
+}
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const content = document.getElementById("detailsContent");
+    const button = document.getElementById("toggleDetailsBtn");
+
+    if (!content || !button) return;
+
+    let expanded = false;
+
+    button.addEventListener("click", () => {
+        content.classList.remove("collapsed");
+        button.style.display = "none";
+        expanded = true;
+    });
+
+    // Cuando se vuelve a la pestaña "Detalles"
+    const detailsTab = document.getElementById("details-tab");
+    detailsTab.addEventListener("shown.bs.tab", () => {
+        if (expanded) {
+            content.classList.remove("collapsed");
+            button.style.display = "none";
+        }
+    });
+});
+</script>

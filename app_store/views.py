@@ -6,21 +6,46 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Count
 
 # Pagina principal de la tienda
+
 class StoreView(View):
     def get(self, request):
+
+        featured_products = (
+            Product.objects
+            .filter(is_active=True, is_featured=True)
+            .prefetch_related(
+                Prefetch(
+                    "variants",
+                    queryset=ProductVariant.objects
+                        .filter(is_active=True)
+                        .prefetch_related("images")
+                )
+            )
+        )
+
         productos = (
             Product.objects
             .filter(is_active=True)
             .prefetch_related(
                 Prefetch(
                     "variants",
-                    queryset=ProductVariant.objects.filter(is_active=True).prefetch_related("images")
+                    queryset=ProductVariant.objects
+                        .filter(is_active=True)
+                        .prefetch_related("images")
                 )
             )
-            .order_by("?") # Orden aleatorio
+            .order_by("?")
         )
 
-        return render(request, "store_page.html", {"productos": productos})
+        return render(
+            request,
+            "store_page.html",
+            {
+                "featured_products": featured_products,
+                "productos": productos,
+            }
+        )
+
 
 
 # Vista para mostrar las categorías con sus productos
@@ -128,6 +153,4 @@ class DiscountedProductsView(View):
         }
 
         return render(request, "Discounted_products.html", context)
-    
-
     

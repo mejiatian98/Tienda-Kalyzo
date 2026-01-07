@@ -1,0 +1,127 @@
+<div class="container my-4">
+    <div class="bg-primary rounded-3 text-light px-3 px-md-4 pt-3 pb-1">
+
+        <div class="row g-3 align-items-stretch">
+
+            <!-- Texto / CTA -->
+            <div class="col-12 col-md-3 px-4 d-flex flex-column justify-content-center align-items-center text-start">
+                <div>
+                    <h2 class="fw-bold">Productos destacados del mes</h2>
+                    <small class="d-block mb-3">
+                        Encuentra los mejores productos seleccionados especialmente para ti.
+                    </small>
+                </div>
+
+                <div class="justify-content-center align-items-center text-center col-12">
+                    <a href="{% url 'all_products' %}" class="mt-2">
+                        <button class="btn btn-outline-light fw-bold w-100">
+                            <h6>Ver más productos</h6>
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Slider -->
+            <div class="col-12 col-md-9 position-relative d-flex align-items-center">
+
+                <!-- Botón izquierdo -->
+                <button class="slider-btn left" onclick="slideFeatured(-1)">&#10094;</button>
+
+                <div id="featuredSlider" class="featured-slider">
+                    {% for producto in featured_products %}
+                        <div class="featured-item">
+                            {% include 'app_store/componentes/Card.html' with producto=producto %}
+                        </div>
+                    {% empty %}
+                        <p class="text-light">No hay productos destacados.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Botón derecho -->
+                <button class="slider-btn right" onclick="slideFeatured(1)">&#10095;</button>
+
+            </div>
+
+        </div>
+        
+        
+    </div>
+</div>
+<style>
+    /* ===============================
+   SLIDER DESTACADOS
+================================ */
+
+.featured-slider {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+    overflow-x: auto;     /* ✅ PERMITE SCROLL */
+    scroll-behavior: smooth;
+}
+
+/* Ocultar scrollbar visualmente pero mantener funcionalidad */
+.featured-slider::-webkit-scrollbar {
+    height: 0;
+}
+
+/* Respetar tamaño real del card */
+.featured-item {
+    flex: 0 0 250px;
+}
+
+/* Neutraliza col-* SOLO dentro del slider */
+.featured-item [class*="col-"] {
+    width: auto !important;
+    flex: 0 0 auto !important;
+}
+
+
+/* Botones */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(62, 180, 248, 0.9);
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.slider-btn.left {
+    left: -20px;
+}
+
+.slider-btn.right {
+    right: -10px;
+}
+
+
+/* Mobile */ 
+@media (max-width: 768px) 
+{   .slider-btn 
+    { display: none; } 
+}
+
+
+</style>
+
+<script>
+function slideFeatured(direction) {
+    const slider = document.getElementById('featuredSlider');
+    const card = slider.querySelector('.featured-item');
+    if (!card) return;
+
+    const scrollAmount = card.offsetWidth + 12;
+    slider.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+</script>

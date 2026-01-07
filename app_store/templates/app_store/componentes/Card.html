@@ -24,8 +24,8 @@
 
                 <!-- IMG -->
                 <div class="img-container">
-                    {% if variante and variante.images.first %}
-                        <img src="{{ variante.images.first.image_url }}"
+                    {% if variante.main_image %}
+                        <img src="{{ variante.main_image.image_url }}"
                              class="card-img-top img-fluid p-3"
                              alt="{{ producto.name }}">
                     {% else %}
@@ -36,7 +36,7 @@
                 </div>
 
                 <!-- CONTENIDO -->
-                <div class="card-body content-area">
+                <div class="card-body content-area fs-5">
                     <h6 class="card-title fw-bold">{{ producto.name }}</h6>
                     <small class="text-muted">
                         {{ producto.description_short|truncatechars:60 }}

@@ -50,6 +50,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
 
     
 
@@ -139,7 +140,7 @@ class ProductVariant(models.Model):
     @property
     def main_image(self):
         return self.images.filter(is_main=True).first() or self.images.first()
-
+    
 
 
 # ---------------------------
@@ -162,6 +163,10 @@ class ProductVariantImage(models.Model):
 
     def __str__(self):
         return f"Imagen de {self.variant.sku}"
+    
+    @property
+    def main_image(self):
+        return self.images.order_by("-is_main").first()
 
 
 
