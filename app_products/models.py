@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 
 # ---------------------------
 #   CATEGORÍAS
@@ -51,6 +52,16 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+
+    @property
+    def avg_rating(self):
+        if hasattr(self, "avg_rating_db") and self.avg_rating_db is not None:
+            return round(self.avg_rating_db)
+        avg = self.comments.aggregate(avg=Avg("rating"))["avg"]
+        return round(avg) if avg else 0
+
+        
+
 
     
 

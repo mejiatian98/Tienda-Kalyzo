@@ -65,7 +65,7 @@
                 </div>
                 <!-- Rating de producto -->
                 <span class="text-warning fs-6 px-3 mb-2 d-flex align-items-end justify-content-end">
-                    {% with rating=producto.avg_rating|default:0 %}
+                    {% with rating=producto.avg_rating|default:5 %}
                         {% for i in "12345" %}
                             {% if forloop.counter <= rating %}
                                 ★
@@ -74,6 +74,9 @@
                             {% endif %}
                         {% endfor %}
                     {% endwith %}
+                    <small class="text-muted ms-2">
+                        ({{ producto.comments.count }})
+                    </small>
                 </span>
             {% endwith %}
         </div>

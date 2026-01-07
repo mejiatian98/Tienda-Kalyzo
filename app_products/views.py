@@ -31,40 +31,31 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         product = self.object
 
-        # Variantes activas
-        variants = product.variants.filter(is_active=True).prefetch_related("options__option_value__option", "images")
-        context["has_medida"] = variants.filter(
-            options__option_value__option__name="Medida", 
+        variants = (
+            product.variants
+            .filter(is_active=True)
+            .prefetch_related(
+                "options__option_value__option",
+                "images"
+            )
+        )
 
-        ).exists()
-
-        context["variants"] = variants
-
-        # Variante principal (primera)
         main_variant = variants.first()
-        context["main_variant"] = main_variant
 
-        # Imágenes de la variante principal
-        context["images"] = (
-            main_variant.images.all() if main_variant else []
-        )
-
-        # Productos similares
-        context["productos"] = (
-            Product.objects
-            .filter(category=product.category, is_active=True)
-            .exclude(id=product.id)
-        )[:4]
-
-        # Comentarios
-        comments = product.comments.all().order_by("-created_at")
-        context["comments"] = comments
-
-        context["avg_rating"] = (
-            round(sum(c.rating for c in comments) / comments.count(), 1)
-            if comments.exists()
-            else 0
-        )
+        context.update({
+            "variants": variants,
+            "main_variant": main_variant,
+            "images": main_variant.images.all() if main_variant else [],
+            "has_medida": variants.filter(
+                options__option_value__option__name="Medida"
+            ).exists(),
+            "productos": (
+                Product.objects
+                .filter(category=product.category, is_active=True)
+                .exclude(id=product.id)[:4]
+            ),
+            "comments": product.comments.all().order_by("-created_at"),
+        })
 
         return context
 
@@ -84,7 +75,10 @@ class ProductDetailView(DetailView):
                 rating=int(rating)
             )
 
-        return redirect("product_detail", slug=product.slug, id=product.id)
-    
+        return redirect(
+            "product_detail",
+            slug=product.slug,
+            id=product.id
+        )
 
 

@@ -1,15 +1,18 @@
 <!-- PROMEDIO -->
     <div class="mb-4">
-        <span class="text-warning fs-5 px-1">
-            {% for i in "12345" %}
-                {% if forloop.counter <= avg_rating %}
-                    ★
-                {% else %}
-                    ☆
-                {% endif %}
-            {% endfor %}
+        <span class="text-warning fs-6">
+            {% with rating=product.avg_rating|default:5 %}
+                {% for i in "12345" %}
+                    {% if forloop.counter <= rating %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
         </span>
         <small class="text-muted">
-            ({{ comments|length }} reseñas · Promedio {{ avg_rating }})
+            ({{ product.comments.count }} reseñas · Promedio {{ product.avg_rating }})
+
         </small>
     </div>

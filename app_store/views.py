@@ -20,20 +20,12 @@ class StoreView(View):
         featured_products = (
             Product.objects
             .filter(is_active=True, is_featured=True)
-            .annotate(
-                avg_rating=Avg("comments__rating"),
-                rating_count=Count("comments")
-            )
             .prefetch_related(variants_prefetch)
         )
 
         productos = (
             Product.objects
             .filter(is_active=True)
-            .annotate(
-                avg_rating=Avg("comments__rating"),
-                rating_count=Count("comments")
-            )
             .prefetch_related(variants_prefetch)
             .order_by("?")
         )
@@ -46,7 +38,7 @@ class StoreView(View):
                 "productos": productos,
             }
         )
-      
+
         
 
 # Vista para mostrar las categorías con sus productos
