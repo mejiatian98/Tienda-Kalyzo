@@ -17,6 +17,8 @@ class AllProductDetailView(View):
         )
 
     
+
+    
 # Detalle del producto
 class ProductDetailView(DetailView):
     model = Product

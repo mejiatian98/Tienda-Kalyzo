@@ -141,6 +141,14 @@ class ProductVariant(models.Model):
     def main_image(self):
         return self.images.filter(is_main=True).first() or self.images.first()
     
+    @property
+    def discount_percentage(self):
+        if self.discount_price and self.price:
+            return round(
+                (self.price - self.discount_price) / self.price * 100
+            )
+        return 0
+    
 
 
 # ---------------------------

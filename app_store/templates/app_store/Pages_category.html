@@ -16,50 +16,10 @@
 <div class = "mb-4">
     <h5 class="fw-bold mb-3">Categorías</h5>
 
-    <div class="row g-3">
+    {% include 'app_store/componentes/Categorys_cards.html' %}
 
-        {% for categoria in categorias %}
-            <div class="col-12 col-sm-6 col-lg-3">
 
-                <a href="{% url 'category_products' categoria.slug %}"
-                   class="category-card text-decoration-none">
-
-                    <div class="category-card-inner text-center">
-
-                        {% if categoria.imagen_category %}
-                            <img src="{{ categoria.imagen_category.url }}"
-                                 alt="{{ categoria.name }}"
-                                 class="category-card-img">
-                        {% else %}
-                            <img src="{% static 'images/no-image.png' %}"
-                                 alt="Sin imagen"
-                                 class="category-card-img">
-                        {% endif %}
-
-                        <!-- OVERLAY -->
-                        <div class="category-card-overlay"></div>
-
-                        <!-- TEXTO -->
-                        <div class="category-card-content">
-                            <h6 class="mb-0 fw-bold fs-4">{{ categoria.name }}</h6>
-                            <small>{{ categoria.total_products }} productos</small>
-
-                        </div>
-
-                    </div>
-
-                </a>
-
-            </div>
-        {% empty %}
-            <p class="text-muted">No hay categorías disponibles.</p>
-        {% endfor %}
-
-    </div>
 </div>
-
-
-
 
 
 
