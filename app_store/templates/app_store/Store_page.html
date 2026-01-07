@@ -42,15 +42,23 @@
 
             <!-- Linea separador -->
             <hr class="hr-separador">
-            
 
-                <div class="row">
-                    {% for producto in productos %}
-                        {% include 'app_store/componentes/Card.html' with producto=producto %}
-                    {% empty %}
-                        <p class="text-muted">Aún no hay productos disponibles.</p>
-                    {% endfor %}
-                </div>
+            <!-- Productos destacados -->
+            <div class="row">
+                {% include 'app_store/componentes/Product_Featured.html' %}
+            </div>
+
+            <!-- Linea separador -->
+            <hr class="hr-separador">
+            
+            <!-- Todos los productos -->
+            <div class="row">
+                {% for producto in productos %}
+                    {% include 'app_store/componentes/Card.html' with producto=producto %}
+                {% empty %}
+                    <p class="text-muted">Aún no hay productos disponibles.</p>
+                {% endfor %}
+            </div>
 
         {% endblock %}
     </div>
