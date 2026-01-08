@@ -1,6 +1,7 @@
 {% load static %}
 
-<div class="row g-3 mb-4 category-scroll">
+
+<div class="row g-3 my-4  category-scroll">
 
     {% for categoria in categorias %}
         <div class="col-12 col-sm-6 col-md-4 col-lg-2 category-col">
@@ -25,7 +26,7 @@
 
                     <!-- TEXTO -->
                     <div class="category-card-content">
-                        <h6 class="mb-0 fw-bold">{{ categoria.name }}</h6>
+                        <h6 class="mb-0 fw-bold fs-4">{{ categoria.name }}</h6>
 
                         {% if categoria.total_products >= 1 %}
                             <h2 class="mb-0">{{ categoria.total_products }}</h2>
@@ -41,3 +42,5 @@
         <p class="text-muted">No hay categorías disponibles.</p>
     {% endfor %}
 </div>
+
+

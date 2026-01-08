@@ -453,6 +453,11 @@ body{
     }
 }
 
+/* ######################################################## */
+
+/* ===============================
+    DETALLE DE PRODUCTO
+================================ */
 
 /* Estilo de precios en la página de detalle del producto */
 .price-box {
@@ -486,9 +491,95 @@ body{
 }
 
 
+/* Sidebar sticky */
+.sidebar-sticky {
+    position: sticky;
+    top: -150px;
+
+}
+
+@media (max-width: 991px) {
+  .sidebar-sticky {
+    position: static;
+    top: auto;
+  }
+}
+
+
+/* ######################################################## */
+
+
+/* ===============================
+   SLIDER DESTACADOS
+================================ */
+
+.featured-slider {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+    overflow-x: auto;     /* ✅ PERMITE SCROLL */
+    scroll-behavior: smooth;
+}
+
+/* Ocultar scrollbar visualmente pero mantener funcionalidad */
+.featured-slider::-webkit-scrollbar {
+    height: 0;
+}
+
+/* Respetar tamaño real del card */
+.featured-item {
+    flex: 0 0 250px;
+}
+
+/* Neutraliza col-* SOLO dentro del slider */
+.featured-item [class*="col-"] {
+    width: auto !important;
+    flex: 0 0 auto !important;
+}
+
+
+/* Botones */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(121, 204, 252, 0.9);
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.slider-btn.left {
+    left: -40px;
+}
+
+.slider-btn.right {
+    right: -60px;
+}
+
+
+/* Mobile */ 
+@media (max-width: 768px) 
+{   .slider-btn 
+    { display: none; } 
+}
+
+
+/* ######################################################## */
 
 
 
+
+/* ===============================
+   CARD CATEGORÍA
+================================ */
+ 
 /* CARD CATEGORÍA */
 .category-card {
     display: block;
@@ -531,7 +622,7 @@ body{
 }
 
 .category-card-inner:hover .category-card-overlay {
-    opacity: 0;
+    opacity: 0.5;
 }
 
 /* TEXTO */
@@ -560,45 +651,78 @@ body{
 
 
 /* ===========================
-   SCROLL HORIZONTAL EN MOBILE
+   SCROLL HORIZONTAL UNIVERSAL
    =========================== */
-@media (max-width: 767px) {
-    .category-scroll {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch; /* swipe suave iOS */
-        gap: 12px;
-        padding-bottom: 10px;
-    }
 
-    .category-scroll::-webkit-scrollbar {
-        display: none; /* oculta scrollbar */
-    }
+.category-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 20px;
+    scroll-behavior: smooth;
+}
 
-    .category-scroll .category-col {
-        flex: 0 0 50%; /* ancho de cada card */
-        max-width: 30%;
+/* swipe suave */
+.category-scroll {
+    /* -webkit-overflow-scrolling: touch; */
+    -webkit-overflow-scrolling: smooth;
+    
+}
+
+/* ocultar scrollbar */
+.category-scroll::-webkit-scrollbar {
+    display: visible;
+}
+
+/* ===========================
+   ANCHO DE CARDS POR BREAKPOINT
+   =========================== */
+
+.category-col {
+    flex: 0 0 auto;
+}
+
+/* Mobile */
+@media (max-width: 575px) {
+    .category-col {
+        width: 40%;
     }
+}
+
+/* Tablet */
+@media (min-width: 576px) and (max-width: 991px) {
+    .category-col {
+        width: 40%;
+    }
+}
+
+/* Desktop */
+/* @media (min-width: 992px) {
+    .category-col {
+        width: 15%;
+    }
+} */
+
+.category-scroll {
+    scroll-snap-type: x mandatory;
+}
+
+.category-col {
+    scroll-snap-align: start;
 }
 
 
 
+/* ######################################################## */
 
 
 
 
-/* Sidebar sticky */
-.sidebar-sticky {
-    position: sticky;
-    top: -150px;
 
-}
 
-@media (max-width: 991px) {
-  .sidebar-sticky {
-    position: static;
-    top: auto;
-  }
-}
+
+
+
+
+
 
