@@ -1,8 +1,7 @@
 {% load static %}
 
-<!-- OFFCANVAS BUSCAR -->
 <div class="offcanvas offcanvas-top" tabindex="-1" id="buscarOffcanvas">
-  
+
   <!-- HEADER -->
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title d-flex align-items-center">
@@ -15,72 +14,69 @@
   <!-- BODY -->
   <div class="offcanvas-body">
 
-    <!-- BARRA DE BÚSQUEDA -->
+    <!-- BUSCADOR -->
     <form method="GET" action="{% url 'search_products' %}">
       <div class="input-group mb-4">
-
-        
-
-        <!-- Campo de texto -->
-        <input 
-          type="text" 
-          name="q" 
+        <input
+          type="text"
+          name="q"
           class="form-control"
           placeholder="Buscar productos, categorías..."
         >
-
-        <!-- BOTÓN PARA BUSCAR -->
         <button class="btn btn-primary" type="submit">
-          <i class="bi bi-search"></i> Buscar
+          <i class="bi bi-search"></i>
         </button>
-
       </div>
     </form>
-    
-    <div class="offcanvas-body">
-      <!-- CATEGORÍAS -->
-      <h6 class="text-muted mb-3 mt-3">Categorías disponibles</h6>
 
+    <!-- CATEGORÍAS -->
+    <h6 class="text-muted mb-3">Categorías disponibles</h6>
 
+    <div class="search-offcanvas-categories">
 
-        {% for categoria in categorias %}
-            <div class="col-12 col-sm-6 col-lg-1">
+  <div class="row g-3">
+    {% for categoria in categorias %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2 category-col">
 
-                <a href="{% url 'category_products' categoria.slug %}"
-                   class="category-card text-decoration-none">
+            <a href="{% url 'category_products' categoria.slug %}"
+               class="category-card text-decoration-none">
 
-                    <div class="category-card-inner text-center">
+                <div class="category-card-inner text-center">
 
-                        {% if categoria.imagen_category %}
-                            <img src="{{ categoria.imagen_category.url }}"
-                                 alt="{{ categoria.name }}"
-                                 class="category-card-img">
-                        {% else %}
-                            <img src="{% static 'images/no-image.png' %}"
-                                 alt="Sin imagen"
-                                 class="category-card-img">
+                    {% if categoria.imagen_category %}
+                        <img src="{{ categoria.imagen_category.url }}"
+                             alt="{{ categoria.name }}"
+                             class="category-card-img">
+                    {% else %}
+                        <img src="{% static 'img/no-image.png' %}"
+                             alt="Sin imagen"
+                             class="category-card-img">
+                    {% endif %}
+
+                    <!-- OVERLAY -->
+                    <div class="category-card-overlay"></div>
+
+                    <!-- TEXTO -->
+                    <div class="category-card-content">
+                        <h6 class="mb-0 fw-bold fs-4">{{ categoria.name }}</h6>
+
+                        {% if categoria.total_products >= 1 %}
+                            <h2 class="mb-0">{{ categoria.total_products }}</h2>
+                            <small>productos</small>
                         {% endif %}
-
-                        <!-- OVERLAY -->
-                        <div class="category-card-overlay"></div>
-
-                        <!-- TEXTO -->
-                        <div class="category-card-content">
-                            <h6 class="mb-0 fw-bold fs-4">{{ categoria.name }}</h6>
-                            <small>{{ categoria.total_products }} productos</small>
-
-                        </div>
-
                     </div>
 
-                </a>
+                </div>
+            </a>
+        </div>
 
-            </div>
-        {% empty %}
-            <p class="text-muted">No hay categorías disponibles.</p>
-        {% endfor %}
+    {% empty %}
+        <p class="text-muted">No hay categorías disponibles.</p>
+    {% endfor %}
+  </div>
 
-      </div>
-    </div>
+</div>
+
+
   </div>
 </div>

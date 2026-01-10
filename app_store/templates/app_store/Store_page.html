@@ -18,14 +18,14 @@
     <title>Kalyzo | {% block title %} Tienda {% endblock %}</title>
 </head>
 <body>
+    <!-- Texto animado -->
+    {% include 'app_store/componentes/Texto_animado.html' %}
 
     <!-- navbar statico -->
     {% include 'app_store/componentes/Navbar.html' %}
 
     
     
-    <!-- Texto animado -->
-    {% include 'app_store/componentes/Texto_animado.html' %}
 
     <!-- subnavbar -->
     {% include 'app_store/componentes/Subnavbar.html' %}
@@ -42,7 +42,9 @@
 
             <!-- Linea separador -->
             <hr class="hr-separador">
-            
+                            <h5 class="section-title mb-3">Categorías</h5>
+            <br>
+
             {% include 'app_store/componentes/Categorys_cards.html' %}
 
             <!-- Productos destacados -->
@@ -54,6 +56,9 @@
             <hr class="hr-separador">
             
             <!-- Todos los productos -->
+                <h5 class="section-title mb-3">Productos</h5><br>
+
+            <br>
             <div class="row">
                 {% for producto in productos %}
                     {% include 'app_store/componentes/Card.html' with producto=producto %}

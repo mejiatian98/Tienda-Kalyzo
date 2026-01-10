@@ -1,10 +1,11 @@
 {% load static %}
 
 
-<div class="row g-3 my-4  category-scroll">
+<div class="category-scroll my-4 ">
+
 
     {% for categoria in categorias %}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 category-col">
+        <div class="category-col">
 
             <a href="{% url 'category_products' categoria.slug %}"
                class="category-card text-decoration-none">

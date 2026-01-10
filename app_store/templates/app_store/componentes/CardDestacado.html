@@ -1,0 +1,46 @@
+{% load moneda %}
+{% load math_filters %}
+
+<div class="col-6 col-md-4 col-lg-3 mb-4">
+
+    <a href="{% url 'product_detail' slug=producto.slug id=producto.id %}"
+       class="text-decoration-none text-dark">
+
+    <div class="col-6 col-md-4 col-lg-3 mb-4">
+{% if producto.slug and producto.id %}
+<a href="{% url 'product_detail' slug=producto.slug id=producto.id %}"
+   class="featured-overlay-card">
+
+    {% with variante=producto.variants.first %}
+        {% if variante and variante.main_image %}
+            <img
+                src="{{ variante.main_image.image_url }}"
+                alt="{{ producto.name }}"
+                class="featured-image"
+            >
+
+            <!-- Badge -->
+            {% if variante.stock == 0 %}
+                <span class="badge-agotado-des">AGOTADO</span>
+            {% elif variante.discount_price %}
+                <span class="badge-discount-des">
+                    -{{ variante.discount_percentage }}%
+                </span>
+            {% endif %}
+
+            <!-- Nombre -->
+            <div class="featured-info">
+                <span class="featured-title">{{ producto.name }}</span>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+</a>
+{% endif %}
+
+
+</div>
+
+
+    </a>
+</div>
