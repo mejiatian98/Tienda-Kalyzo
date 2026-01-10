@@ -32,7 +32,7 @@
                 <div id="featuredSlider" class="featured-slider">
                     {% for producto in featured_products %}
                         <div class="featured-item">
-                            {% include 'app_store/componentes/Card.html' with producto=producto %}
+                            {% include 'app_store/componentes/CardDestacado.html' with producto=producto %}
                         </div>
                     {% empty %}
                         <p class="text-light">No hay productos destacados.</p>

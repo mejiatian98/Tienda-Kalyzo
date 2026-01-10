@@ -137,6 +137,75 @@ body{
   max-height: 100vh !important;
 }
 
+/* ============================= */
+/* SEARCH OFFCANVAS – CATEGORÍAS */
+/* ============================= */
+
+.search-offcanvas-categories {
+    margin-top: 10px;
+}
+
+/* CARD */
+.search-category-card {
+    display: block;
+
+}
+
+.search-category-inner {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #0066ff;
+    transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.search-category-inner:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px rgba(0,0,0,0.22);
+}
+
+/* IMAGEN */
+.search-category-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .45s ease;
+}
+
+.search-category-inner:hover .search-category-img {
+    transform: scale(1.08);
+}
+
+/* OVERLAY */
+.search-category-overlay {
+    position: absolute;
+    inset: 0;
+   
+}
+
+/* TEXTO */
+.search-category-content {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    color: #fff;
+    z-index: 2;
+}
+
+.search-category-content h6 {
+    font-size: 15px;
+}
+
+.search-category-content small {
+    font-size: 12px;
+    opacity: 0.85;
+}
+/* ============================= */
+
+
 
 
 /* Estilo de Cards */
@@ -252,14 +321,71 @@ body{
 
 
 /* CARD con altura FIJA TOTAL (evita que se expanda con zoom) */
+/* ============================= */
+/* PRODUCT CARD – PREMIUM STYLE */
+/* ============================= */
+
 .product-card {
-    display: flex;
-    flex-direction: column;
-    height: 380px; /* 🔹 Ajusta esta medida a lo que necesites */
-    max-height: 580px;
-    overflow: hidden; /* Evita expansión hacia abajo */
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    transition: transform .35s ease, box-shadow .35s ease;
 }
 
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* IMAGEN */
+.product-card .img-container {
+    height: 230px;
+    background: linear-gradient(180deg, #f8f9fa, #ffffff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-card img {
+    max-height: 200px;
+    object-fit: contain;
+    transition: transform .4s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+
+
+/* BODY */
+.product-card .card-body {
+    padding: 14px 16px 8px;
+}
+
+.product-card .card-title {
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+/* FOOTER */
+.product-card .card-footer {
+    padding: 10px 16px 14px;
+}
+
+.product-card .bi-bag-plus {
+    transition: transform .25s ease;
+}
+
+.product-card .bi-bag-plus:hover {
+    transform: scale(1.15);
+}
+
+/* RATING */
+.product-card span.text-warning {
+    font-size: 14px;
+    padding: 0 16px 12px;
+}
 
 
 /* Cuerpo del card con medida fija */
@@ -612,13 +738,16 @@ body{
 .category-card-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(0, 123, 255, 0.6),
-        rgba(0, 86, 179, 0.6)
-    );
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,0.05) 0%,
+            rgba(0,0,0,0.25) 60%,
+            rgba(0,0,0,0.45) 100%
+        );
+        
     z-index: 1;
-    transition: opacity 0.35s ease;
+    transition: opacity .35s ease;
 }
 
 .category-card-inner:hover .category-card-overlay {
@@ -650,29 +779,104 @@ body{
 }
 
 
+
+.category-card-content h6 {
+    letter-spacing: .5px;
+    text-transform: uppercase;
+}
+
+.category-card-content h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.category-card-content small {
+    opacity: .85;
+    font-size: .75rem;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+
+
+/* ============================= */
+/* RESPONSIVE CATEGORY CARD */
+/* ============================= */
+
+/* Desktop grande */
+@media (min-width: 1200px) {
+    .category-card-inner {
+        border-radius: 14px;
+    }
+
+    .category-card-content h6 {
+        font-size: 1.15rem;
+    }
+}
+
+/* Tablets */
+@media (max-width: 991px) {
+    .category-card-inner {
+        border-radius: 12px;
+    }
+
+    .category-card-content h6 {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 575px) {
+    
+
+    
+
+
+
+    .category-card-inner {
+        aspect-ratio: 4 / 3; /* 🔑 menos alta */
+        border-radius: 12px;
+    }
+    /* Quitar hover en mobile */
+    .category-card-inner:hover {
+        transform: none;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    }
+
+    .category-card-overlay {
+        opacity: 0.85;
+    }
+
+    .category-card-content {
+        justify-content: flex-end;
+        padding-bottom: 16px;
+                font-size: 0.95rem;
+
+    }
+}
+
+
+
 /* ===========================
    SCROLL HORIZONTAL UNIVERSAL
    =========================== */
 
 .category-scroll {
     display: flex;
-    flex-wrap: nowrap;
+    gap: 14px;
     overflow-x: auto;
-    padding: 20px;
-    scroll-behavior: smooth;
+    padding: 10px 4px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* swipe suave */
-.category-scroll {
-    /* -webkit-overflow-scrolling: touch; */
-    -webkit-overflow-scrolling: smooth;
-    
+.category-scroll::-webkit-scrollbar {
+    display: none;
 }
+
 
 /* ocultar scrollbar */
-.category-scroll::-webkit-scrollbar {
-    display: visible;
-}
+
 
 /* ===========================
    ANCHO DE CARDS POR BREAKPOINT
@@ -680,7 +884,10 @@ body{
 
 .category-col {
     flex: 0 0 auto;
+    width: 160px; /* mobile */
+    scroll-snap-align: start;
 }
+
 
 /* Mobile */
 @media (max-width: 575px) {
@@ -711,14 +918,136 @@ body{
     scroll-snap-align: start;
 }
 
+@media (min-width: 992px) {
+    .category-scroll {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
+        overflow: visible;
+    }
+
+    .category-col {
+        width: auto;
+    }
+}
 
 
-/* ######################################################## */
+
+
+/* ######################### CARD DESTACADO PERMITE QUE SE LE SOBRE PONGAN LOS DATSO ENCIMA DE LA IMAGEN############################### */
+.featured-overlay-card {
+    position: relative;
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+}
+
+.featured-image {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.featured-overlay-card:hover .featured-image {
+    transform: scale(1.06);
+}
+
+/* Nombre abajo */
+.featured-info {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+}
+
+.featured-title {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Descuento */
+.badge-discount-des{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #dc3545;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+/* Agotado */
+.badge-agotado-des {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #000;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+}
 
 
 
+/* ###################### TITULO PARA LAS SESIONES MEJORADO  ################################## */
+
+.section-title {
+    font-weight: 800;
+    font-size: 28px;
+    color: #0b1b4d;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 6px;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 180px;
+    height: 4px;
+    background-color: #0066ff;
+    border-radius: 4px;
+}
 
 
+/*###############  Estilo para el carrousell  ######################### */
+
+/* CONTENEDOR */
+#carouselExampleCaptions {
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,.15);
+}
+
+/* IMÁGENES */
+.edit_img {
+    height: 420px;
+    object-fit: cover;
+}
+
+/* Desktop grande */
+@media (min-width: 1200px) {
+    .edit_img {
+        height: 520px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 575px) {
+    .edit_img {
+        height: 260px;
+    }
+}
 
 
 

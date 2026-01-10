@@ -9,6 +9,9 @@ urlpatterns = [
     path("productos/buscar/", views.SearchProductsView.as_view(), name="search_products"),
     path("productos/top ventas/", views.TopSellingProductsView.as_view(), name="top_selling_products"),
     path("productos/productos oferta/", views.DiscountedProductsView.as_view(), name="discounted_products"),
+    
+    path("sobre_nosotros/", views.sobreNosotros.as_view(), name="sobre_nosotros"),
+    path("contacto/", views.ContactView.as_view(), name="contacto"),
 
     
 ]

@@ -147,3 +147,13 @@ class DiscountedProductsView(View):
 
         return render(request, "Discounted_products.html", context)
     
+
+
+class sobreNosotros(View):
+    def get(self, request):
+        return render(request, "Sobre_nosotros.html")
+    
+
+class ContactView(View):
+    def get(self, request):
+        return render(request, "Contacto.html")

@@ -1,6 +1,6 @@
 <div class="row">
     {% if productos %}
-    <h3 class="fw-bold mb-4">Productos similares</h3>
+    <h3 class="section-title mb-4">Productos similares</h3>
         {% for producto in productos %}
             {% include 'app_store/componentes/Card.html' with producto=producto %}
         {% endfor %}
