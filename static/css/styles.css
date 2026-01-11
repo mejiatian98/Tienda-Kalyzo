@@ -5,7 +5,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    z-index: 1030 !important;
+    z-index: 1020 !important;
 }
 
 /* Fondo de la pagina */
@@ -13,29 +13,73 @@ body{
     background-color: #f5f5f5 !important;
 }
 
-/* CSS de variantes seleccion */
+
+
+
+/* ================= ESTILOS PARA VARIANTES CON ANIMACIÓN ================= */
 
 .variant-option {
     width: 80px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid #dee2e6 !important; /* Borde gris claro por defecto */
+    position: relative;
 }
 
-.variant-option:hover {
-    border-color: #0d6efd !important;
-    transform: scale(1.05);
+.variant-option:hover:not(.variant-disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: #adb5bd !important;
 }
 
+/* Variante deshabilitada (sin stock) */
 .variant-option.variant-disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background-color: #f8f9fa;
+}
+
+.variant-option.variant-selected::after {
+    content: "✓";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #0d6efd;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Variante seleccionada - Borde azul con animación */
+.variant-option.variant-selected {
+    border: 2px solid #0d6efd !important;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
+    background-color: rgba(13, 110, 253, 0.05);
+    transform: translateY(-2px);
 }
 
 .variant-option.variant-disabled:hover {
-    border-color: initial !important;
     transform: none;
+    box-shadow: none;
+    border-color: #dee2e6 !important;
 }
-
+.variant-option.variant-disabled img {
+    filter: grayscale(100%);
+    opacity: 0.6;
+}
+/* Texto dentro de la variante */
+.variant-option small {
+    display: block;
+    margin-top: 4px;
+    font-weight: 500;
+}
 
 
 /* Badge AGOTADO */
@@ -53,7 +97,8 @@ body{
 }
 
 
-/* Texto de KALYZO */
+
+/* ================= TEXTO KALYZO ================= */
 .no-link-style {
   text-decoration: none;
 }
@@ -545,16 +590,7 @@ body{
     gap: 10px;
 }
 
-.variant-option {
-    cursor: pointer;
-    background: #ffffff;
-    transition: all 0.2s ease;
-}
 
-.variant-option:hover {
-    border-color: #000;
-    transform: translateY(-2px);
-}
 
 .variant-disabled {
     opacity: 0.5;
@@ -999,6 +1035,8 @@ body{
 
 /* ###################### TITULO PARA LAS SESIONES MEJORADO  ################################## */
 
+
+
 .section-title {
     font-weight: 800;
     font-size: 28px;
@@ -1013,11 +1051,57 @@ body{
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 180px;
-    height: 4px;
-    background-color: #0066ff;
+    width: 100%;
+    height: 5px;
     border-radius: 4px;
+    background:
+    radial-gradient(circle at 10% 20%, rgba(0,180,255,0.9), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(0,150,255,0.85), transparent 45%),
+    radial-gradient(circle at 30% 40%, rgba(0,120,240,0.8), transparent 45%),
+    radial-gradient(circle at 40% 10%, rgba(0,90,220,0.85), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(0,160,255,0.8), transparent 50%),
+    radial-gradient(circle at 60% 60%, rgba(0,200,255,0.85), transparent 45%),
+    radial-gradient(circle at 70% 20%, rgba(0,110,230,0.9), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0,70,210,0.85), transparent 45%),
+    radial-gradient(circle at 90% 50%, rgba(0,140,255,0.9), transparent 45%),
+    radial-gradient(circle at 15% 55%, rgba(0,100,200,0.8), transparent 50%),
+
+    radial-gradient(circle at 25% 25%, rgba(0,170,255,0.9), transparent 45%),
+    radial-gradient(circle at 35% 75%, rgba(0,130,255,0.85), transparent 45%),
+    radial-gradient(circle at 45% 45%, rgba(0,80,190,0.85), transparent 50%),
+    radial-gradient(circle at 55% 15%, rgba(0,190,255,0.9), transparent 45%),
+    radial-gradient(circle at 65% 85%, rgba(0,120,220,0.8), transparent 50%),
+    radial-gradient(circle at 75% 35%, rgba(0,160,240,0.85), transparent 45%),
+    radial-gradient(circle at 85% 65%, rgba(0,60,180,0.85), transparent 45%),
+    radial-gradient(circle at 95% 25%, rgba(0,100,255,0.9), transparent 40%),
+
+    linear-gradient(
+      140deg,
+      #001b66,
+      #002f99,
+      #004bcc,
+      #0066ff,
+      #008cff,
+      #00b3ff
+    );
+
+  background-size: 240% 240%;
+  animation: canvaGradient 15s ease-in-out infinite;
 }
+
+@keyframes canvaGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
 
 
 /*###############  Estilo para el carrousell  ######################### */
