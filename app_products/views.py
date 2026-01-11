@@ -17,9 +17,6 @@ class AllProductDetailView(View):
         )
 
     
-
-    
-# Detalle del producto
 class ProductDetailView(DetailView):
     model = Product
     template_name = "Product_detail.html"
@@ -31,6 +28,7 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         product = self.object
 
+        # Obtener todas las variantes activas con sus relaciones
         variants = (
             product.variants
             .filter(is_active=True)
@@ -38,17 +36,50 @@ class ProductDetailView(DetailView):
                 "options__option_value__option",
                 "images"
             )
+            .order_by("sku")
         )
 
+        # Variante principal (primera activa)
         main_variant = variants.first()
+
+        # Recopilar TODAS las imágenes de TODAS las variantes activas
+        all_variant_images = []
+        seen_urls = set()
+        
+        for variant in variants:
+            for img in variant.images.all():
+                if img.image_url not in seen_urls:
+                    all_variant_images.append({
+                        'url': img.image_url,
+                        'alt': img.alt_text or f"{product.name} - {variant.sku}",
+                        'variant_id': variant.id,
+                        'is_main': img.is_main
+                    })
+                    seen_urls.add(img.image_url)
+
+        # Ordenar: primero las imágenes principales
+        all_variant_images.sort(key=lambda x: (not x['is_main'], x['url']))
+
+        # ✅ DETECTAR QUÉ OPCIONES TIENE EL PRODUCTO
+        available_options = {}
+        for variant in variants:
+            for variant_option in variant.options.all():
+                option_name = variant_option.option_value.option.name
+                if option_name not in available_options:
+                    available_options[option_name] = True
 
         context.update({
             "variants": variants,
             "main_variant": main_variant,
-            "images": main_variant.images.all() if main_variant else [],
-            "has_medida": variants.filter(
-                options__option_value__option__name="Medida"
-            ).exists(),
+            "all_variant_images": all_variant_images,
+            "main_image": all_variant_images[0] if all_variant_images else None,
+            
+            # ✅ OPCIONES DISPONIBLES
+            "has_color": "Color" in available_options,
+            "has_medida": "Medida" in available_options,
+            "has_peso": "Peso" in available_options,
+            "has_material": "Material" in available_options,
+            
             "productos": (
                 Product.objects
                 .filter(category=product.category, is_active=True)
@@ -79,6 +110,7 @@ class ProductDetailView(DetailView):
             "product_detail",
             slug=product.slug,
             id=product.id
-        )
+        )  
+
 
 

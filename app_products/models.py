@@ -36,6 +36,7 @@ class Product(models.Model):
     description_short = models.TextField(blank=True)  # Descripción corta
     description_long = models.TextField(blank=True)  # Descripción larga
     warranty = models.TextField(blank=True)  # Garantia
+    
     sales_count = models.IntegerField(default=0)  # Ranking de ventas
     is_active = models.BooleanField(default=True, choices=((True, "Activo"), (False, "Inactivo")),)  # Producto activo
     is_featured = models.BooleanField(default=False)  # Producto destacado
@@ -55,8 +56,6 @@ class Product(models.Model):
 
     @property
     def avg_rating(self):
-        if hasattr(self, "avg_rating_db") and self.avg_rating_db is not None:
-            return round(self.avg_rating_db)
         avg = self.comments.aggregate(avg=Avg("rating"))["avg"]
         return round(avg) if avg else 0
 
@@ -69,12 +68,16 @@ class Product(models.Model):
 #   VARIANTES DE PRODUCTOS
 # ---------------------------
 class Option(models.Model):
-    name = models.CharField(choices=[
-        ("Color", "Color"),
-        ("Peso", "Peso"),
-        ("Medida", "Medida"),
-        ("Material", "Material"),
-    ], max_length=50, unique=True) # Color, Peso, Medida, Material
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+        choices=[
+            ("Color", "Color"),
+            ("Medida", "Medida"),
+            ("Peso", "Peso"),
+            ("Material", "Material"),
+        ]
+    )
 
     def __str__(self):
         return self.name
@@ -112,38 +115,36 @@ class OptionValue(models.Model):
 # ---------------------------
 
 
+
 class ProductVariant(models.Model):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
         related_name="variants"
-    )  # Producto base
+    )
 
-    sku = models.CharField(max_length=100, unique=True)  # SKU único
-    price = models.DecimalField(max_digits=10, decimal_places=2)  # Precio base
+    sku = models.CharField(max_length=100, unique=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         null=True,
         blank=True
-    )  # Precio con descuento
+    )
 
-    stock = models.PositiveIntegerField(default=0)  # Inventario
-    is_active = models.BooleanField(default=True)  # Variante activa
+    stock = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
     provider_variant_id = models.CharField(
         max_length=100,
         blank=True,
         null=True
-    )  # ID proveedor
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["sku"]
-        indexes = [
-            models.Index(fields=["sku"]),
-            models.Index(fields=["is_active"]),
-        ]
 
     def __str__(self):
         return f"{self.product.name} - {self.sku}"
@@ -151,14 +152,21 @@ class ProductVariant(models.Model):
     @property
     def main_image(self):
         return self.images.filter(is_main=True).first() or self.images.first()
-    
+
     @property
     def discount_percentage(self):
         if self.discount_price and self.price:
-            return round(
-                (self.price - self.discount_price) / self.price * 100
-            )
+            return round((self.price - self.discount_price) / self.price * 100)
         return 0
+
+    @property
+    def stock_status(self):
+        if self.stock <= 0:
+            return {"label": "Agotado", "available": False}
+        if self.stock <= 5:
+            return {"label": f"Últimas {self.stock}", "available": True}
+        return {"label": f"{self.stock} disponibles", "available": True}
+
     
 
 
