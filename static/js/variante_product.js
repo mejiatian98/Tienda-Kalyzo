@@ -266,16 +266,17 @@ function selectVariant(
 }
 
 // ================= INICIALIZAR OPCIONES DE LA VARIANTE PRINCIPAL AL CARGAR =================
-document.addEventListener('DOMContentLoaded', function() {
-    // Obtener las opciones de la variante principal al cargar
-    const mainVariantElement = document.querySelector('.variant-option.variant-selected');
-    
-    if (mainVariantElement) {
-        const options = JSON.parse(mainVariantElement.dataset.options || '[]');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener las opciones de la variante principal al cargar
+        const mainVariantElement = document.querySelector('.variant-option.variant-selected');
         
-        // Inicializar las opciones de la variante principal
-        if (typeof updateOptions === 'function') {
-            updateOptions(options);
+        if (mainVariantElement) {
+            const options = JSON.parse(mainVariantElement.dataset.options || '[]');
+            
+            // Inicializar las opciones de la variante principal
+            if (typeof updateOptions === 'function') {
+                updateOptions(options);
+            }
         }
     }
-});
+);
