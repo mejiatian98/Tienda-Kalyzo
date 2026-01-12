@@ -9,4 +9,5 @@ urlpatterns = [
     path('carrito/eliminar/', views.RemoveFromCartView.as_view(), name='remove_from_cart'),
     path('carrito/vaciar/', views.ClearCartView.as_view(), name='clear_cart'),
     path('carrito/count/', views.GetCartCountView.as_view(), name='cart_count'),
+    path('carrito/items/', views.GetCartItemsView.as_view(), name='cart_items'),
 ]
