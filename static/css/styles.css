@@ -674,18 +674,50 @@ body{
 }
 
 
-/* Sidebar sticky */
+/* ######################################################## */
+
+
+/* ===============================
+   SIDEBAR STICKY CON SCROLL SUAVE
+================================ */
+
+/* Sidebar sticky con scroll suave */
 .sidebar-sticky {
     position: sticky;
-    top: -150px;
-
+    top: 35px;
+    align-self: flex-start;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    scroll-behavior: smooth; /* ← Scroll suave */
 }
 
+/* Scrollbar personalizada (opcional) */
+.sidebar-sticky::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-sticky::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.sidebar-sticky::-webkit-scrollbar-thumb {
+    background: rgba(13, 110, 253, 0.3);
+    border-radius: 10px;
+}
+
+.sidebar-sticky::-webkit-scrollbar-thumb:hover {
+    background: rgba(13, 110, 253, 0.5);
+}
+
+/* Mobile - desactivar sticky */
 @media (max-width: 991px) {
-  .sidebar-sticky {
-    position: static;
-    top: auto;
-  }
+    .sidebar-sticky {
+        position: static;
+        top: auto;
+        max-height: none;
+        overflow-y: visible;
+    }
 }
 
 

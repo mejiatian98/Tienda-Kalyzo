@@ -1,0 +1,334 @@
+<!-- app_orders/componentes/Carrito_offcanvas.html -->
+
+{% load moneda %}
+{% load cart_filters %}
+
+<!-- ================= OFFCANVAS CARRITO ================= -->
+<div class="offcanvas offcanvas-end" 
+     tabindex="-1" 
+     id="carritoOffcanvas" 
+     aria-labelledby="carritoOffcanvasLabel">
+    
+    <!-- HEADER -->
+    <div class="offcanvas-header bg-primary text-white border-bottom">
+        <h5 class="offcanvas-title fw-bold d-flex align-items-center" id="carritoOffcanvasLabel">
+            <i class="bi bi-cart3 me-2 fs-4"></i>
+            Mi Carrito
+            <span id="offcanvasCartCount" class="badge bg-white text-primary ms-2 fs-6">0</span>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <!-- BODY -->
+    <div class="offcanvas-body p-0 d-flex flex-column">
+        
+        <!-- CONTENEDOR DE ITEMS (scrollable) -->
+        <div id="offcanvasCartContainer" class="flex-grow-1 overflow-auto">
+            
+            <!-- Estado: Cargando -->
+            <div id="offcanvasLoading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="text-muted mt-2 small">Cargando tu carrito...</p>
+            </div>
+
+            <!-- Estado: Vacío -->
+            <div id="offcanvasEmpty" class="text-center py-5 px-3 d-none">
+                <div class="mb-4">
+                    <i class="bi bi-cart-x text-muted opacity-50" style="font-size: 5rem;"></i>
+                </div>
+                <h5 class="text-dark mb-2">Tu carrito está vacío</h5>
+                <p class="text-muted small mb-4">¡Agrega productos increíbles y empieza a comprar!</p>
+                <a href="{% url 'store_page' %}">
+                  <button class="btn btn-primary btn-sm" data-bs-dismiss="offcanvas">
+                      <i class="bi bi-shop me-2"></i>
+                      Ir a la tienda
+                  </button>
+                </a>
+            </div>
+
+            <!-- Lista de items -->
+            <div id="offcanvasCartItems" class="p-3 d-none">
+                <!-- Los items se cargan dinámicamente aquí -->
+            </div>
+
+        </div>
+
+        <!-- FOOTER FIJO (Resumen y botones) -->
+        <div id="offcanvasFooter" class="border-top bg-light p-3 d-none">
+            
+            <!-- Resumen de precios -->
+            <div class="mb-3">
+                
+                <!-- Descuentos -->
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-success small">
+                        <i class="bi bi-piggy-bank me-1"></i>
+                        Te ahorras:
+                    </span>
+                    <span class="text-success fw-semibold" id="offcanvasSavings">-$0</span>
+                </div>
+
+                <!-- Envío -->
+                <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                    <span class="text-muted small">
+                        <i class="bi bi-truck me-1"></i>
+                        Envío:
+                    </span>
+                    <span class="badge bg-success">GRATIS</span>
+                </div>
+
+                <!-- Total -->
+                <div class="d-flex justify-content-between align-items-center p-3 bg-white rounded mb-3">
+                    <strong class="text-dark">Total a pagar:</strong>
+                    <strong class="fs-4 text-primary" id="offcanvasTotal">$0</strong>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="d-grid gap-2">
+                <a href="{% url 'orders:carrito' %}" class="btn btn-primary btn-lg fw-bold shadow-sm">
+                    <i class="bi bi-cart-check me-2"></i>
+                    Ver Carrito Completo
+                </a>
+                
+                <button type="button" 
+                        class="btn btn-outline-secondary" 
+                        data-bs-dismiss="offcanvas">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Seguir Comprando
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<style>
+/* Offcanvas carrito - ancho personalizado */
+#carritoOffcanvas {
+    width: 400px;
+    max-width: 100%;
+}
+
+/* Scrollbar del contenedor */
+#offcanvasCartContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+#offcanvasCartContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#offcanvasCartContainer::-webkit-scrollbar-thumb {
+    background: rgba(13, 110, 253, 0.3);
+    border-radius: 10px;
+}
+
+#offcanvasCartContainer::-webkit-scrollbar-thumb:hover {
+    background: rgba(13, 110, 253, 0.5);
+}
+
+/* Card de item en offcanvas */
+.offcanvas-item-card {
+    transition: all 0.2s ease;
+}
+
+.offcanvas-item-card:hover {
+    background-color: #f8f9fa;
+}
+
+/* Imagen del producto */
+.offcanvas-product-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+
+/* Selector de cantidad */
+.offcanvas-quantity-select {
+    width: 60px;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    #carritoOffcanvas {
+        width: 100%;
+    }
+    
+    .offcanvas-product-img {
+        width: 55px;
+        height: 55px;
+    }
+}
+</style>
+
+<script>
+// ================= CARGAR CARRITO EN OFFCANVAS =================
+document.addEventListener('DOMContentLoaded', function() {
+    const offcanvasElement = document.getElementById('carritoOffcanvas');
+    
+    if (offcanvasElement) {
+        offcanvasElement.addEventListener('show.bs.offcanvas', function() {
+            loadOffcanvasCart();
+        });
+    }
+});
+
+function loadOffcanvasCart() {
+    const loading = document.getElementById('offcanvasLoading');
+    const empty = document.getElementById('offcanvasEmpty');
+    const itemsContainer = document.getElementById('offcanvasCartItems');
+    const footer = document.getElementById('offcanvasFooter');
+    
+    // Mostrar loading
+    loading.classList.remove('d-none');
+    empty.classList.add('d-none');
+    itemsContainer.classList.add('d-none');
+    footer.classList.add('d-none');
+    
+    // Hacer fetch al servidor
+    fetch('/orders/carrito/count/')
+        .then(response => response.json())
+        .then(data => {
+            loading.classList.add('d-none');
+            
+            if (!data || data.cart_count === 0) {
+                empty.classList.remove('d-none');
+            } else {
+                loadCartItems();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loading.classList.add('d-none');
+            empty.classList.remove('d-none');
+        });
+}
+
+function loadCartItems() {
+    fetch('/orders/carrito/items/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.items && data.items.length > 0) {
+                renderOffcanvasCart(data);
+            } else {
+                document.getElementById('offcanvasEmpty').classList.remove('d-none');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('offcanvasEmpty').classList.remove('d-none');
+        });
+}
+
+function renderOffcanvasCart(data) {
+    const itemsContainer = document.getElementById('offcanvasCartItems');
+    const footer = document.getElementById('offcanvasFooter');
+    const countBadge = document.getElementById('offcanvasCartCount');
+    
+    let itemsHTML = '';
+    
+    data.items.forEach(item => {
+        itemsHTML += generateOffcanvasItemHTML(item);
+    });
+    
+    itemsContainer.innerHTML = itemsHTML;
+    itemsContainer.classList.remove('d-none');
+    footer.classList.remove('d-none');
+    
+    // Actualizar totales
+    countBadge.textContent = data.cart_count;
+    document.getElementById('offcanvasSavings').textContent = '-' + formatCurrency(data.savings);
+    document.getElementById('offcanvasTotal').textContent = formatCurrency(data.total);
+}
+
+function generateOffcanvasItemHTML(item) {
+    const imageUrl = item.image || '/static/img/no_image.png';
+    
+    // Generar opciones de cantidad
+    let quantityOptions = '';
+    for (let i = 1; i <= item.stock; i++) {
+        quantityOptions += `<option value="${i}" ${i === item.quantity ? 'selected' : ''}>${i}</option>`;
+    }
+    
+    return `
+        <div class="offcanvas-item-card border-bottom pb-3 mb-3">
+            <div class="d-flex gap-3">
+                
+                <!-- Imagen -->
+                <div class="flex-shrink-0">
+                    <img src="${imageUrl}" 
+                         alt="${item.product_name}" 
+                         class="offcanvas-product-img"
+                         onerror="this.src='/static/img/no_image.png'">
+                </div>
+                
+                <!-- Info del producto -->
+                <div class="flex-grow-1">
+                    
+                    <!-- Nombre -->
+                    <h6 class="fw-bold mb-2 text-dark" style="font-size: 0.9rem;">
+                        ${item.product_name}
+                    </h6>
+                    
+                    <!-- Precio y Cantidad -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        
+                        <!-- Precio -->
+                        <div>
+                            ${item.discount_percentage > 0 ? `
+                                <div class="text-decoration-line-through text-muted" style="font-size: 0.75rem;">
+                                    $${formatNumber(item.original_price)}
+                                </div>
+                                <div class="fw-bold text-danger">
+                                    $${formatNumber(item.price)}
+                                </div>
+                            ` : `
+                                <div class="fw-bold text-dark">
+                                    $${formatNumber(item.price)}
+                                </div>
+                            `}
+                        </div>
+                        
+                        <!-- Cantidad -->
+                        <div class="d-flex align-items-center gap-2">
+                            <small class="text-muted">Cant:</small>
+                            <select class="form-select form-select-sm offcanvas-quantity-select"
+                                    onchange="updateCartQuantity(${item.variant_id}, this.value)">
+                                ${quantityOptions}
+                            </select>
+                        </div>
+                        
+                    </div>
+                    
+                    <!-- Total del item -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Total:</small>
+                        <span class="fw-bold text-primary">
+                            $${formatNumber(item.price * item.quantity)}
+                        </span>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+    `;
+}
+
+function formatNumber(value) {
+    return Math.round(value).toLocaleString('es-CO');
+}
+
+function formatCurrency(value) {
+    return '$' + formatNumber(value);
+}
+</script>

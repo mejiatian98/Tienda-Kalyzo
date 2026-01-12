@@ -28,3 +28,11 @@ def range_list(value):
         return range(1, int(value) + 1)
     except (ValueError, TypeError):
         return range(1, 2)
+
+@register.filter
+def range_list(value):
+    """Genera un rango de 1 hasta el valor dado"""
+    try:
+        return range(1, int(value) + 1)
+    except (ValueError, TypeError):
+        return range(1, 2)

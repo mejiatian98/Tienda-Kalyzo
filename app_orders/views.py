@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from app_products.models import ProductVariant, Product
 from .utils.cart import Cart
 
-
+# Carrito Views
 class CarritoView(TemplateView):
     """
     Vista principal del carrito
@@ -32,9 +32,7 @@ class CarritoView(TemplateView):
         
         return context 
 
-        
-
-
+# Agregar producto al carrito (AJAX)
 class AddToCartView(View):
     """
     Vista para agregar productos al carrito (AJAX)
@@ -65,7 +63,7 @@ class AddToCartView(View):
         
         return response
 
-
+# Actualizar cantidades en el carrito (AJAX)
 class UpdateCartView(View):
     """
     Vista para actualizar cantidades en el carrito
@@ -90,7 +88,7 @@ class UpdateCartView(View):
         
         return response
 
-
+# Eliminar productos del carrito (AJAX)
 class RemoveFromCartView(View):
     """
     Vista para eliminar productos del carrito
@@ -114,7 +112,7 @@ class RemoveFromCartView(View):
         
         return response
 
-
+# Vaciar el carrito (AJAX)
 class ClearCartView(View):
     """
     Vista para vaciar el carrito completamente
@@ -136,7 +134,7 @@ class ClearCartView(View):
         
         return response
 
-
+# Obtener el contador del carrito (AJAX)
 class GetCartCountView(View):
     """
     Vista para obtener el contador del carrito (para actualizar el header)
@@ -148,4 +146,20 @@ class GetCartCountView(View):
         return JsonResponse({
             'cart_count': cart.get_count(),
             'cart_total': float(cart.get_total())
+        })
+    
+# Obtener los items del carrito (AJAX)
+class GetCartItemsView(View):
+    """
+    Vista para obtener los items del carrito en formato JSON
+    """
+    def get(self, request):
+        cart = Cart(request)
+        
+        return JsonResponse({
+            'items': cart.get_items(),
+            'cart_count': cart.get_count(),
+            'subtotal': cart.get_subtotal(),
+            'total': cart.get_total(),
+            'savings': cart.get_savings(),
         })

@@ -2,6 +2,7 @@
 
 {% load moneda %}
 {% load static %}
+{% load cart_filters %}
 
 <!-- ================= INFORMACIÓN DEL PRODUCTO ================= -->
 
@@ -149,19 +150,9 @@
         <div id="quantityContainer" class="mb-3">
             <label class="fw-bold mb-2 d-block">Cantidad:</label>
             <select id="quantitySelect" class="form-select" style="width: 150px;">
-                {% with max_qty=main_variant.stock|add:0 %}
-                    {% if max_qty > 10 %}
-                        {% for i in "12345678910" %}
-                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-                        {% endfor %}
-                    {% else %}
-                        {% for i in "12345678910" %}
-                            {% if forloop.counter <= max_qty %}
-                                <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
+                {% for i in main_variant.stock|range_list %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
             </select>
         </div>
     {% else %}
@@ -194,32 +185,9 @@
                 <span class="fs-5">Producto agotado</span>
             </button>
         {% endif %}
+        
     </div>
 
-    <!-- ================= BENEFICIOS Y GARANTÍAS ================= -->
-    <div class="p-3 bg-light rounded shadow-sm">
-        <h6 class="fw-bold mb-3 d-flex align-items-center">
-            <i class="bi bi-shield-check text-success me-2"></i>
-            Compra 100% protegida
-        </h6>
-        <ul class="list-unstyled mb-0 small">
-            <li class="mb-2 d-flex align-items-start">
-                <i class="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"></i>
-                <span>Envío gratis a todo Colombia</span>
-            </li>
-            <li class="mb-2 d-flex align-items-start">
-                <i class="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"></i>
-                <span>Garantía de devolución 30 días</span>
-            </li>
-            <li class="mb-2 d-flex align-items-start">
-                <i class="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"></i>
-                <span>Pago 100% seguro y protegido</span>
-            </li>
-            <li class="mb-0 d-flex align-items-start">
-                <i class="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"></i>
-                <span>Soporte al cliente 24/7</span>
-            </li>
-        </ul>
-    </div>
+    
 
 {% endif %}

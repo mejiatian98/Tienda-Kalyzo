@@ -115,11 +115,11 @@ function updateQuantitySelector(stock) {
     if (!quantityContainer) return;
 
     const stockInt = parseInt(stock);
-    const maxQty = Math.min(stockInt, 10);
 
     if (stockInt > 0) {
         let optionsHTML = '';
-        for (let i = 1; i <= maxQty; i++) {
+        // ✅ GENERAR TODAS LAS OPCIONES HASTA EL STOCK DISPONIBLE
+        for (let i = 1; i <= stockInt; i++) {
             optionsHTML += `<option value="${i}">${i}</option>`;
         }
 
