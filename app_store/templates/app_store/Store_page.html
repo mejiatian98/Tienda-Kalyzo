@@ -60,6 +60,7 @@
 
             <br>
             <div class="row">
+                {% csrf_token %}
                 {% for producto in productos|slice:":8" %}
                     {% include 'app_store/componentes/Card.html' with producto=producto %}
                 {% empty %}
@@ -97,3 +98,4 @@
 <script defer src="{% static 'js/variante_product.js' %}"></script>
 <script defer src="{% static 'js/ver_mas_comentarios.js' %}"></script>
 <script defer src="{% static 'js/product_featured.js' %}"></script>
+<script defer src="{% static 'js/cart.js' %}"></script>

@@ -1,3 +1,5 @@
+# app_products/views.py
+
 from django.views.generic import DetailView
 from .models import Product, CommentPublic
 from django.shortcuts import redirect, render

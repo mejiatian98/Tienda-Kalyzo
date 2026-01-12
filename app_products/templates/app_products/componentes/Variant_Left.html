@@ -1,3 +1,5 @@
+<!-- app_products/componentes/Variant_Left.html -->
+
 {% load moneda %}
 {% load static %}
 
@@ -5,16 +7,6 @@
 {% if all_variant_images %}
     <div class="product-images d-flex flex-column flex-md-row">
         
-        <!-- IMAGEN PRINCIPAL -->
-        <div class="main-image flex-grow-1 text-center">
-            <img 
-                id="mainProductImage"
-                src="{{ main_image.url }}"
-                alt="{{ main_image.alt }}"
-                class="main-product-image"
-            >
-        </div>
-
         <!-- MINIATURAS - TODAS LAS IMÁGENES DE TODAS LAS VARIANTES -->
         <div id="thumbnailContainer" class="thumbnail-column me-md-3 mb-3 mb-md-0">
             {% for img in all_variant_images %}
@@ -28,16 +20,38 @@
             {% endfor %}
         </div>
 
+        <!-- IMAGEN PRINCIPAL -->
+        <div class="main-image flex-grow-1 text-center">
+            <img 
+                id="mainProductImage"
+                src="{{ main_image.url }}"
+                alt="{{ main_image.alt }}"
+                class="main-product-image"
+            >
+        </div>
+
     </div>
 {% else %}
-    <p class="text-muted">No hay imágenes disponibles.</p>
+    <div class="alert alert-light border text-center py-5" role="alert">
+        <i class="bi bi-image fs-1 text-muted d-block mb-3"></i>
+        <p class="text-muted mb-0">No hay imágenes disponibles para este producto.</p>
+    </div>
 {% endif %}
 
 <hr class="hr-separador">
 
-{% include 'app_products/componentes/rating_product.html' %}
+<!-- ================= RATING ================= -->
+<div class="mb-3">
+    {% include 'app_products/componentes/rating_product.html' %}
+</div>
 
 <!-- ================= DESCRIPCIÓN ================= -->
-<div class="product-description mb-4">
-    {{ product.description_short|safe }}
+<div class="product-description mb-4 p-3 bg-light rounded">
+    <h6 class="fw-bold mb-3 text-dark">
+        <i class="bi bi-info-circle text-primary me-2"></i>
+        Descripción
+    </h6>
+    <div class="text-muted lh-base">
+        {{ product.description_short|safe }}
+    </div>
 </div>

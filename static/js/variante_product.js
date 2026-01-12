@@ -1,3 +1,6 @@
+// static/js/variante_product.js
+
+
 // ================= VARIABLES GLOBALES =================
 let currentVariantId = null;
 let allVariantImages = [];
@@ -16,6 +19,28 @@ document.addEventListener('DOMContentLoaded', function() {
     if (thumbs.length > 0) {
         thumbs[0].classList.add('active');
     }
+
+    // Obtener las opciones de la variante principal al cargar
+    const mainVariantElement = document.querySelector('.variant-option.variant-selected');
+    
+    if (mainVariantElement) {
+        const options = JSON.parse(mainVariantElement.dataset.options || '[]');
+        
+        // Inicializar las opciones de la variante principal
+        if (typeof updateOptions === 'function') {
+            updateOptions(options);
+        }
+    }
+
+    // ✅ EVENT DELEGATION - Funciona con elementos dinámicos
+    document.body.addEventListener('click', function(e) {
+        // Si el click fue en el botón de agregar al carrito o dentro de él
+        const addToCartBtn = e.target.closest('#addToCartBtn');
+        if (addToCartBtn) {
+            e.preventDefault();
+            addToCart();
+        }
+    });
 });
 
 // ================= CAMBIAR IMAGEN PRINCIPAL =================
@@ -46,19 +71,19 @@ function updatePrice(price, discountPrice, discountPercentage) {
 
     if (discountFloat && discountFloat < priceFloat) {
         priceContainer.innerHTML = `
-            <div class="price-line">
-                <span class="price-label">Antes:</span>
+            <div class="price-line mb-2">
+                <span class="price-label me-2">Antes:</span>
                 <span class="price-old">
                     $${priceFloat.toLocaleString('es-CO', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
                 </span>
                 ${discountPercent > 0 ? `
-                <span class="bg-danger text-white fw-bold p-1 rounded d-inline-block small">
-                    <small>-${discountPercent}% Descuento</small>
+                <span class="bg-danger text-white fw-bold px-2 py-1 rounded ms-2">
+                    <small>-${discountPercent}% OFF</small>
                 </span>
                 ` : ''}
             </div>
             <div class="price-line">
-                <span class="price-label">Ahora:</span>
+                <span class="price-label me-2">Ahora:</span>
                 <span class="price-new">
                     $${discountFloat.toLocaleString('es-CO', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
                 </span>
@@ -67,7 +92,7 @@ function updatePrice(price, discountPrice, discountPercentage) {
     } else {
         priceContainer.innerHTML = `
             <div class="price-line">
-                <span class="price-label">Precio:</span>
+                <span class="price-label me-2">Precio:</span>
                 <span class="price-new">
                     $${priceFloat.toLocaleString('es-CO', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
                 </span>
@@ -118,23 +143,26 @@ function updateCartButtons(stock) {
 
     if (stockInt > 0) {
         cartButtonContainer.innerHTML = `
-            <a href="#" id="contraentregaBtn">
-                <button class="btn btn-primary w-100 fw-bold mt-2 fs-2">
-                    ¡Pedir Contraentrega!
-                    <p><small>Envío gratis!</small></p>
-                </button>
-            </a>
-            <a href="#" id="addToCartBtn">
-                <button class="btn btn-primary w-100 fw-bold mt-2 fs-4">
-                    <i class="bi bi-bag-plus"></i>
-                    Añadir al carrito
-                </button>
-            </a>
+            <button type="button" id="contraentregaBtn" class="btn bg-primary text-light w-100 fw-bold py-3 shadow-sm">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="d-flex align-items-center mb-1">
+                        <i class="bi bi-truck fs-3 me-2"></i>
+                        <span class="fs-4">¡Pedir Contraentrega!</span>
+                    </div>
+                    <small class="opacity-90">Envío gratis a todo el país</small>
+                </div>
+            </button>
+            
+            <button type="button" id="addToCartBtn" class="btn bg-primary text-light w-100 fw-bold py-2 shadow-sm mt-2">
+                <i class="bi bi-bag-plus fs-5 me-2"></i>
+                <span class="fs-5">Añadir al carrito</span>
+            </button>
         `;
     } else {
         cartButtonContainer.innerHTML = `
-            <button class="btn btn-danger w-100 fw-bold" disabled>
-                Producto agotado 
+            <button class="btn btn-danger w-100 fw-bold py-3 shadow-sm" disabled>
+                <i class="bi bi-x-circle fs-5 me-2"></i>
+                <span class="fs-5">Producto agotado</span>
             </button>
         `;
     }
@@ -246,37 +274,114 @@ function selectVariant(
     // 1. Actualizar imagen principal
     changeMainImage(imageUrl, altText);
 
-    // 2. ✅ YA NO ACTUALIZAMOS LAS MINIATURAS - Se mantienen todas las imágenes
-    // updateThumbnails(images); // ← LÍNEA ELIMINADA
-
-    // 3. Actualizar precio
+    // 2. Actualizar precio
     updatePrice(price, discountPrice, discountPercentage);
 
-    // 4. Actualizar stock
+    // 3. Actualizar stock
     updateStock(stock);
 
-    // 5. Actualizar selector de cantidad
+    // 4. Actualizar selector de cantidad
     updateQuantitySelector(stock);
 
-    // 6. Actualizar botones
+    // 5. Actualizar botones
     updateCartButtons(stock);
 
-    // 7. Actualizar TODAS las opciones dinámicamente
+    // 6. Actualizar TODAS las opciones dinámicamente
     updateOptions(options);
 }
 
-// ================= INICIALIZAR OPCIONES DE LA VARIANTE PRINCIPAL AL CARGAR =================
-    document.addEventListener('DOMContentLoaded', function() {
-        // Obtener las opciones de la variante principal al cargar
-        const mainVariantElement = document.querySelector('.variant-option.variant-selected');
-        
-        if (mainVariantElement) {
-            const options = JSON.parse(mainVariantElement.dataset.options || '[]');
-            
-            // Inicializar las opciones de la variante principal
-            if (typeof updateOptions === 'function') {
-                updateOptions(options);
+// ================= FUNCIONES DEL CARRITO =================
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
     }
-);
+    return cookieValue;
+}
+
+function addToCart() {
+    const variantId = currentVariantId || document.querySelector('.variant-option.variant-selected')?.dataset.variantId;
+    const quantity = document.getElementById('quantitySelect')?.value || 1;
+    
+    if (!variantId) {
+        alert('Por favor selecciona una variante');
+        return;
+    }
+    
+    // Mostrar loading
+    const btn = document.getElementById('addToCartBtn');
+    if (!btn) return;
+    
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Agregando...';
+    btn.disabled = true;
+    
+    fetch('/orders/carrito/agregar/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: `variant_id=${variantId}&quantity=${quantity}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        
+        if (data.success) {
+            // Actualizar contador del carrito en el header
+            updateCartCount(data.cart_count);
+            
+            // Mostrar mensaje de éxito
+            showSuccessMessage(data.message);
+            
+            // Opcional: preguntar si quiere ir al carrito
+            if (confirm('Producto agregado. ¿Deseas ir al carrito?')) {
+                window.location.href = '/orders/carrito/';
+            }
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        alert('Error al agregar al carrito');
+    });
+}
+
+function updateCartCount(count) {
+    // Actualizar el contador en el header (si existe)
+    const cartCounter = document.getElementById('cartCounter');
+    if (cartCounter) {
+        cartCounter.textContent = count;
+        if (count > 0) {
+            cartCounter.classList.remove('d-none');
+        }
+    }
+}
+
+function showSuccessMessage(message) {
+    // Crear un toast/notificación simple
+    const toast = document.createElement('div');
+    toast.className = 'alert alert-success position-fixed top-0 end-0 m-3';
+    toast.style.zIndex = '9999';
+    toast.innerHTML = `
+        <i class="bi bi-check-circle"></i> ${message}
+    `;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
