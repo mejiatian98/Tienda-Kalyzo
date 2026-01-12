@@ -1,16 +1,15 @@
+<!-- app_store/componentes/Card.html -->
+
 {% load moneda %}
 {% load math_filters %}
+{% load static %}
 
 <div class="col-6 col-md-4 col-lg-3 mb-4">
-
     <a href="{% url 'product_detail' slug=producto.slug id=producto.id %}"
        class="text-decoration-none text-dark">
        
-
         <div class="card product-card shadow-sm border-0 position-relative">
-
             {% with variante=producto.variants.first %}
-
                 {% if variante %}
                     {% if variante.stock == 0 %}
                         <span class="badge-agotado">AGOTADO</span>
@@ -20,15 +19,16 @@
                         </span>
                     {% endif %}
                 {% endif %}
+                
                 <!-- IMG -->
                 <div class="img-container">
                     {% if variante.main_image %}
                         <img src="{{ variante.main_image.image_url }}"
-                             class="card-img-top img-fluid p-3"
+                             class="card-img-top img-fluid"
                              alt="{{ producto.name }}">
                     {% else %}
-                        <img src="#"
-                             class="card-img-top img-fluid p-3"
+                        <img src="{% static 'img/no_image.png' %}"
+                             class="card-img-top img-fluid"
                              alt="Sin imagen">
                     {% endif %}
                 </div>
@@ -59,10 +59,19 @@
                             </p>
                         {% endif %}
                     {% endif %}
+                    
+                    <!-- BOTÓN PARA AGREGAR AL CARRITO -->
                     {% if variante and variante.stock > 0 %}
-                        <a href="#"><i class="bi bi-bag-plus fs-4 text-primary"></i></a>
+                        <button 
+                            type="button"
+                            class="btn btn-link p-0 add-to-cart-btn" 
+                            onclick="addToCartFromCard(event, {{ variante.id }}, '{{ producto.name|escapejs }}')"
+                            title="Agregar al carrito">
+                            <i class="bi bi-bag-plus fs-4 text-primary"></i>
+                        </button>
                     {% endif %}
                 </div>
+                
                 <!-- Rating de producto -->
                 <span class="text-warning fs-6 px-3 mb-2 d-flex align-items-end justify-content-end">
                     {% with rating=producto.avg_rating|default:5 %}

@@ -1,0 +1,357 @@
+<!-- # app_orders/carrito.html -->
+
+{% extends 'Store_page.html' %}
+{% load moneda %}
+{% load static %}
+{% load math_filters %}
+{% load cart_filters %}
+
+{% block title %}Carrito de Compras - Kalyzo Shop{% endblock %}
+
+{% block content %}
+
+
+<!-- ================= HEADER DEL CARRITO ================= -->
+<div class="bg-primary rounded-3 text-light px-3 px-md-4 pt-3 pb-1 text-center mb-4">
+    <h2 class="fw-bold mb-1">
+        <i class="bi bi-cart3"></i> Carrito de Compras
+    </h2>
+    <p class="text-light mt-2">Revisa y confirma tus productos antes de finalizar la compra</p>
+</div>
+
+{% if cart_items %}
+<div class="row">
+    
+    <!-- ================= COLUMNA IZQUIERDA: LISTA DE PRODUCTOS ================= -->
+    <div class="col-lg-8">
+        
+        <!-- Header de la lista -->
+        <div class="d-flex justify-content-between align-items-center text-light mb-3 p-3 bg-primary rounded-3">
+            <h5 class="mb-0 fw-bold">
+                <i class="bi bi-basket fs-4 me-4"></i> 
+                Productos ({{ cart_count }})
+            </h5>
+            <button class="btn btn-sm btn-danger" onclick="clearCart()">
+                <i class="bi bi-trash"></i> Vaciar carrito
+            </button>
+        </div>
+
+        <!-- Tabla de productos (Escritorio) -->
+        <div class="d-none d-lg-block">
+            <!-- Header de la tabla -->
+            <div class="row fw-bold text-muted small mb-2 px-3">
+                <div class="col-5">PRODUCTO</div>
+                <div class="col-2 text-center">PRECIO</div>
+                <div class="col-2 text-center">CANTIDAD</div>
+                <div class="col-2 text-center">TOTAL</div>
+                <div class="col-1 text-center"></div>
+            </div>
+
+            <!-- Items -->
+            {% for item in cart_items %}
+            <div class="cart-item mb-3 p-3 border rounded bg-white" data-variant-id="{{ item.variant_id }}">
+                <div class="row align-items-center">
+                    
+                    <!-- Columna Producto (Imagen + Detalles) -->
+                    <div class="col-5">
+                        <div class="d-flex align-items-center">
+                            <!-- Imagen -->
+                            <div class="flex-shrink-0 me-3">
+                                {% if item.image %}
+                                    <img src="{{ item.image }}" alt="{{ item.product_name }}" class="product-car" >
+                                {% else %}
+                                    <div class="bg-light border rounded d-flex align-items-center justify-content-center" >
+                                        <i class="bi bi-image text-muted"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Detalles -->
+                            <div>
+                                <a href="{% url 'product_detail' slug=item.product_slug id=item.product_id %}">
+                                    <h6 class="mb-1 fw-bold">{{ item.product_name }}</h6>
+                                </a>
+                                <small class="text-muted d-block mb-1">
+                                    <i class="bi bi-upc"></i> {{ item.sku }}
+                                </small>
+
+                                <!-- ✅ OPCIONES DE LA VARIANTE -->
+                                {% if item.options %}
+                                    <div class="mb-1">
+                                        {% for option in item.options %}
+                                            <span class="badge bg-secondary me-1">
+                                                {{ option.option }}: {{ option.value }}
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}    
+                                                  
+                                {% if item.discount_percentage %}
+                                    <span class="badge bg-danger">-{{ item.discount_percentage }}% OFF</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Precio -->
+                    <div class="col-2 text-center">
+                        {% if item.original_price and item.original_price != item.price %}
+                            <div class="text-decoration-line-through text-muted small">
+                                ${{ item.original_price|floatformat:0|intcomma }}
+                            </div>
+                            <div class="fw-bold text-danger">
+                                ${{ item.price|floatformat:0|intcomma }}
+                            </div>
+                        {% else %}
+                            <div class="fw-bold">
+                                ${{ item.price|floatformat:0|intcomma }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Columna Cantidad -->
+                    <div class="col-2 text-center">
+                        <select 
+                            class="form-select form-select-sm text-center mx-auto" 
+                            style="width: 80px;"
+                            onchange="updateCartQuantity({{ item.variant_id }}, this.value)">
+                            {% for i in item.stock|range_list %}
+                                <option value="{{ i }}" {% if i == item.quantity %}selected{% endif %}>
+                                    {{ i }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <small class="text-muted d-block mt-1">
+                            Disponible: {{ item.stock }}
+                        </small>
+                    </div>
+
+                    <!-- Columna Total -->
+                    <div class="col-2 text-center">
+                        <div class="fw-bold">
+                            ${{ item.price|multiply:item.quantity|floatformat:0|intcomma }}
+                        </div>
+                    </div>
+
+                    <!-- Columna Eliminar -->
+                    <div class="col-1 text-center">
+                        <button class="btn btn-sm btn-link text-danger p-0 mt-1" onclick="removeFromCart({{ item.variant_id }})" title="Eliminar">
+                            <i class="bi bi-trash fs-4"></i>
+                        </button>
+                    </div> 
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Vista Mobile -->
+        <div class="d-lg-none">
+            {% for item in cart_items %}
+            <div class="card mb-3" data-variant-id="{{ item.variant_id }}">
+                <div class="card-body">
+                    <div class="d-flex mb-3">
+                        <!-- Imagen -->
+                        <div class="flex-shrink-0 me-3">
+                            {% if item.image %}
+                                <img src="{{ item.image }}" alt="{{ item.product_name }}" class="product-car" >
+                            {% else %}
+                                <div class="bg-light border rounded d-flex align-items-center justify-content-center" >
+                                    <i class="bi bi-image text-muted fs-3"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Detalles -->
+                        <div class="flex-grow-1">
+                            <a href="{% url 'product_detail' slug=item.product_slug id=item.product_id %}">
+                                <h6 class="fw-bold mb-1">{{ item.product_name }}</h6>
+                            </a>
+                            <small class="text-muted d-block mb-2">
+                                <i class="bi bi-upc"></i> {{ item.sku }}
+                            </small>
+
+                            <!-- ✅ OPCIONES DE LA VARIANTE (MOBILE) -->
+                            {% if item.options %}
+                                <div class="mb-2">
+                                    {% for option in item.options %}
+                                        <span class="badge bg-secondary me-1">
+                                            {{ option.option }}: {{ option.value }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% if item.discount_percentage %}
+                                <span class="badge bg-danger mb-2">-{{ item.discount_percentage }}% OFF</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <small class="text-muted d-block">Precio</small>
+                            <div class="fw-bold">
+                                ${{ item.price|floatformat:0|intcomma }}
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <small class="text-muted d-block">Cantidad</small>
+                            <select 
+                                class="form-select form-select-sm text-center" 
+                                onchange="updateCartQuantity({{ item.variant_id }}, this.value)">
+                                {% for i in item.stock|range_list %}
+                                    <option value="{{ i }}" {% if i == item.quantity %}selected{% endif %}>
+                                        {{ i }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted d-block mt-1">Stock: {{ item.stock }}</small>
+                        </div>
+                        <div class="col-4">
+                            <small class="text-muted d-block">Total</small>
+                            <div class="fw-bold">
+                                ${{ item.price|multiply:item.quantity|floatformat:0|intcomma }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-sm btn-outline-danger w-100 mt-3" onclick="removeFromCart({{ item.variant_id }})">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Botón seguir comprando -->
+        <div class="my-4">
+            <a href="{% url 'all_products' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Continuar comprando
+            </a>
+        </div>
+
+    </div>
+
+    <!-- ================= COLUMNA DERECHA: RESUMEN ================= -->
+    <div class="col-lg-4 mb-5">
+        <!-- desactivar pointer  -->
+        <div class="card shadow-sm border-0" style="pointer-events: none;">
+            <div class="card-header bg-white my-3">
+                <h5 class="fw-bold">
+                    <i class="bi bi-receipt fs-4"></i> Resumen de compra
+                </h5>
+            </div>
+            <div class="card-body">
+                
+                <!-- Detalle de precios -->
+                <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                    <span>Subtotal ({{ cart_count }} productos)</span>
+                    <strong id="cartSubtotal">${{ cart_total|floatformat:0|intcomma }}</strong>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                    <span>
+                        <i class="bi bi-truck"></i> Envío
+                    </span>
+                    <span class="badge bg-success">GRATIS</span>
+                </div>
+
+                <!-- ✅ AHORRO TOTAL -->
+                <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                    <span>
+                        <i class="bi bi-piggy-bank"></i> Te ahorras
+                    </span>
+                    <span class="text-success fw-bold">
+                        {% if cart_savings > 0 %}
+                            -${{ cart_savings|floatformat:0|intcomma }}
+                        {% else %}
+                            $0
+                        {% endif %}
+                    </span>
+                </div>
+
+                <!-- Total -->
+                <div class="d-flex justify-content-between align-items-center my-4 p-3 bg-light rounded">
+                    <h5 class="mb-0 fw-bold">Total a pagar</h5>
+                    <h4 class="mb-0 fw-bold text-primary" id="cartTotal">
+                        ${{ cart_total|floatformat:0|intcomma }}
+                    </h4>
+                </div>
+
+                <!-- Botón de compra -->
+                <button class="btn bg-primary w-100 mb-3 py-2 fw-bold text-light" style="pointer-events: visible;">
+                    <i class="bi bi-credit-card"></i>
+                    Proceder al pago
+                </button>
+
+                <!-- Información adicional -->
+                <div class="mt-4 p-3 bg-light rounded">
+                    <h6 class="mb-3 fw-bold">
+                        <i class="bi bi-shield-check text-success"></i> 
+                        Compra protegida
+                    </h6>
+                    <ul class="list-unstyled mb-0 small">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i> 
+                            Envío gratis a todo el país
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i> 
+                            Garantía de devolución
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i> 
+                            Pago seguro
+                        </li>
+                        <li class="mb-0">
+                            <i class="bi bi-check-circle text-success"></i> 
+                            Soporte 24/7
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% else %}
+
+<!-- ================= CARRITO VACÍO ================= -->
+<div class="text-center py-5">
+    <div class="mb-4">
+        <i class="bi bi-cart-x display-1 text-muted"></i>
+    </div>
+    <h3 class="fw-bold mb-3">Tu carrito está vacío</h3>
+    <p class="text-muted mb-4">
+        Agrega productos para comenzar tu compra
+    </p>
+    <a href="{% url 'all_products' %}" class="btn bg-primary text-light w-100 fw-bold mt-2 fs-4">
+        <i class="bi bi-shop"></i> Ver productos
+    </a>
+</div>
+
+{% endif %}
+
+
+
+<style>
+
+    /* Estilos mínimos adicionales */
+    .cart-item {
+        transition: box-shadow 0.2s ease;
+    }
+
+    .cart-item:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+</style>
+
+{% endblock %}

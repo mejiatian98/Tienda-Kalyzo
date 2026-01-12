@@ -1,37 +1,52 @@
+<!-- app_products/componentes/Product_Specifications.html -->
+
 <!-- ================= ESPECIFICACIONES DEL PRODUCTO ================= -->
-<div class="product-specs ">
+<div class="product-specs">
+
+    <!-- TÍTULO DE LA SECCIÓN -->
+    <div class="d-flex align-items-center mb-4">
+        <div class="spec-icon-wrapper bg-info bg-opacity-10 rounded-circle p-3 me-3">
+            <i class="bi bi-clipboard-data text-primary fs-4"></i>
+        </div>
+        <div>
+            <h5 class="fw-bold mb-1 text-dark">Información del producto</h5>
+            <small class="text-muted">Conoce todos los detalles</small>
+        </div>
+    </div>
 
     <!-- TABS -->
-    <ul class="nav nav-tabs" id="productTabs" role="tablist">
+    <ul class="nav nav-tabs border-0" id="productTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <button
-                class="nav-link active"
+                class="nav-link active px-4 py-3 border-0 rounded-top"
                 id="details-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#details"
                 type="button"
                 role="tab"
             >
-                Detalles
+                <i class="bi bi-card-text me-2"></i>
+                <span class="fw-semibold">Detalles</span>
             </button>
         </li>
 
         <li class="nav-item" role="presentation">
             <button
-                class="nav-link"
+                class="nav-link px-4 py-3 border-0 rounded-top"
                 id="warranty-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#warranty"
                 type="button"
                 role="tab"
             >
-                Garantías
+                <i class="bi bi-shield-check me-2"></i>
+                <span class="fw-semibold">Garantías</span>
             </button>
         </li>
     </ul>
 
     <!-- CONTENIDO -->
-    <div class="tab-content border border-top-0 rounded-bottom p-4 bg-white">
+    <div class="tab-content border-0 rounded shadow-sm">
 
         <!-- DETALLES (DESCRIPCIÓN LARGA) -->
         <div
@@ -39,26 +54,36 @@
             id="details"
             role="tabpanel"
         >
-            {% if product.description_long %}
-                <div
-                    id="detailsContent"
-                    class="details-content collapsed text-muted"
-                >
-                    {{ product.description_long|linebreaks }}
-                </div>
+            <div class="p-4 bg-white rounded-bottom">
+                {% if product.description_long %}
+                    <div
+                        id="detailsContent"
+                        class="details-content collapsed text-muted lh-lg"
+                    >
+                        {{ product.description_long|linebreaks }}
+                    </div>
 
-                <button
-                    id="toggleDetailsBtn"
-                    class="btn btn-link p-0 mt-2"
-                    type="button"
-                >
-                    Ver más
-                </button>
-            {% else %}
-                <p class="text-center text-muted mb-0">
-                    Este producto no cuenta con una descripción detallada.
-                </p>
-            {% endif %}
+                    <div class="text-center mt-4">
+                        <button
+                            id="toggleDetailsBtn"
+                            class="btn btn-outline-primary btn-sm rounded-pill px-4"
+                            type="button"
+                        >
+                            <i class="bi bi-chevron-down me-2"></i>
+                            <span>Ver más detalles</span>
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <div class="mb-3">
+                            <i class="bi bi-info-circle text-primary opacity-50" style="font-size: 3rem;"></i>
+                        </div>
+                        <h6 class="text-muted fw-normal mb-0">
+                            Este producto no cuenta con una descripción detallada.
+                        </h6>
+                    </div>
+                {% endif %}
+            </div>
         </div>
 
         <!-- GARANTÍA -->
@@ -67,46 +92,102 @@
             id="warranty"
             role="tabpanel"
         >
-            {% if product.warranty %}
-                <div class="text-muted">
-                    {{ product.warranty|linebreaks }}
-                </div>
-            {% else %}
-                <p class="text-center text-muted mb-0">
-                    Este producto no cuenta con información de garantía.
-                </p>
-            {% endif %}
+            <div class="p-4 bg-white rounded">
+                {% if product.warranty %}
+                    <div class="warranty-content">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="flex-shrink-0 bg-success bg-opacity-10 rounded-circle p-2 me-3">
+                                <i class="bi bi-shield-fill-check text-success"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold mb-2 text-dark">Garantía incluida</h6>
+                                <div class="text-muted lh-lg">
+                                    {{ product.warranty|linebreaks }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <div class="mb-3">
+                            <i class="bi bi-shield-x text-muted opacity-50" style="font-size: 3rem;"></i>
+                        </div>
+                        <h6 class="text-muted fw-normal mb-0">
+                            Este producto no cuenta con información de garantía.
+                        </h6>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
 
 
 <style>
+    /* Tabs personalizados */
+    .nav-tabs .nav-link {
+        background: transparent;
+        color: #6c757d;
+        transition: all 0.3s ease;
+    }
+
+    .nav-tabs .nav-link:hover {
+        background: rgba(13, 110, 253, 0.1);
+        color: #0d6efd;
+    }
+
+    .nav-tabs .nav-link.active {
+        background: #fff;
+        color: #0d6efd;
+    }
+
+    /* Contenido de detalles */
     .details-content {
-    transition: max-height 0.4s ease;
-    overflow: hidden;
-}
+        transition: max-height 0.4s ease-in-out;
+        overflow: hidden;
+    }
 
-/* Estado colapsado */
-.details-content.collapsed {
-    max-height: 100px; /* ajusta según diseño */
-    position: relative;
-}
+    /* Estado colapsado */
+    .details-content.collapsed {
+        max-height: 180px;
+        position: relative;
+    }
 
-/* Fade inferior */
-.details-content.collapsed::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background: linear-gradient(
-        rgba(255, 255, 255, 0),
-        #fff
-    );
-}
+    /* Fade inferior mejorado */
+    .details-content.collapsed::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.8) 50%,
+            rgba(255, 255, 255, 1) 100%
+        );
+        pointer-events: none;
+    }
 
+    /* Botón toggle mejorado */
+    #toggleDetailsBtn {
+        transition: all 0.3s ease;
+    }
+
+    #toggleDetailsBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+    }
+
+    /* Ícono wrapper */
+    .spec-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 
 <script>
@@ -119,9 +200,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let expanded = false;
 
     button.addEventListener("click", () => {
-        content.classList.remove("collapsed");
-        button.style.display = "none";
-        expanded = true;
+        if (!expanded) {
+            // Expandir
+            content.classList.remove("collapsed");
+            button.innerHTML = '<i class="bi bi-chevron-up me-2"></i><span>Ver menos</span>';
+            expanded = true;
+        } else {
+            // Colapsar
+            content.classList.add("collapsed");
+            button.innerHTML = '<i class="bi bi-chevron-down me-2"></i><span>Ver más detalles</span>';
+            expanded = false;
+            
+            // Scroll suave hacia arriba
+            content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     });
 
     // Cuando se vuelve a la pestaña "Detalles"
@@ -129,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
     detailsTab.addEventListener("shown.bs.tab", () => {
         if (expanded) {
             content.classList.remove("collapsed");
-            button.style.display = "none";
+            button.innerHTML = '<i class="bi bi-chevron-up me-2"></i><span>Ver menos</span>';
         }
     });
 });

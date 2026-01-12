@@ -1,6 +1,57 @@
 from django.db import models
 from app_products.models import Product, ProductVariant
 from app_customers.models import Customer
+from django.utils import timezone
+from datetime import timedelta
+
+# ---------------------------
+#   CARRITO TEMPORAL (para gestión de stock)
+# ---------------------------
+
+class CartReservation(models.Model):
+    """
+    Modelo para rastrear reservas temporales de stock en el carrito.
+    Se eliminan automáticamente después de 3 horas si no se completa la compra.
+    """
+    session_key = models.CharField(max_length=40, db_index=True)  # ID único del carrito
+    variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()  # 3 horas después de created_at
+    
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ('session_key', 'variant')
+        indexes = [
+            models.Index(fields=['expires_at', 'is_active']),
+        ]
+
+    def save(self, *args, **kwargs):
+        if not self.expires_at:
+            self.expires_at = timezone.now() + timedelta(hours=3)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Reserva {self.session_key} - {self.variant.sku}"
+
+    @classmethod
+    def clean_expired(cls):
+        """Limpia las reservas expiradas"""
+        expired = cls.objects.filter(
+            expires_at__lt=timezone.now(),
+            is_active=True
+        )
+        
+        count = 0
+        for reservation in expired:
+            reservation.is_active = False
+            reservation.save()
+            count += 1
+        
+        return count
+
 
 # ---------------------------
 #   ÓRDENES
@@ -48,7 +99,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"Item de orden {self.order.id}"
-
 
 
 # ---------------------------

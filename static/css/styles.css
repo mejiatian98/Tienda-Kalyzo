@@ -385,10 +385,19 @@ body{
 /* IMAGEN */
 .product-card .img-container {
     height: 230px;
-    background: linear-gradient(180deg, #f8f9fa, #ffffff);
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.color{
+    background-color: #001b66,
+      #002f99,
+      #004bcc,
+      #0066ff,
+      #008cff,
+      #00b3ff
 }
 
 .product-card img {
@@ -527,6 +536,18 @@ body{
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.2s ease;
+    max-width: 100%;
+    flex-shrink: 0; /* IMPORTANTE para scroll */
+}
+
+
+.product-car {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    padding: 5px;
+    border: 2px solid #f0f0f0;
+    border-radius: 10px;
     max-width: 100%;
     flex-shrink: 0; /* IMPORTANTE para scroll */
 }

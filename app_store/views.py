@@ -39,7 +39,6 @@ class StoreView(View):
             }
         )
 
-        
 
 # Vista para mostrar las categorías con sus productos
 class CategoriaView(View):
@@ -116,6 +115,7 @@ class SearchProductsView(View):
             "productos": productos
         })
 
+
 # Vista para mostrar los productos más vendidos
 class TopSellingProductsView(View):
     def get(self, request):
@@ -148,12 +148,14 @@ class DiscountedProductsView(View):
         return render(request, "Discounted_products.html", context)
     
 
-
+# Vista para la página "Sobre Nosotros"
 class sobreNosotros(View):
     def get(self, request):
         return render(request, "Sobre_nosotros.html")
     
-
+    
+# Vista para la página de Contacto
 class ContactView(View):
     def get(self, request):
         return render(request, "Contacto.html")
+    
