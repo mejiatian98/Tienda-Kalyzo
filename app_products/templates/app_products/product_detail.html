@@ -14,79 +14,72 @@
 
 
 <!-- ================= CONTENEDOR PRINCIPAL ================= -->
-<div class="container-fluid px-lg-4">
-    <div class="row product-detail-row">
 
-        <!-- ======================================================
-            COLUMNA IZQUIERDA - IMÁGENES
-            Desktop: col-lg-7 orden-1 | Mobile: orden-1
-        ======================================================= -->
-        <div class="col-lg-7 mb-4 order-1">
-            <!-- ================= CAJA PRODUCTO ================= -->
-            <div class="product-box p-4 rounded shadow-sm">
-                {% include 'app_products/componentes/Variant_Left.html' %}
-            </div>
+<div class="row product-detail-row">
 
-            <!-- ================= ESPECIFICACIONES Y COMENTARIOS (SOLO DESKTOP) ================= -->
-            <div class="d-none d-lg-block">
-                <!-- ESPECIFICACIONES -->
-                <div class="mt-4">
-                    {% include 'app_products/componentes/Product_Specifications.html' %}
-                </div>
-                
-                <!-- COMENTARIOS -->
-                <div class="mt-4">
-                    {% include 'app_products/componentes/Comments.html' %}
-                </div>
-
-                <div class="mt-4">
-                    {% include 'app_products/componentes/Beneficios_Garantia.html' %}
-                </div>
-                
-            </div>
+    <!-- ======================================================
+        COLUMNA IZQUIERDA - IMÁGENES
+        Desktop: col-lg-7 orden-1 | Mobile: orden-1
+    ======================================================= -->
+    <div class="col-lg-7 mb-4 order-1">
+        <!-- ================= CAJA PRODUCTO ================= -->
+        <div class="product-box p-4 rounded shadow-sm">
+            {% include 'app_products/componentes/Variant_Left.html' %}
         </div>
 
-
-        <!-- ======================================================
-            COLUMNA DERECHA - COMPRA (STICKY EN DESKTOP)
-            Desktop: col-lg-5 sticky orden-2 | Mobile: orden-2
-        ======================================================= -->
-        <div class="col-lg-5 mb-4 order-2">
-            <div class="sidebar-sticky product-box p-4 rounded shadow-sm">
-                {% include 'app_products/componentes/Variant_Right.html' %}
-            </div>
-
-        </div>
-
-        <!-- ======================================================
-            ESPECIFICACIONES Y COMENTARIOS (SOLO MOBILE)
-            Mobile: orden-3 (después de compra)
-        ======================================================= -->
-        <div class="col-12 order-3 d-lg-none">
+        <!-- ================= ESPECIFICACIONES Y COMENTARIOS (SOLO DESKTOP) ================= -->
+        <div class="d-none d-lg-block">
             <!-- ESPECIFICACIONES -->
-            <div class="mb-4">
+            <div class="mt-4">
                 {% include 'app_products/componentes/Product_Specifications.html' %}
             </div>
             
             <!-- COMENTARIOS -->
-            <div class="mb-4">
+            <div class="mt-4">
                 {% include 'app_products/componentes/Comments.html' %}
             </div>
+            
+        </div>
+    </div>
 
-            <div class="mt-4">
-                {% include 'app_products/componentes/Beneficios_Garantia.html' %}
-            </div>
+
+    <!-- ======================================================
+        COLUMNA DERECHA - COMPRA (STICKY EN DESKTOP)
+        Desktop: col-lg-5 sticky orden-2 | Mobile: orden-2
+    ======================================================= -->
+    <div class="col-lg-5 mb-4 order-2">
+        <div class="sidebar-sticky product-box p-4 rounded shadow-sm">
+            {% include 'app_products/componentes/Variant_Right.html' %}
         </div>
 
     </div>
-    
+
+    <!-- ======================================================
+        ESPECIFICACIONES Y COMENTARIOS (SOLO MOBILE)
+        Mobile: orden-3 (después de compra)
+    ======================================================= -->
+    <div class="col-12 order-3 d-lg-none">
+        <!-- ESPECIFICACIONES -->
+        <div class="mb-4">
+            {% include 'app_products/componentes/Product_Specifications.html' %}
+        </div>
+        
+        <!-- COMENTARIOS -->
+        <div class="mb-4">
+            {% include 'app_products/componentes/Comments.html' %}
+        </div>
+
+    </div>
+
 </div>
+
+
 
 
 <!-- ================= PRODUCTOS SIMILARES ================= -->
 <hr class="separator my-5">
 
-<div class="container-fluid px-lg-4">
+<div class="">
     {% include 'app_products/componentes/Similar_Products.html' %}
 </div>
 

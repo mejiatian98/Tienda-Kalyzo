@@ -107,17 +107,40 @@
 </div>
 {% endif %}
 
-<hr class="my-3">
 
-<!-- ================= STOCK DISPONIBLE ================= -->
+
+
 {% if main_variant %}
-    <div id="stockInfo" class="mb-3">
-        <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
-            <i class="bi bi-box-seam text-primary"></i>
-            <span class="fw-semibold small">Stock disponible:</span>
-            <span id="stockValue" class="badge bg-primary px-2 py-1">{{ main_variant.stock }}</span>
+    <div class="row align-items-center bg-light rounded py-2">
+
+        <!-- ================= SELECTOR DE CANTIDAD ================= -->
+        {% if main_variant.stock > 0 %}
+            <div id="quantityContainer" class=" col-6">
+                <div class="d-flex align-items-center gap-2">
+                    <label class="fw-bold mb-0">Cantidad:</label>
+                    <select id="quantitySelect" class="form-select" style="width: 150px;">
+                        {% for i in main_variant.stock|range_list %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        {% else %}
+            <div id="quantityContainer" class="mb-3 col-6"></div>
+        {% endif %}
+
+        <!-- ================= STOCK DISPONIBLE ================= -->
+        <div id="stockInfo" class=" col-6">
+            <div class="d-flex align-items-center gap-2 p-2">
+                <i class="bi bi-box-seam text-primary"></i>
+                <span class="fw-semibold small">Stock disponible:</span>
+                <span id="stockValue" class="badge bg-primary text-light px-2 py-1">{{ main_variant.stock }}</span>
+            </div>
         </div>
+
     </div>
+
+    <hr class="my-3">
 
     <!-- ================= SELECTOR DINÁMICO DE OPCIONES ================= -->
 
@@ -145,39 +168,29 @@
     </div>
     {% endif %}
 
-    <!-- ================= SELECTOR DE CANTIDAD ================= -->
-    {% if main_variant.stock > 0 %}
-        <div id="quantityContainer" class="mb-3">
-            <label class="fw-bold mb-2 d-block">Cantidad:</label>
-            <select id="quantitySelect" class="form-select" style="width: 150px;">
-                {% for i in main_variant.stock|range_list %}
-                    <option value="{{ i }}">{{ i }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    {% else %}
-        <div id="quantityContainer" class="mb-3"></div>
-    {% endif %}
+    
 
     <!-- ================= BOTONES DE COMPRA ================= -->
     <div id="cartButtonContainer" class="d-grid gap-2 mb-3">
         {% if main_variant.stock > 0 %}
+
+        <!-- Botón secundario - Añadir al carrito -->
+            <button type="button" id="addToCartBtn" class="btn bg-primary text-light w-100 fw-bold py-2 shadow-sm">
+                <i class="bi bi-bag-plus fs-5 me-2"></i>
+                <span class="fs-5">Añadir al carrito</span>
+            </button>
+            
             <!-- Botón principal - Contraentrega -->
             <button type="button" id="contraentregaBtn" class="btn bg-primary text-light w-100 fw-bold py-3 shadow-sm">
                 <div class="d-flex flex-column align-items-center">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-truck fs-3 me-2"></i>
-                        <span class="fs-4">¡Pedir Contraentrega!</span>
+                        <span class="fs-4">¡Pedir Ahora!</span>
                     </div>
-                    <small class="opacity-90">Envío gratis a todo el país</small>
+                    <small class="opacity-90">Envío contraentrega gratis a todo el país</small>
                 </div>
             </button>
             
-            <!-- Botón secundario - Añadir al carrito -->
-            <button type="button" id="addToCartBtn" class="btn bg-primary text-light w-100 fw-bold py-2 shadow-sm">
-                <i class="bi bi-bag-plus fs-5 me-2"></i>
-                <span class="fs-5">Añadir al carrito</span>
-            </button>
         {% else %}
             <!-- Botón deshabilitado - Producto agotado -->
             <button class="btn btn-danger w-100 fw-bold py-3 shadow-sm" disabled>
@@ -186,6 +199,10 @@
             </button>
         {% endif %}
         
+    </div>
+
+    <div class="mt-4">
+        {% include 'app_products/componentes/Beneficios_Garantia.html' %}
     </div>
 
     

@@ -445,8 +445,8 @@ body{
 /* Cuerpo del card con medida fija */
 .content-area {
     flex: 1;
-    height: 200px; /* 🔹 Ajusta según tu contenido */
-    max-height: 180px;
+    height: 100px; /* 🔹 Ajusta según tu contenido */
+    max-height: 100px;
     overflow: hidden;
 }
 
@@ -511,9 +511,9 @@ body{
 
 
 /* Página de detalle de producto */
-.product-box {
+/* .product-box {
     background: #ffffff;
-}
+} */
 
 
 /* Contenedor de imágenes del producto */
@@ -684,7 +684,7 @@ body{
 /* Sidebar sticky con scroll suave */
 .sidebar-sticky {
     position: sticky;
-    top: 35px;
+    top: 40px;
     align-self: flex-start;
     max-height: calc(100vh - 40px);
     overflow-y: auto;
@@ -692,6 +692,7 @@ body{
 }
 
 /* Scrollbar personalizada (opcional) */
+
 .sidebar-sticky::-webkit-scrollbar {
     width: 6px;
 }
@@ -705,6 +706,7 @@ body{
     background: rgba(13, 110, 253, 0.3);
     border-radius: 10px;
 }
+
 
 .sidebar-sticky::-webkit-scrollbar-thumb:hover {
     background: rgba(13, 110, 253, 0.5);
