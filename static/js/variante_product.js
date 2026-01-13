@@ -124,10 +124,12 @@ function updateQuantitySelector(stock) {
         }
 
         quantityContainer.innerHTML = `
-            <label class="fw-bold mb-2 d-block">Cantidad:</label>
-            <select id="quantitySelect" class="form-select" style="width:150px;">
-                ${optionsHTML}
-            </select>
+            <div class="d-flex align-items-center gap-2">
+                <label class="fw-bold mb-0">Cantidad:</label>
+                <select id="quantitySelect" class="form-select" style="width: 150px;">
+                    ${optionsHTML}
+                </select>
+            </div>
         `;
     } else {
         quantityContainer.innerHTML = '';
@@ -143,23 +145,26 @@ function updateCartButtons(stock) {
 
     if (stockInt > 0) {
         cartButtonContainer.innerHTML = `
+            <!-- Botón secundario - Añadir al carrito -->
+            <button type="button" id="addToCartBtn" class="btn bg-primary text-light w-100 fw-bold py-2 shadow-sm">
+                <i class="bi bi-bag-plus fs-5 me-2"></i>
+                <span class="fs-5">Añadir al carrito</span>
+            </button>
+            
+            <!-- Botón principal - Contraentrega -->
             <button type="button" id="contraentregaBtn" class="btn bg-primary text-light w-100 fw-bold py-3 shadow-sm">
                 <div class="d-flex flex-column align-items-center">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-truck fs-3 me-2"></i>
-                        <span class="fs-4">¡Pedir Contraentrega!</span>
+                        <span class="fs-4">¡Pedir Ahora!</span>
                     </div>
-                    <small class="opacity-90">Envío gratis a todo el país</small>
+                    <small class="opacity-90">Envío contraentrega gratis a todo el país</small>
                 </div>
-            </button>
-            
-            <button type="button" id="addToCartBtn" class="btn bg-primary text-light w-100 fw-bold py-2 shadow-sm mt-2">
-                <i class="bi bi-bag-plus fs-5 me-2"></i>
-                <span class="fs-5">Añadir al carrito</span>
             </button>
         `;
     } else {
         cartButtonContainer.innerHTML = `
+            <!-- Botón deshabilitado - Producto agotado -->
             <button class="btn btn-danger w-100 fw-bold py-3 shadow-sm" disabled>
                 <i class="bi bi-x-circle fs-5 me-2"></i>
                 <span class="fs-5">Producto agotado</span>

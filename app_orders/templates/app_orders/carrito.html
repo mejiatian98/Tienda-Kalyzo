@@ -28,8 +28,8 @@
         <!-- Header de la lista -->
         <div class="d-flex justify-content-between align-items-center text-light mb-3 p-3 bg-primary rounded-3">
             <h5 class="mb-0 fw-bold">
-                <i class="bi bi-basket fs-4 me-4"></i> 
-                Productos ({{ cart_count }})
+                <!-- <i class="bi bi-basket fs-4 me-4"></i>  -->
+                Productos <div class="badge bg-white text-primary ms-2"> {{ cart_count }}</div>
             </h5>
             <button class="btn btn-sm btn-danger" onclick="clearCart()">
                 <i class="bi bi-trash"></i> Vaciar carrito

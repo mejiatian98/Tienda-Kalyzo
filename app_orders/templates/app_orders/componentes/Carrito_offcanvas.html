@@ -40,12 +40,12 @@
                 </div>
                 <h5 class="text-dark mb-2">Tu carrito está vacío</h5>
                 <p class="text-muted small mb-4">¡Agrega productos increíbles y empieza a comprar!</p>
-                <a href="{% url 'store_page' %}">
-                  <button class="btn btn-primary btn-sm" data-bs-dismiss="offcanvas">
-                      <i class="bi bi-shop me-2"></i>
-                      Ir a la tienda
-                  </button>
-                </a>
+
+                <button class="btn bg-primary text-light w-100 fw-bold py-2 shadow-sm" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-shop me-2"></i>
+                    Ir a la tienda
+                </button>
+
             </div>
 
             <!-- Lista de items -->
@@ -88,7 +88,7 @@
 
             <!-- Botones de acción -->
             <div class="d-grid gap-2">
-                <a href="{% url 'orders:carrito' %}" class="btn btn-primary btn-lg fw-bold shadow-sm">
+                <a href="{% url 'orders:carrito' %}" class="btn bg-primary text-light fw-bold shadow-sm">
                     <i class="bi bi-cart-check me-2"></i>
                     Ver Carrito Completo
                 </a>
@@ -134,6 +134,7 @@
 /* Card de item en offcanvas */
 .offcanvas-item-card {
     transition: all 0.2s ease;
+    position: relative;
 }
 
 .offcanvas-item-card:hover {
@@ -147,14 +148,36 @@
     object-fit: cover;
     border-radius: 6px;
     border: 1px solid #e0e0e0;
+    transition: transform 0.2s ease;
 }
 
+.offcanvas-item-card a:hover .offcanvas-product-img {
+    transform: scale(1.05);
+}
+
+/* Link del nombre */
+.offcanvas-item-card a:hover h6 {
+    color: var(--bs-primary) !important;
+}
 
 /* Selector de cantidad */
 .offcanvas-quantity-select {
     width: 60px;
     font-size: 0.85rem;
     padding: 0.25rem 0.5rem;
+}
+
+/* Botón eliminar */
+.btn-remove-item {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.btn-remove-item:hover {
+    transform: scale(1.1);
+    background-color: #dc3545 !important;
+    color: white !important;
 }
 
 /* Responsive */
@@ -253,6 +276,9 @@ function renderOffcanvasCart(data) {
 function generateOffcanvasItemHTML(item) {
     const imageUrl = item.image || '/static/img/no_image.png';
     
+    // Construir URL del producto
+    const productUrl = `/productos/${item.product_slug}/p/${item.product_id}/`;
+    
     // Generar opciones de cantidad
     let quantityOptions = '';
     for (let i = 1; i <= item.stock; i++) {
@@ -260,24 +286,37 @@ function generateOffcanvasItemHTML(item) {
     }
     
     return `
-        <div class="offcanvas-item-card border-bottom pb-3 mb-3">
+        <div class="offcanvas-item-card border-bottom rounded p-2 mb-2 shadow-sm">
             <div class="d-flex gap-3">
                 
                 <!-- Imagen -->
                 <div class="flex-shrink-0">
-                    <img src="${imageUrl}" 
-                         alt="${item.product_name}" 
-                         class="offcanvas-product-img"
-                         onerror="this.src='/static/img/no_image.png'">
+                    <a href="${productUrl}">
+                        <img src="${imageUrl}" 
+                             alt="${item.product_name}" 
+                             class="offcanvas-product-img"
+                             onerror="this.src='/static/img/no_image.png'">
+                    </a>
                 </div>
                 
                 <!-- Info del producto -->
                 <div class="flex-grow-1">
                     
-                    <!-- Nombre -->
-                    <h6 class="fw-bold mb-2 text-dark" style="font-size: 0.9rem;">
-                        ${item.product_name}
-                    </h6>
+                    <!-- Nombre con link y botón eliminar -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <a href="${productUrl}" class="text-decoration-none flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">
+                                ${item.product_name}
+                            </h6>
+                        </a>
+                        
+                        <!-- Botón eliminar -->
+                        <button class="btn btn-sm btn-outline-danger btn-remove-item ms-2" 
+                                onclick="removeFromCart(${item.variant_id})"
+                                title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
                     
                     <!-- Precio y Cantidad -->
                     <div class="d-flex justify-content-between align-items-center mb-2">
