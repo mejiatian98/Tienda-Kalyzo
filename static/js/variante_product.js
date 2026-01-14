@@ -317,7 +317,7 @@ function addToCart() {
     const quantity = document.getElementById('quantitySelect')?.value || 1;
     
     if (!variantId) {
-        alert('Por favor selecciona una variante');
+        showErrorMessage('Por favor selecciona una variante');
         return;
     }
     
@@ -349,19 +349,23 @@ function addToCart() {
             // Mostrar mensaje de éxito
             showSuccessMessage(data.message);
             
-            // Opcional: preguntar si quiere ir al carrito
-            if (confirm('Producto agregado. ¿Deseas ir al carrito?')) {
-                window.location.href = '/orders/carrito/';
-            }
+            // Abrir el offcanvas del carrito
+            setTimeout(() => {
+                const carritoOffcanvas = document.getElementById('carritoOffcanvas');
+                if (carritoOffcanvas) {
+                    const bsOffcanvas = new bootstrap.Offcanvas(carritoOffcanvas);
+                    bsOffcanvas.show();
+                }
+            }, 800);
         } else {
-            alert(data.message);
+            showErrorMessage(data.message);
         }
     })
     .catch(error => {
         console.error('Error:', error);
         btn.innerHTML = originalHTML;
         btn.disabled = false;
-        alert('Error al agregar al carrito');
+        showErrorMessage('Error al agregar al carrito');
     });
 }
 
@@ -377,16 +381,41 @@ function updateCartCount(count) {
 }
 
 function showSuccessMessage(message) {
-    // Crear un toast/notificación simple
+    // Crear un toast de éxito
     const toast = document.createElement('div');
-    toast.className = 'alert alert-success position-fixed top-0 end-0 m-3';
+    toast.className = 'position-fixed top-0 start-50 translate-middle-x mt-3';
     toast.style.zIndex = '9999';
     toast.innerHTML = `
-        <i class="bi bi-check-circle"></i> ${message}
+        <div class="alert alert-success alert-dismissible fade show shadow-lg" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <strong>¡Éxito!</strong> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     `;
     document.body.appendChild(toast);
     
+    // Auto-remover después de 3 segundos
     setTimeout(() => {
         toast.remove();
     }, 3000);
+}
+
+function showErrorMessage(message) {
+    // Crear un toast de error
+    const toast = document.createElement('div');
+    toast.className = 'position-fixed top-0 start-50 translate-middle-x mt-3';
+    toast.style.zIndex = '9999';
+    toast.innerHTML = `
+        <div class="alert alert-danger alert-dismissible fade show shadow-lg" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <strong>Error:</strong> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    
+    // Auto-remover después de 4 segundos
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
 }
