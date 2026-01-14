@@ -71,10 +71,17 @@ function addToCartFromCard(event, variantId, productName) {
             updateCartCount(data.cart_count);
             showToast(`${productName} agregado al carrito`, 'success');
             
+            // Abrir el offcanvas del carrito después de mostrar el mensaje
             setTimeout(() => {
                 icon.className = originalIcon;
                 button.disabled = false;
-            }, 1000);
+                
+                const carritoOffcanvas = document.getElementById('carritoOffcanvas');
+                if (carritoOffcanvas) {
+                    const bsOffcanvas = new bootstrap.Offcanvas(carritoOffcanvas);
+                    bsOffcanvas.show();
+                }
+            }, 800);
         } else {
             icon.className = originalIcon;
             button.disabled = false;
@@ -94,8 +101,7 @@ function addToCartFromCard(event, variantId, productName) {
  */
 function updateCartQuantity(variantId, quantity) {
     if (quantity < 1) {
-        alert('La cantidad mínima es 1');
-        location.reload();
+        showToast('La cantidad mínima es 1', 'error');
         return;
     }
 
@@ -116,16 +122,33 @@ function updateCartQuantity(variantId, quantity) {
     .then(data => {
         if (data.success) {
             showToast('Cantidad actualizada', 'success');
-            setTimeout(() => location.reload(), 500);
+            
+            // Verificar si estamos en el offcanvas
+            const offcanvasElement = document.getElementById('carritoOffcanvas');
+            const isOffcanvasOpen = offcanvasElement && offcanvasElement.classList.contains('show');
+            
+            if (isOffcanvasOpen) {
+                // Si está en el offcanvas, recargar y mantenerlo abierto
+                setTimeout(() => {
+                    location.href = location.href + '?offcanvas=open';
+                }, 500);
+            } else {
+                // Si está en la página del carrito, solo recargar
+                setTimeout(() => location.reload(), 500);
+            }
         } else {
             showToast(data.message, 'error');
-            location.reload();
+            if (cartItem) {
+                cartItem.style.opacity = '1';
+            }
         }
     })
     .catch(error => {
         console.error('Error:', error);
         showToast('Error al actualizar el carrito', 'error');
-        location.reload();
+        if (cartItem) {
+            cartItem.style.opacity = '1';
+        }
     });
 }
 
@@ -133,8 +156,6 @@ function updateCartQuantity(variantId, quantity) {
  * Eliminar producto del carrito
  */
 function removeFromCart(variantId) {
-    if (!confirm('¿Eliminar este producto del carrito?')) return;
-
     const cartItem = document.querySelector(`[data-variant-id="${variantId}"]`);
     if (cartItem) {
         cartItem.style.opacity = '0.5';
@@ -151,15 +172,34 @@ function removeFromCart(variantId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            showToast('Producto eliminado', 'success');
-            setTimeout(() => location.reload(), 500);
+            showToast('Producto eliminado del carrito', 'success');
+            
+            // Verificar si estamos en el offcanvas
+            const offcanvasElement = document.getElementById('carritoOffcanvas');
+            const isOffcanvasOpen = offcanvasElement && offcanvasElement.classList.contains('show');
+            
+            if (isOffcanvasOpen) {
+                // Si está en el offcanvas, recargar y mantenerlo abierto
+                setTimeout(() => {
+                    location.href = location.href + '?offcanvas=open';
+                }, 500);
+            } else {
+                // Si está en la página del carrito, solo recargar
+                setTimeout(() => location.reload(), 500);
+            }
         } else {
             showToast(data.message, 'error');
+            if (cartItem) {
+                cartItem.style.opacity = '1';
+            }
         }
     })
     .catch(error => {
         console.error('Error:', error);
         showToast('Error al eliminar del carrito', 'error');
+        if (cartItem) {
+            cartItem.style.opacity = '1';
+        }
     });
 }
 
@@ -167,8 +207,6 @@ function removeFromCart(variantId) {
  * Vaciar todo el carrito
  */
 function clearCart() {
-    if (!confirm('¿Vaciar todo el carrito?')) return;
-
     fetch('/orders/carrito/vaciar/', {
         method: 'POST',
         headers: {
@@ -179,7 +217,7 @@ function clearCart() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            showToast('Carrito vaciado', 'success');
+            showToast('Carrito vaciado correctamente', 'success');
             setTimeout(() => location.reload(), 500);
         } else {
             showToast(data.message, 'error');
@@ -210,30 +248,40 @@ function updateCartCount(count) {
  * Mostrar notificación toast
  */
 function showToast(message, type = 'info') {
-    const bgColor = type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#0d6efd';
-    const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+    const config = {
+        success: {
+            bg: '#28a745',
+            icon: 'check-circle-fill'
+        },
+        error: {
+            bg: '#dc3545',
+            icon: 'exclamation-triangle-fill'
+        },
+        info: {
+            bg: '#0d6efd',
+            icon: 'info-circle-fill'
+        }
+    };
+    
+    const { bg, icon } = config[type] || config.info;
     
     const toast = document.createElement('div');
-    toast.className = 'position-fixed bottom-0 end-0 m-3 p-3 rounded shadow-lg text-white';
-    toast.style.cssText = `
-        z-index: 9999;
-        background: ${bgColor};
-        min-width: 250px;
-        animation: slideUp 0.3s ease;
-    `;
+    toast.className = 'position-fixed top-0 start-50 translate-middle-x mt-3';
+    toast.style.zIndex = '9999';
     toast.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="bi bi-${icon} me-2 fs-5"></i>
-            <span>${message}</span>
+        <div class="alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show shadow-lg" role="alert" style="min-width: 300px;">
+            <i class="bi bi-${icon} me-2"></i>
+            <strong>${type === 'success' ? '¡Éxito!' : type === 'error' ? 'Error:' : 'Info:'}</strong> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     `;
     
     document.body.appendChild(toast);
     
+    // Auto-remover después de 3 segundos
     setTimeout(() => {
-        toast.style.animation = 'slideDown 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-    }, 2500);
+        toast.remove();
+    }, 3000);
 }
 
 // ================= ANIMACIONES CSS =================
@@ -258,6 +306,7 @@ document.head.appendChild(style);
 
 // ================= CARGAR CONTADOR DEL CARRITO AL INICIAR =================
 document.addEventListener('DOMContentLoaded', function() {
+    // Cargar contador
     fetch('/orders/carrito/count/')
         .then(response => response.json())
         .then(data => {
@@ -266,4 +315,18 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error al cargar contador del carrito:', error);
         });
+    
+    // Verificar si debe abrir el offcanvas (después de actualizar cantidad)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('offcanvas') === 'open') {
+        const carritoOffcanvas = document.getElementById('carritoOffcanvas');
+        if (carritoOffcanvas) {
+            const bsOffcanvas = new bootstrap.Offcanvas(carritoOffcanvas);
+            bsOffcanvas.show();
+        }
+        
+        // Limpiar la URL sin recargar
+        const cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+    }
 });
