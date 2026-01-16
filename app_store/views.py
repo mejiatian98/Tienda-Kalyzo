@@ -157,5 +157,5 @@ class sobreNosotros(View):
 # Vista para la página de Contacto
 class ContactView(View):
     def get(self, request):
-        return render(request, "Contacto.html")
+        return render(request, "Sobre_nosotros.html")
     
