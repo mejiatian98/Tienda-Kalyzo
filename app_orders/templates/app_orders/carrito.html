@@ -280,7 +280,7 @@
                 </div>
 
                 <!-- Botón de compra -->
-                <button class="btn bg-primary w-100 mb-3 py-2 fw-bold text-light" style="pointer-events: visible;">
+                <button class="btn bg-primary w-100 mb-3 py-2 fw-bold text-light btn-pay" style="pointer-events: visible;">
                     <i class="bi bi-credit-card"></i>
                     Proceder al pago
                 </button>
@@ -332,6 +332,36 @@
         border-color: #0d6efd;
         box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
     }
+
+    /* Estilo para el botón de pago con efecto pulso */
+    @keyframes payShake {
+    0% { transform: translateX(0) scale(1); }
+    10% { transform: translateX(-2px) scale(1.02); }
+    20% { transform: translateX(2px) scale(1.02); }
+    30% { transform: translateX(-2px) scale(1.03); }
+    40% { transform: translateX(2px) scale(1.03); }
+    50% { transform: translateX(0) scale(1.04); }
+    100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes payPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(13,110,253,0.8);
+    }
+    70% {
+        box-shadow: 0 0 0 22px rgba(13,110,253,0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(13,110,253,0);
+    }
+}
+
+.btn-pay{
+    animation:
+        payShake 3.5s infinite,
+        payPulse 2.5s infinite;
+}
+
 </style>
 
 {% endblock %}

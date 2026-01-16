@@ -88,7 +88,7 @@
 
             <!-- Botones de acción -->
             <div class="d-grid gap-2">
-                <a href="{% url 'orders:carrito' %}" class="btn bg-primary text-light fw-bold shadow-sm">
+                <a href="{% url 'orders:carrito' %}" class="btn bg-primary text-light fw-bold shadow-sm btn-cart-pulse">
                     <i class="bi bi-cart-check me-2"></i>
                     Ver Carrito Completo
                 </a>
@@ -107,6 +107,44 @@
 </div>
 
 <style>
+/* Estilo botones */
+
+@keyframes cartPulseScale {
+    0% { transform: translateX(0) scale(1); }
+    10% { transform: translateX(-2px) scale(1.02); }
+    20% { transform: translateX(2px) scale(1.02); }
+    30% { transform: translateX(-2px) scale(1.03); }
+    40% { transform: translateX(2px) scale(1.03); }
+    50% { transform: translateX(0) scale(1.04); }
+    100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes cartPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(13,110,253,0.8);
+    }
+    70% {
+        box-shadow: 0 0 0 22px rgba(13,110,253,0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(13,110,253,0);
+    }
+}
+
+.btn-cart-pulse {
+    animation:
+        cartPulseScale 3.5s infinite,
+        cartPulse 2.5s infinite;
+}
+.btn-cart-pulse:hover {
+    animation-play-state: paused;
+}
+
+
+
+
+
+
 /* Offcanvas carrito - ancho personalizado */
 #carritoOffcanvas {
     width: 400px;

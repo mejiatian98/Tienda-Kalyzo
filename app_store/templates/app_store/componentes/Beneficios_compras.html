@@ -1,0 +1,101 @@
+{% load static %}
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+</head>
+
+<div class="benefits-container">
+    <div class="benefit-item">
+        <div class="icon">
+            <i class="bi bi-shield-check"></i>
+        </div>
+        <h4>COMPRA SEGURA</h4>
+        <p>
+            Explora nuestra selección con total tranquilidad.
+            Garantizamos una experiencia de compra segura y protegida.
+        </p>
+    </div>
+
+    <div class="benefit-item">
+        <div class="icon">
+            <i class="bi bi-truck"></i>
+        </div>
+        <h4>ENVÍO GRATIS Y RÁPIDO</h4>
+        <p>
+            Recibe tus productos rápidamente y sin costo adicional.
+            Rapidez y conveniencia en cada entrega.
+        </p>
+    </div>
+
+    <div class="benefit-item">
+        <div class="icon">
+            <i class="bi bi-award"></i>
+        </div>
+        <h4>GARANTÍA DE SATISFACCIÓN</h4>
+        <p>
+            Tu felicidad es nuestra prioridad.
+            Garantizamos tu satisfacción en cada producto.
+        </p>
+    </div>
+
+    <div class="benefit-item">
+        <div class="icon">
+            <i class="bi bi-box-seam"></i>
+        </div>
+        <h4>PAGA AL RECIBIR</h4>
+        <p>
+            Realiza el pago cuando recibas tu pedido.
+            Compra sin preocupaciones.
+        </p>
+    </div>
+</div>
+
+<style>
+    .benefits-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 50px 20px;
+}
+
+.benefit-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.benefit-item .icon {
+    font-size: 40px;
+    color: #0d6efd;
+}
+
+.benefit-item h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0d6efd;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.benefit-item p {
+    font-size: 19px;
+    color: #6c757d;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .benefits-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .benefits-container {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+}
+
+</style>

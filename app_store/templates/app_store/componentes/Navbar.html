@@ -2,13 +2,23 @@
 <nav class="navbar navbar-1 bg-primary" data-bs-theme="dark">
   <div class="container d-flex justify-content-between align-items-center px-3 py-2">
 
-    <a class="navbar-nav nav-link d-flex align-items-center text-center" href="{% url 'store_page' %}">
-      <i class="bi bi-house fs-4"></i>
+    <a class="navbar-nav nav-link d-flex align-items-center text-center"
+   href="{% url 'store_page' %}">
+    <i class="bi bi-house fs-4 btn-house"></i>
     </a>
 
-    <a href="{% url 'store_page' %}" class="no-link-style">
-      <span class="brand-text">KALYZO</span>
-    </a>
+
+    <a href="{% url 'store_page' %}" class="no-link-style brand-link">
+    <span class="brand-text-animated">
+        <span>K</span>
+        <span>A</span>
+        <span>L</span>
+        <span>Y</span>
+        <span>Z</span>
+        <span>O</span>
+    </span>
+</a>
+
 
 
     <!-- ICONOS -->
@@ -66,6 +76,52 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 </script>
+<style>
+
+.brand-text-animated {
+    font-weight: 700;
+    letter-spacing: 3px;
+    font-size: 1.5rem;
+    color: #ffffff;
+    display: inline-flex;
+}
+
+.brand-text-animated span {
+    display: inline-block;
+    animation: letterGlow 2.8s infinite ease-in-out;
+    text-shadow: none;
+}
+
+/* Delay progresivo (letra por letra) */
+.brand-text-animated span:nth-child(1) { animation-delay: 0s; }
+.brand-text-animated span:nth-child(2) { animation-delay: 0.15s; }
+.brand-text-animated span:nth-child(3) { animation-delay: 0.3s; }
+.brand-text-animated span:nth-child(4) { animation-delay: 0.45s; }
+.brand-text-animated span:nth-child(5) { animation-delay: 0.6s; }
+.brand-text-animated span:nth-child(6) { animation-delay: 0.75s; }
+
+@keyframes letterGlow {
+    0% {
+        color: #ffffff;
+        text-shadow: none;
+    }
+    40% {
+        color: #ffffff;
+        text-shadow:
+            0 0 6px rgba(0, 140, 255, 0.6),
+            0 0 14px rgba(0, 140, 255, 0.4);
+    }
+    80% {
+        color: #ffffff;
+        text-shadow: none;
+    }
+    100% {
+        color: #ffffff;
+        text-shadow: none;
+    }
+}
+
+</style>
 
 
 <!-- OFFCANVAS BUSCAR -->
