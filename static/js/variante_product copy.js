@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event delegation - Funciona con elementos dinámicos
+    // ✅ EVENT DELEGATION - Funciona con elementos dinámicos
     document.body.addEventListener('click', function(e) {
         // Botón de agregar al carrito
         const addToCartBtn = e.target.closest('#addToCartBtn');
@@ -40,14 +40,14 @@ document.addEventListener('DOMContentLoaded', function() {
             addToCart();
         }
         
-        // Botón de contraentrega (abre el modal)
+        // ✅ Botón de contraentrega (abre el modal)
         const contraentregaBtn = e.target.closest('#contraentregaBtn');
         if (contraentregaBtn) {
             e.preventDefault();
             handleContraentregaClick();
         }
         
-        // Botón de finalizar compra
+        // ✅ Botón de finalizar compra
         const btnFinalizar = e.target.closest('#btnFinalizarCompra');
         if (btnFinalizar) {
             e.preventDefault();
@@ -288,7 +288,7 @@ function selectVariant(
     updateOptions(options);
 }
 
-// ================= UTILIDADES =================
+// ================= FUNCIONES DEL CARRITO =================
 
 function getCookie(name) {
     let cookieValue = null;
@@ -304,16 +304,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
-function deleteCookie(name) {
-    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
-
-function formatNumber(value) {
-    return Math.round(value).toLocaleString('es-CO');
-}
-
-// ================= FUNCIONES DEL CARRITO =================
 
 function addToCart() {
     const variantId = currentVariantId || document.querySelector('.variant-option.variant-selected')?.dataset.variantId;
@@ -373,31 +363,9 @@ function updateCartCount(count) {
         cartCounter.textContent = count;
         if (count > 0) {
             cartCounter.classList.remove('d-none');
-        } else {
-            cartCounter.classList.add('d-none');
         }
     }
 }
-
-function clearCartOffcanvas() {
-    const cartItemsContainer = document.getElementById('cartItemsContainer');
-    const cartTotalElement = document.getElementById('cartTotal');
-    
-    if (cartItemsContainer) {
-        cartItemsContainer.innerHTML = `
-            <div class="text-center py-5">
-                <i class="bi bi-cart-x fs-1 text-muted"></i>
-                <p class="text-muted mt-3">Tu carrito está vacío</p>
-            </div>
-        `;
-    }
-    
-    if (cartTotalElement) {
-        cartTotalElement.textContent = '$0';
-    }
-}
-
-// ================= MENSAJES =================
 
 function showSuccessMessage(message) {
     const toast = document.createElement('div');
@@ -437,6 +405,9 @@ function showErrorMessage(message) {
 
 // ================= CONTRAENTREGA - MODAL Y WHATSAPP =================
 
+/**
+ * Verificar si el carrito está vacío
+ */
 function checkCartStatus() {
     return fetch('/orders/carrito/count/')
         .then(response => response.json())
@@ -447,14 +418,20 @@ function checkCartStatus() {
         });
 }
 
+/**
+ * Manejar clic en botón de contraentrega
+ * Si el carrito está vacío, primero agrega 1 producto
+ */
 async function handleContraentregaClick() {
     console.log('Verificando estado del carrito...');
     
+    // Verificar si el carrito está vacío
     const cartCount = await checkCartStatus();
     
     if (cartCount === 0) {
         console.log('Carrito vacío, agregando producto...');
         
+        // Obtener variant_id actual
         const variantId = currentVariantId || document.querySelector('.variant-option.variant-selected')?.dataset.variantId;
         
         if (!variantId) {
@@ -462,6 +439,7 @@ async function handleContraentregaClick() {
             return;
         }
         
+        // Agregar producto al carrito (cantidad 1)
         try {
             const response = await fetch('/orders/carrito/agregar/', {
                 method: 'POST',
@@ -479,6 +457,7 @@ async function handleContraentregaClick() {
                 updateCartCount(data.cart_count);
                 showSuccessMessage('Producto agregado al carrito');
                 
+                // Esperar un momento y abrir el modal
                 setTimeout(() => {
                     openContraentregaModal();
                 }, 500);
@@ -491,15 +470,21 @@ async function handleContraentregaClick() {
         }
     } else {
         console.log('Carrito con productos, abriendo modal directamente...');
+        // Si ya hay productos, abrir el modal directamente
         openContraentregaModal();
     }
 }
 
+/**
+ * Abrir modal de contraentrega
+ */
 function openContraentregaModal() {
     console.log('Abriendo modal de contraentrega...');
     
+    // Cargar resumen del pedido desde el servidor
     loadPedidoResumen();
     
+    // Abrir modal
     const modalElement = document.getElementById('contraentregaModal');
     if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
@@ -509,6 +494,9 @@ function openContraentregaModal() {
     }
 }
 
+/**
+ * Cargar resumen del pedido desde el servidor
+ */
 function loadPedidoResumen() {
     const resumenContainer = document.getElementById('pedidoResumen');
     const totalElement = document.getElementById('totalPagar');
@@ -518,9 +506,11 @@ function loadPedidoResumen() {
         return;
     }
     
+    // Mostrar loading
     resumenContainer.innerHTML = '<div class="text-center"><span class="spinner-border spinner-border-sm"></span> Cargando...</div>';
     totalElement.textContent = '$0';
     
+    // Obtener datos del carrito desde el servidor
     fetch('/orders/carrito/items/')
         .then(response => response.json())
         .then(data => {
@@ -558,15 +548,20 @@ function loadPedidoResumen() {
         });
 }
 
+/**
+ * Finalizar compra - Crear orden y redirigir a WhatsApp
+ */
 function finalizarCompraWhatsApp() {
     const form = document.getElementById('contraentregaForm');
     const btn = document.getElementById('btnFinalizarCompra');
     
+    // Validar formulario
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
     }
     
+    // Obtener datos del formulario
     const formData = new FormData(form);
     const data = {};
     formData.forEach((value, key) => {
@@ -575,10 +570,12 @@ function finalizarCompraWhatsApp() {
     
     console.log('Datos del formulario:', data);
     
+    // Mostrar loading
     const originalHTML = btn.innerHTML;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Procesando...';
     btn.disabled = true;
     
+    // Enviar datos al servidor para crear la orden
     fetch('/clientes/orden/crear/', {
         method: 'POST',
         headers: {
@@ -595,9 +592,105 @@ function finalizarCompraWhatsApp() {
         console.log('Result:', result);
         
         if (result.success) {
-            // Eliminar cookie del carrito
+            // Construir URL de WhatsApp
+            const whatsappMessage = encodeURIComponent(result.data.whatsapp_message);
+            const whatsappNumber = result.data.whatsapp_number;
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+            
+            console.log('WhatsApp URL:', whatsappUrl);
+            
+            // Abrir WhatsApp
+            window.open(whatsappUrl, '_blank');
+            
+            // Cerrar modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('contraentregaModal'));
+            if (modal) {
+                modal.hide();
+            }
+            
+            // Mostrar mensaje de éxito
+            showSuccessMessage(`¡Orden #${result.data.order_id} creada exitosamente!`);
+            
+            // Limpiar formulario
+            form.reset();
+            
+            // Actualizar contador del carrito
+            updateCartCount(0);
+            
+        } else {
+            console.error('Error en result:', result.message);
+            showErrorMessage(result.message || 'Error al crear la orden');
+        }
+        
+        // Restaurar botón
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+    })
+    .catch(error => {
+        console.error('Error en fetch:', error);
+        showErrorMessage('Error al procesar la compra');
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+    });
+}
+
+/**
+ * Formatear números
+ */
+function formatNumber(value) {
+    return Math.round(value).toLocaleString('es-CO');
+}
+
+
+// static/js/variante_product.js
+
+/**
+ * Finalizar compra - Crear orden y redirigir a WhatsApp
+ */
+function finalizarCompraWhatsApp() {
+    const form = document.getElementById('contraentregaForm');
+    const btn = document.getElementById('btnFinalizarCompra');
+    
+    // Validar formulario
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+    
+    // Obtener datos del formulario
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+    
+    console.log('Datos del formulario:', data);
+    
+    // Mostrar loading
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Procesando...';
+    btn.disabled = true;
+    
+    // Enviar datos al servidor para crear la orden
+    fetch('/clientes/orden/crear/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
+    .then(result => {
+        console.log('Result:', result);
+        
+        if (result.success) {
+            // ✅ ELIMINAR COOKIE DEL CARRITO
             deleteCookie('cart');
-            console.log('Cookie del carrito eliminada');
+            console.log('✅ Cookie del carrito eliminada');
             
             // Construir URL de WhatsApp
             const whatsappMessage = encodeURIComponent(result.data.whatsapp_message);
@@ -624,7 +717,7 @@ function finalizarCompraWhatsApp() {
             // Actualizar contador del carrito a 0
             updateCartCount(0);
             
-            // Limpiar el contenido del offcanvas del carrito
+            // ✅ Limpiar el contenido del offcanvas del carrito
             clearCartOffcanvas();
             
         } else {
@@ -632,6 +725,7 @@ function finalizarCompraWhatsApp() {
             showErrorMessage(result.message || 'Error al crear la orden');
         }
         
+        // Restaurar botón
         btn.innerHTML = originalHTML;
         btn.disabled = false;
     })
@@ -641,4 +735,39 @@ function finalizarCompraWhatsApp() {
         btn.innerHTML = originalHTML;
         btn.disabled = false;
     });
+}
+
+/**
+ * ✅ Función para eliminar una cookie
+ */
+function deleteCookie(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+/**
+ * ✅ Limpiar el contenido del offcanvas del carrito
+ */
+function clearCartOffcanvas() {
+    const cartItemsContainer = document.getElementById('cartItemsContainer');
+    const cartTotalElement = document.getElementById('cartTotal');
+    
+    if (cartItemsContainer) {
+        cartItemsContainer.innerHTML = `
+            <div class="text-center py-5">
+                <i class="bi bi-cart-x fs-1 text-muted"></i>
+                <p class="text-muted mt-3">Tu carrito está vacío</p>
+            </div>
+        `;
+    }
+    
+    if (cartTotalElement) {
+        cartTotalElement.textContent = '$0';
+    }
+}
+
+/**
+ * Formatear números
+ */
+function formatNumber(value) {
+    return Math.round(value).toLocaleString('es-CO');
 }
