@@ -1,3 +1,6 @@
+# app_orders/models.py
+
+
 from django.db import models
 from app_products.models import Product, ProductVariant
 from app_customers.models import Customer

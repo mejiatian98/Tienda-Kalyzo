@@ -92,6 +92,10 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',  # ✅ IMPORTANTE
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -141,7 +145,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
+# kalyzo_shop/settings.py
 
+# Agregar al final del archivo:
+
+# ✅ Configuración de encoding
+import sys
+sys.setdefaultencoding = lambda encoding: None  # Prevenir cambios de encoding
+
+# ✅ Asegurar que Django use UTF-8
+DEFAULT_CHARSET = 'utf-8'
+FILE_CHARSET = 'utf-8'
+
+# ✅ Para formularios y respuestas JSON
+DEFAULT_CONTENT_TYPE = 'text/html; charset=utf-8'
 
 
 # ======================

@@ -1,0 +1,186 @@
+<!-- app_orders/componentes/Contraentrega_Modal.html -->
+
+<!-- Modal Contraentrega -->
+<div class="modal fade" id="contraentregaModal" tabindex="-1" aria-labelledby="contraentregaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            
+            <!-- HEADER -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold" id="contraentregaModalLabel">
+                    <i class="bi bi-truck me-2"></i>
+                    Finalizar Compra - Contraentrega
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- BODY -->
+            <div class="modal-body">
+                
+                <!-- Resumen del Pedido -->
+                <div class="alert alert-info mb-4">
+                    <h6 class="fw-bold mb-3">
+                        <i class="bi bi-cart-check me-2"></i>
+                        Resumen de tu Pedido
+                    </h6>
+                    <div id="pedidoResumen" class="small">
+                        <div class="text-center">
+                            <span class="spinner-border spinner-border-sm"></span> Cargando...
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Total a Pagar:</span>
+                        <span class="fs-4 text-primary fw-bold" id="totalPagar">$0</span>
+                    </div>
+                </div>
+
+                <!-- Formulario de Cliente -->
+                <form id="contraentregaForm">
+                    
+                    <h6 class="fw-bold mb-3 text-primary">
+                        <i class="bi bi-person-fill me-2"></i>
+                        Información de Contacto
+                    </h6>
+                    
+                    <div class="row g-3 mb-4">
+                        <!-- Nombre Completo -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-person me-1"></i>
+                                Nombre Completo *
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="customerName" 
+                                   name="customer_name"
+                                   placeholder="Juan Pérez" 
+                                   required>
+                        </div>
+                        
+                        <!-- Teléfono -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-phone me-1"></i>
+                                Teléfono / WhatsApp *
+                            </label>
+                            <input type="tel" 
+                                   class="form-control" 
+                                   id="customerPhone" 
+                                   name="customer_phone"
+                                   placeholder="3001234567" 
+                                   required>
+                            <small class="text-muted">Te contactaremos por WhatsApp</small>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-envelope me-1"></i>
+                                Email (Opcional)
+                            </label>
+                            <input type="email" 
+                                   class="form-control" 
+                                   id="customerEmail" 
+                                   name="customer_email"
+                                   placeholder="correo@ejemplo.com">
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3 text-primary">
+                        <i class="bi bi-geo-alt-fill me-2"></i>
+                        Dirección de Entrega
+                    </h6>
+                    
+                    <div class="row g-3 mb-4">
+                        <!-- Departamento -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Departamento *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="customerDepartment" 
+                                   name="department"
+                                   placeholder="Caldas" 
+                                   required>
+                        </div>
+                        
+                        <!-- Ciudad -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Ciudad *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="customerCity" 
+                                   name="city"
+                                   placeholder="Manizales" 
+                                   required>
+                        </div>
+                        
+                        <!-- Barrio -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Barrio</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="customerNeighborhood" 
+                                   name="neighborhood"
+                                   placeholder="Centro">
+                        </div>
+                        
+                        <!-- Dirección -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Dirección Completa *</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="customerAddress" 
+                                   name="address"
+                                   placeholder="Calle 23 #45-67" 
+                                   required>
+                        </div>
+                        
+                        <!-- Observaciones -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-chat-left-text me-1"></i>
+                                Observaciones (Opcional)
+                            </label>
+                            <textarea class="form-control" 
+                                      id="customerNote" 
+                                      name="note"
+                                      rows="3" 
+                                      placeholder="Ej: Casa color azul, portón negro. Tocar timbre 2 veces."></textarea>
+                            <small class="text-muted">Indica referencias para facilitar la entrega</small>
+                        </div>
+                    </div>
+
+                    <!-- Información importante -->
+                    <div class="alert alert-success">
+                        <h6 class="fw-bold mb-2">
+                            <i class="bi bi-check-circle me-2"></i>
+                            Beneficios de tu Compra
+                        </h6>
+                        <ul class="mb-0 small">
+                            <li>✓ Envío GRATIS a todo Colombia</li>
+                            <li>✓ Pagas al recibir tu pedido</li>
+                            <li>✓ Garantía de devolución</li>
+                            <li>✓ Soporte 24/7</li>
+                        </ul>
+                    </div>
+
+                </form>
+                
+            </div>
+            
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-success btn-lg fw-bold" id="btnFinalizarCompra">
+                    <i class="bi bi-whatsapp me-2"></i>
+                    Finalizar Compra 
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>
