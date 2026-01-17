@@ -8,6 +8,9 @@
     z-index: 1020 !important;
 }
 
+
+
+
 /* Fondo de la pagina */
 body{
     background-color: #f5f5f5 !important;
@@ -1237,6 +1240,16 @@ body{
 }
 
 
+
+/* ###################### BOTONES ANIMADOS ################################## */
+.btn-animate {
+    transition: all 0.3s ease;
+}
+
+.btn-animate:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+}
 
 
 

@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <div class="container my-4">
     <div class="bg-primary rounded-3 text-light px-3 px-md-4 pt-3 pb-1">
 
@@ -16,7 +17,7 @@
 
                 <div class="justify-content-center align-items-center text-center col-12">
                     <a href="{% url 'all_products' %}" class="mt-2">
-                        <button class="btn btn-outline-light fw-bold w-100">
+                        <button class="btn btn-outline-light fw-bold w-100 btn-animate">
                             <h6>Ver más productos</h6>
                         </button>
                     </a>
@@ -51,4 +52,15 @@
     </div>
 </div>
 
+<style>
+    .btn-animate {
+    transition: all 0.3s ease;
+}
+
+.btn-animate:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+}
+
+</style>
 
