@@ -1,0 +1,98 @@
+{% load static %}
+<div class="logistics-partners">
+    <div class="partner">
+        <img src="{% static 'aliados/envio-gratis.png' %}" alt="Envío Gratis">
+    </div>
+    <div class="partner">
+        <img src="{% static 'aliados/envia.png' %}" alt="Envia">
+    </div>
+    <div class="partner">
+        <img src="{% static 'aliados/interrapidisimo.png' %}" alt="Interrapidisimo">
+    </div>
+    <div class="partner">
+        <img src="{% static 'aliados/servientrega.png' %}" alt="Servientrega">
+    </div>
+    <div class="partner">
+        <img src="{% static 'aliados/coordinadora.png' %}" alt="Coordinadora">
+    </div>
+</div>
+<style>
+.logistics-partners {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 24px 16px;
+}
+
+/* Cada logo */
+.logistics-partners .partner {
+    flex: 0 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Logo */
+.logistics-partners .partner img {
+    width: 100px;            /* MEDIDA FIJA */
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Hover elegante */
+.logistics-partners .partner:hover {
+    transform: translateY(-4px);
+}
+
+.logistics-partners .partner:hover img {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+
+/* ENTRADA SUAVE (solo una vez al cargar) */
+@keyframes logoFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.logistics-partners .partner {
+    animation: logoFadeUp 0.6s ease forwards;
+}
+
+/* Delay progresivo */
+.logistics-partners .partner:nth-child(1) { animation-delay: 0s; }
+.logistics-partners .partner:nth-child(2) { animation-delay: 0.1s; }
+.logistics-partners .partner:nth-child(3) { animation-delay: 0.2s; }
+.logistics-partners .partner:nth-child(4) { animation-delay: 0.3s; }
+.logistics-partners .partner:nth-child(5) { animation-delay: 0.4s; }
+
+/* TABLET */
+@media (max-width: 1024px) {
+    .logistics-partners .partner img {
+        width: 90px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .logistics-partners {
+        justify-content: flex-start;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 8px 0;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .logistics-partners::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+</style>

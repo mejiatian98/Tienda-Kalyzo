@@ -12,6 +12,6 @@ urlpatterns = [
     
     path("sobre_nosotros/", views.sobreNosotros.as_view(), name="sobre_nosotros"),
     path("contacto/", views.ContactView.as_view(), name="contacto"),
-
+   
     
 ]
