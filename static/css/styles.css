@@ -1251,7 +1251,8 @@ body{
     box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
 }
 
-
-
-
-
+.btn-pay{
+    animation:
+        payShake 3.5s infinite,
+        payPulse 2.5s infinite;
+}
