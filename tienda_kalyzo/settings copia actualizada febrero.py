@@ -79,15 +79,14 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            BASE_DIR / "app_store" / "templates" / "app_store",
-            BASE_DIR / "app_products" / "templates" / "app_products",
-            BASE_DIR / "app_customers" / "templates" / "app_customers",
-            BASE_DIR / "app_orders" / "templates" / "app_orders",
+            "app_store/templates/app_store", 
+            "app_products/templates/app_products", 
+            "app_customers/templates/app_customers", 
+            "app_orders/templates/app_orders"
         ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.template.context_processors.static",
                 "django.contrib.auth.context_processors.auth",
