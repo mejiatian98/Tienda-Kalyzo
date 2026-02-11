@@ -76,37 +76,18 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "tienda_kalyzo.urls"
 
-# TEMPLATES = [
-#     {
-#         "BACKEND": "django.template.backends.django.DjangoTemplates",
-#         "DIRS": [
-#             "app_store/templates/app_store", 
-#             "app_products/templates/app_products", 
-#             "app_customers/templates/app_customers", 
-#             "app_orders/templates/app_orders"
-#         ],
-#         "APP_DIRS": True,
-#         "OPTIONS": {
-#             "context_processors": [
-#                 "django.template.context_processors.request",
-#                 "django.template.context_processors.static",
-#                 "django.contrib.auth.context_processors.auth",
-#                 "django.contrib.messages.context_processors.messages",
-#                 "app_store.context_processors.categorias_globales",
-#             ],
-#         },
-#     },
-# ]
-
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            "app_store/templates/app_store", 
+            "app_products/templates/app_products", 
+            "app_customers/templates/app_customers", 
+            "app_orders/templates/app_orders"
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.template.context_processors.static",
                 "django.contrib.auth.context_processors.auth",
