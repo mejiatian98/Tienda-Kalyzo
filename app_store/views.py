@@ -32,7 +32,7 @@ class StoreView(View):
 
         return render(
             request,
-            "store_page.html",
+            "app_store/store_page.html",
             {
                 "featured_products": featured_products,
                 "productos": productos,
@@ -55,7 +55,7 @@ class CategoriaView(View):
             "categorias": categorias
         }
 
-        return render(request, "Pages_category.html", context)
+        return render(request, "app_store/Pages_category.html", context)
 
 
 # Vista para mostrar productos de una categoría específica
@@ -86,7 +86,7 @@ class CategoriaProductosView(View):
             "productos": productos,
         }
 
-        return render(request, "Categoria_products.html", context)
+        return render(request, "app_store/Categoria_products.html", context)
 
 
 # Vista para mostrar los productos más nuevos
@@ -95,7 +95,7 @@ class NewsProductsView(View):
         # Traer los productos ordenados por fecha de creación (más nuevos primero)
         productos_nuevos = Product.objects.order_by('-created_at').filter(is_active=True)
 
-        return render(request, "news_products.html", {
+        return render(request, "app_store/news_products.html", {
             "productos": productos_nuevos
         })
     
@@ -110,7 +110,7 @@ class SearchProductsView(View):
             is_active=True
         ).prefetch_related("variants__images", "variants")
 
-        return render(request, "search_results.html", {
+        return render(request, "app_store/search_results.html", {
             "query": query,
             "productos": productos
         })
@@ -122,7 +122,7 @@ class TopSellingProductsView(View):
         # Traer los productos ordenados por ventas (más vendidos primero)
         productos_top_ventas = Product.objects.order_by('-sales_count').filter(is_active=True)
 
-        return render(request, "top_selling_products.html", {
+        return render(request, "app_store/top_selling_products.html", {
             "productos": productos_top_ventas
         })
     
@@ -145,17 +145,17 @@ class DiscountedProductsView(View):
             "productos": productos
         }
 
-        return render(request, "Discounted_products.html", context)
+        return render(request, "app_store/Discounted_products.html", context)
     
 
 # Vista para la página "Sobre Nosotros"
 class sobreNosotros(View):
     def get(self, request):
-        return render(request, "Sobre_nosotros.html")
+        return render(request, "app_store/Sobre_nosotros.html")
     
     
 # Vista para la página de Contacto
 class ContactView(View):
     def get(self, request):
-        return render(request, "Sobre_nosotros.html")
+        return render(request, "app_store/Sobre_nosotros.html")
     
