@@ -14,14 +14,14 @@ class AllProductDetailView(View):
         productos = Product.objects.filter(is_active=True).order_by("?")
         return render(
             request,
-            "All_Products.html",
+            "app_products/All_Products.html",
             {"productos": productos}
         )
 
     
 class ProductDetailView(DetailView):
     model = Product
-    template_name = "Product_detail.html"
+    template_name = "app_products/Product_detail.html"
     context_object_name = "product"
     slug_field = "slug"
     slug_url_kwarg = "slug"

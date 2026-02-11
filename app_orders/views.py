@@ -13,7 +13,7 @@ class CarritoView(TemplateView):
     """
     Vista principal del carrito
     """
-    template_name = 'carrito.html'
+    template_name = 'app_orders/carrito.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
