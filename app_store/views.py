@@ -32,7 +32,7 @@ class StoreView(View):
 
         return render(
             request,
-            "store_page.html",
+            "Store_page.html",
             {
                 "featured_products": featured_products,
                 "productos": productos,
