@@ -39,11 +39,34 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # --------------------------------------------
 # ALLOWED HOSTS
 # --------------------------------------------
+
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+if IS_PRODUCTION:
+    ALLOWED_HOSTS.extend([
+        'kalyzo.shop',
+        'www.kalyzo.shop',
+        '.onrender.com',
+    ])
+
+# SECURITY (PRODUCCIÓN)
+if IS_PRODUCTION:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://kalyzo.shop',
+        'https://www.kalyzo.shop',
+        'https://*.onrender.com',
+    ]
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
 
 
 # --------------------------------------------
