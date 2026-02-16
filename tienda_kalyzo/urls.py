@@ -26,4 +26,7 @@ urlpatterns = [
     path("clientes/", include("app_customers.urls")),
     path("productos/", include("app_products.urls")),
     path("orders/", include("app_orders.urls")),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = "app_store.views.custom_404"
