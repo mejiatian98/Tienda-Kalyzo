@@ -5,6 +5,11 @@ from app_products.models import Product, Category, ProductVariant
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from django.db.models import Avg
+from django.shortcuts import redirect
+
+
+def custom_404(request, exception):
+    return redirect("/") 
 
 # Pagina principal de la tienda
 class StoreView(View):
