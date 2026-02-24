@@ -181,7 +181,7 @@ class ProductVariantImage(models.Model):
         on_delete=models.CASCADE
     )  # Variante asociada
 
-    image_url = models.URLField()  # URL de imagen
+    image_url = models.ImageField(upload_to="productos/", blank=True, null=True)
     alt_text = models.CharField(max_length=200, blank=True)  # SEO / accesibilidad
     is_main = models.BooleanField(default=False)  # Imagen principal
 
