@@ -59,7 +59,7 @@
                 <div
                     class="variant-option border rounded p-2 text-center position-relative {% if v.stock == 0 %}variant-disabled{% endif %} {% if v.id == main_variant.id %}variant-selected{% endif %}"
                     data-variant-id="{{ v.id }}"
-                    data-main-image="{{ v.images.first.image_url }}"
+                    data-main-image="{{ v.images.first.image_url.url }}"
                     data-main-alt="{{ v.images.first.alt_text }}"
                     data-price="{{ v.price }}"
                     data-discount-price="{{ v.discount_price|default_if_none:'' }}"
@@ -67,7 +67,7 @@
                     data-stock="{{ v.stock }}"
                     data-images='[
                         {% for img in v.images.all %}
-                            {"url":"{{ img.image_url }}","alt":"{{ img.alt_text|default:'' }}"}{% if not forloop.last %},{% endif %}
+                            {"url":"{{ img.image_url.url }}","alt":"{{ img.alt_text|default:'' }}"}{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     ]'
                     data-options='[
@@ -83,7 +83,7 @@
                     {% endif %}
                 >
                     <img
-                        src="{{ v.images.first.image_url }}"
+                        src="{{ v.images.first.image_url.url }}"
                         alt="{{ v.images.first.alt_text }}"
                         class="img-fluid rounded mb-1"
                         style="height:50px; object-fit:cover;"

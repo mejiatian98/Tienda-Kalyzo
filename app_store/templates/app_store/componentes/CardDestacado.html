@@ -14,7 +14,7 @@
                     {% with variante=producto.variants.first %}
                         {% if variante and variante.main_image %}
                             <img
-                                src="{{ variante.main_image.image_url }}"
+                                src="{{ variante.main_image.image_url.url }}"
                                 alt="{{ producto.name }}"
                                 class="featured-image"
                             >

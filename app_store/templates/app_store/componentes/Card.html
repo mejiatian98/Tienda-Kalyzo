@@ -23,7 +23,7 @@
                 <!-- IMG -->
                 <div class="img-container">
                     {% if variante.main_image %}
-                        <img src="{{ variante.main_image.image_url }}"
+                        <img src="{{ variante.main_image.image_url.url }}"
                              class="card-img-top img-fluid"
                              alt="{{ producto.name }}">
                     {% else %}

@@ -1,5 +1,3 @@
-# app_products/views.py
-
 from django.views.generic import DetailView
 from .models import Product, CommentPublic
 from django.shortcuts import redirect, render
@@ -50,14 +48,17 @@ class ProductDetailView(DetailView):
         
         for variant in variants:
             for img in variant.images.all():
-                if img.image_url not in seen_urls:
+                # ✅ CAMBIO: usar .url del ImageField
+                image_url = img.image_url.url if img.image_url else None
+                
+                if image_url and image_url not in seen_urls:
                     all_variant_images.append({
-                        'url': img.image_url,
+                        'url': image_url,
                         'alt': img.alt_text or f"{product.name} - {variant.sku}",
                         'variant_id': variant.id,
                         'is_main': img.is_main
                     })
-                    seen_urls.add(img.image_url)
+                    seen_urls.add(image_url)
 
         # Ordenar: primero las imágenes principales
         all_variant_images.sort(key=lambda x: (not x['is_main'], x['url']))
@@ -112,7 +113,4 @@ class ProductDetailView(DetailView):
             "product_detail",
             slug=product.slug,
             id=product.id
-        )  
-
-
-
+        )
